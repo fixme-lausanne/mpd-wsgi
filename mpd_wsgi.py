@@ -1,19 +1,20 @@
 #/usr/bin/env python2
-##mpd mini interface 
-import sys
-import pprint
+########################
+##mpd mini interface
+########################
 
 from flask import Flask
 
-import mpd
 from mpd import MPDClient, CommandError
 from socket import error as SocketError
+
 
 HOST = "localhost"
 PORT = 6600
 PASSWORD = None
-
+MPD_ROOT = "/media/"
 CON_ID = {'host':HOST, 'port':PORT}
+
 app = Flask(__name__)
 
 STAT_COMMAND = 0
@@ -34,7 +35,7 @@ def mpd_connect():
         client.connect(**CON_ID)
     except SocketError:
         return None
-    
+
     # Auth if password is set non False
     if PASSWORD:
         try:
@@ -42,10 +43,10 @@ def mpd_connect():
         except CommandError:
             return None
     return client
-    
+
 def mpd_disconnect(client):
     client.disconnect()
-    
+
 def mpd_command(command):
     client = mpd_connect()
     if client:
@@ -59,6 +60,8 @@ def mpd_command(command):
             ret = client.playlistfind(1)
         elif command == STATUS_COMMAND:
             ret = client.status()
+        else:
+            raise NotImplemented()
         mpd_disconnect(client)
         return ret
     else:
@@ -83,10 +86,14 @@ def next_song():
 @app.route("/stats")
 def stats():
     return str(mpd_command(STAT_COMMAND))
-    
+
 @app.route("/status")
 def status():
     return str(mpd_command(STATUS_COMMAND))
+
+@app.route("/file")
+def download_file():
+    return static_file(file_name, root=os.path.join(os.getcwd(), 'static', 'styles'))
 
 if __name__ == "__main__":
     app.run(debug=True)
