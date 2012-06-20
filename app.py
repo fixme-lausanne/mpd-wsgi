@@ -95,5 +95,6 @@ def status():
 def download_file():
     return static_file(file_name, root=os.path.join(os.getcwd(), 'static', 'styles'))
 
+    #status()
 if __name__ == "__main__":
     app.run(debug=True)
