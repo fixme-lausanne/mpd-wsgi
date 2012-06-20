@@ -15,7 +15,7 @@ PASSWORD = None
 MPD_ROOT = "/media/"
 CON_ID = {'host':HOST, 'port':PORT}
 
-app = Flask(__name__)
+app = Flask(__name__, debug=True)
 
 STAT_COMMAND = 0
 PREVIOUS_COMMAND = 1
