@@ -12,7 +12,7 @@ from socket import error as SocketError
 HOST = "localhost"
 PORT = 6600
 PASSWORD = None
-MPD_ROOT = "/media/"
+MPD_ROOT = "/media/disk1/music/"
 CON_ID = {'host':HOST, 'port':PORT}
 
 app = Flask(__name__)
@@ -92,7 +92,8 @@ def status():
 
 @app.route("/file")
 def download_file():
-    return static_file(file_name, root=os.path.join(os.getcwd(), 'static', 'styles'))
+    file_path = mpd_command(CURRENT_COMMAND)['file']
+    return static_file(file_path, root=MPD_ROOT)
 
 if __name__ == "__main__":
     app.run(debug=True)
