@@ -16,6 +16,8 @@ MPD_ROOT = "/media/disk1/music/"
 CON_ID = {'host':HOST, 'port':PORT}
 
 app = Flask(__name__)
+app.debug = True
+
 
 STAT_COMMAND = 0
 PREVIOUS_COMMAND = 1
