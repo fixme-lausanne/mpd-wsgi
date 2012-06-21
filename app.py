@@ -15,7 +15,7 @@ PASSWORD = None
 MPD_ROOT = "/media/"
 CON_ID = {'host':HOST, 'port':PORT}
 
-app = Flask(__name__, debug=True)
+app = Flask(__name__)
 
 STAT_COMMAND = 0
 PREVIOUS_COMMAND = 1
@@ -71,6 +71,7 @@ def mpd_command(command):
 @app.route("/previous")
 def previous_song():
     return str(mpd_command(PREVIOUS_COMMAND))
+
 #ask for the actual song
 @app.route("/")
 def current_song():
@@ -93,6 +94,5 @@ def status():
 def download_file():
     return static_file(file_name, root=os.path.join(os.getcwd(), 'static', 'styles'))
 
-    #status()
 if __name__ == "__main__":
     app.run(debug=True)
