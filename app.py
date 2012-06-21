@@ -3,7 +3,7 @@
 ##mpd mini interface
 ########################
 
-from flask import Flask
+from flask import Flask, static_file
 
 from mpd import MPDClient, CommandError
 from socket import error as SocketError
@@ -16,8 +16,6 @@ MPD_ROOT = "/media/disk1/music/"
 CON_ID = {'host':HOST, 'port':PORT}
 
 app = Flask(__name__)
-app.debug = True
-
 
 STAT_COMMAND = 0
 PREVIOUS_COMMAND = 1
