@@ -3,7 +3,7 @@
 ##mpd mini interface
 ########################
 
-from flask import Flask, static_file
+from flask import Flask, send_from_directory
 
 from mpd import MPDClient, CommandError
 from socket import error as SocketError
@@ -93,7 +93,7 @@ def status():
 @app.route("/file")
 def download_file():
     file_path = mpd_command(CURRENT_COMMAND)['file']
-    return static_file(file_path, root=MPD_ROOT)
+    return send_from_directory(MPD_ROOT, file_path)
 
 if __name__ == "__main__":
     app.run(debug=True)
