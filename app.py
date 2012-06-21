@@ -53,9 +53,9 @@ def mpd_command(command):
         if command == STAT_COMMAND:
             ret = client.stats()
         elif command == PREVIOUS_COMMAND:
-            ret = client.currentsong()
+            ret = client.previous()
         elif command == CURRENT_COMMAND:
-            ret = client.play()
+            ret = client.currentsong()
         elif command == NEXT_COMMAND:
             ret = client.next()
         elif command == STATUS_COMMAND:
