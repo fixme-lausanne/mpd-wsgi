@@ -52,12 +52,12 @@ def mpd_command(command):
     if client:
         if command == STAT_COMMAND:
             ret = client.stats()
-        if command == PREVIOUS_COMMAND:
-            ret = client.playlistfind(-1)
-        if command == CURRENT_COMMAND:
-            ret = client.currentsong()
+        elif command == PREVIOUS_COMMAND:
+            ret = client.previous()
+        elif command == CURRENT_COMMAND:
+            ret = client.play()
         elif command == NEXT_COMMAND:
-            ret = client.playlistfind(1)
+            ret = client.next()
         elif command == STATUS_COMMAND:
             ret = client.status()
         else:
@@ -67,18 +67,16 @@ def mpd_command(command):
     else:
         return ""
 
-#ask for the next song
+#ask for the previous song
 @app.route("/previous")
 def previous_song():
     return str(mpd_command(PREVIOUS_COMMAND))
-
-
 #ask for the actual song
 @app.route("/")
 def current_song():
     return str(mpd_command(CURRENT_COMMAND))
 
-#ask for the previous song
+#ask for the next song
 @app.route("/next")
 def next_song():
     return str(mpd_command(NEXT_COMMAND))
