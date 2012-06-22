@@ -67,13 +67,18 @@ def mpd_command(command):
     else:
         return ""
 
+#simply return the documentation concerning the app
+@app.route("/")
+def main_page():
+    return str()
+
 #ask for the previous song
 @app.route("/previous")
 def previous_song():
     return str(mpd_command(PREVIOUS_COMMAND))
 
 #ask for the actual song
-@app.route("/")
+@app.route("/current")
 def current_song():
     return str(mpd_command(CURRENT_COMMAND))
 
@@ -82,18 +87,24 @@ def current_song():
 def next_song():
     return str(mpd_command(NEXT_COMMAND))
 
+#return general statistics about mpd
 @app.route("/stats")
 def stats():
     return str(mpd_command(STAT_COMMAND))
 
+#return the actual status of mpd
 @app.route("/status")
 def status():
     return str(mpd_command(STATUS_COMMAND))
 
+#return the actual file played trough mpd
 @app.route("/file")
 def download_file():
     file_path = mpd_command(CURRENT_COMMAND)['file']
-    return send_from_directory(MPD_ROOT, file_path)
+    if file_path:
+        return send_from_directory(MPD_ROOT, file_path)
+    else:
+        return ""
 
 if __name__ == "__main__":
     app.run(debug=True)
