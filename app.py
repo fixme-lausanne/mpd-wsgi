@@ -67,10 +67,22 @@ def mpd_command(command):
     else:
         abort(503)
 
+def about():
+    doc = """
+    The available urls are:
+        /previous : change the current song to the previous one in the playlist. Return an empty string<br>
+        /current : get information on the current playing song. Return informations about the song in json or fail with a 503 HTTP error.<br>
+        /next : change the current song to the next one in the playlist. Return an empty string.<br>
+        /stats : return general information about mpd. Return a json formatted string or fail with a 503 HTTP error if an error occured.<br>
+        /status : return the actual status of mplayer. Return a json formatted string or fail with a 503 HTTP error if an error occured.<br>
+        /file : return the actual playing file. Return a data stream or an empty string if an error occured.<br>
+    """
+    return doc
+
 #simply return the documentation concerning the app
 @app.route("/")
 def main_page():
-    return str()
+    return str(about())
 
 #ask for the previous song
 @app.route("/previous")
