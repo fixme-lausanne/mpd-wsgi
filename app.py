@@ -3,7 +3,7 @@
 ##mpd mini interface
 ########################
 
-from flask import Flask, send_from_directory
+from flask import Flask, send_from_directory, abort
 
 from mpd import MPDClient, CommandError
 from socket import error as SocketError
@@ -65,7 +65,7 @@ def mpd_command(command):
         mpd_disconnect(client)
         return ret
     else:
-        return ""
+        abort(503)
 
 #simply return the documentation concerning the app
 @app.route("/")
