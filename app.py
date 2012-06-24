@@ -63,7 +63,7 @@ def mpd_command(command):
         else:
             raise NotImplemented()
         mpd_disconnect(client)
-        return ret
+        return ret or ""
     else:
         abort(503)
 
