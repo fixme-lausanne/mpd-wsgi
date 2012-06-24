@@ -1,13 +1,14 @@
 #/usr/bin/env python2
-########################
-##mpd mini interface
-########################
+"""
+mpd mini interface
+"""
 
 from flask import Flask, send_from_directory, abort
 
 from mpd import MPDClient, CommandError
 from socket import error as SocketError
-
+import pydoc
+import inspect
 
 HOST = "localhost"
 PORT = 6600
@@ -68,50 +69,61 @@ def mpd_command(command):
         abort(503)
 
 def about():
-    doc = """
-    The available urls are:
-        /previous : change the current song to the previous one in the playlist. Return an empty string<br>
-        /current : get information on the current playing song. Return informations about the song in json or fail with a 503 HTTP error.<br>
-        /next : change the current song to the next one in the playlist. Return an empty string.<br>
-        /stats : return general information about mpd. Return a json formatted string or fail with a 503 HTTP error if an error occured.<br>
-        /status : return the actual status of mplayer. Return a json formatted string or fail with a 503 HTTP error if an error occured.<br>
-        /file : return the actual playing file. Return a data stream or an empty string if an error occured.<br>
-    """
+    map = app.url_map
+    doc = "The URL are : <br>"    
+    for i in map.iter_rules():
+        url_name = i.rule
+        doc += url_name
+        doc += "<br>"
     return doc
 
-#simply return the documentation concerning the app
 @app.route("/")
 def main_page():
+    """
+    simply return the documentation concerning the app
+    """
     return str(about())
 
-#ask for the previous song
 @app.route("/previous")
 def previous_song():
+    """
+    ask for the previous song
+    """
     return str(mpd_command(PREVIOUS_COMMAND))
 
-#ask for the actual song
 @app.route("/current")
 def current_song():
+    """
+    ask for the actual song
+    """
     return str(mpd_command(CURRENT_COMMAND))
 
-#ask for the next song
 @app.route("/next")
 def next_song():
+    """
+    ask for the next song
+    """
     return str(mpd_command(NEXT_COMMAND))
 
-#return general statistics about mpd
 @app.route("/stats")
 def stats():
+    """
+    return general statistics about mpd
+    """
     return str(mpd_command(STAT_COMMAND))
 
-#return the actual status of mpd
 @app.route("/status")
 def status():
+    """
+    return the actual status of mpd
+    """
     return str(mpd_command(STATUS_COMMAND))
 
-#return the actual file played trough mpd
 @app.route("/file")
 def download_file():
+    """
+    return the actual file played trough mpd
+    """
     file_path = mpd_command(CURRENT_COMMAND)['file']
     if file_path:
         return send_from_directory(MPD_ROOT, file_path)
