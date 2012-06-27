@@ -3,7 +3,7 @@
 mpd mini interface
 """
 
-from flask import Flask, send_from_directory, abort
+from flask import Flask, send_from_directory, abort, jsonify
 
 from mpd import MPDClient, CommandError
 from socket import error as SocketError
@@ -83,7 +83,7 @@ def about():
 def main_page():
     """
     simply return the documentation concerning the app
-    """
+    """ 
     return str(about())
 
 @app.route("/action/previous")
@@ -91,35 +91,35 @@ def previous_song():
     """
     ask for the previous song
     """
-    return str(mpd_command(PREVIOUS_COMMAND))
+    return jsonify(mpd_command(PREVIOUS_COMMAND))
 
 @app.route("/current")
 def current_song():
     """
     ask for the actual song
     """
-    return str(mpd_command(CURRENT_COMMAND))
+    return jsonify(mpd_command(CURRENT_COMMAND))
 
 @app.route("/next")
 def next_song():
     """
     ask for the next song
     """
-    return str(mpd_command(NEXT_COMMAND))
+    return jsonify(mpd_command(NEXT_COMMAND))
 
 @app.route("/stats")
 def stats():
     """
     return general statistics about mpd
     """
-    return str(mpd_command(STAT_COMMAND))
+    return jsonify(mpd_command(STAT_COMMAND))
 
 @app.route("/status")
 def status():
     """
     return the actual status of mpd
     """
-    return str(mpd_command(STATUS_COMMAND))
+    return jsonify(mpd_command(STATUS_COMMAND))
 
 @app.route("/file")
 def download_file():
