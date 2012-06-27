@@ -70,7 +70,7 @@ def mpd_command(command):
 
 def about():
     map = app.url_map
-    doc = "The URL are : <br>"    
+    doc = "The URL are : <br>"
     for i in map.iter_rules():
         url_name = i.rule
         doc += url_name
@@ -126,7 +126,7 @@ def download_file():
     """
     file_path = mpd_command(CURRENT_COMMAND)['file']
     if file_path:
-        return send_from_directory(MPD_ROOT, file_path)
+        return send_from_directory(MPD_ROOT, file_path, as_attachment=True)
     else:
         return ""
 
