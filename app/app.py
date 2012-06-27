@@ -126,7 +126,6 @@ def download_file():
     """
     file_path = mpd_command(CURRENT_COMMAND)['file']
     if file_path:
-        response.header['Content-Disposition'] = 'attachement; filename=kaka.mp3'
         return send_from_directory(MPD_ROOT, file_path, as_attachment=True)
     else:
         return ""
