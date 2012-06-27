@@ -70,8 +70,10 @@ def mpd_command(command):
 
 def about():
     map = app.url_map
-    doc = "The URL are : <br>"
+    doc = "The URL you can access are : <br>"
     for i in map.iter_rules():
+        if i == "/static/":
+            continue
         url_name = i.rule
         doc += url_name
         doc += "<br>"
@@ -84,7 +86,7 @@ def main_page():
     """
     return str(about())
 
-@app.route("/previous")
+@app.route("/action/previous")
 def previous_song():
     """
     ask for the previous song
