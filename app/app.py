@@ -72,7 +72,7 @@ def about():
     map = app.url_map
     doc = "The URL you can access are : <br>"
     for i in map.iter_rules():
-        if i == "/static/":
+        if i.contains("/static/"):
             continue
         url_name = i.rule
         doc += url_name
