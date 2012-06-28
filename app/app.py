@@ -18,10 +18,10 @@ CON_ID = {'host':HOST, 'port':PORT}
 
 app = Flask(__name__)
 
-STAT_COMMAND = 0
 PREVIOUS_COMMAND = 1
-CURRENT_COMMAND = 2
-NEXT_COMMAND = 3
+NEXT_COMMAND= 2
+j
+STAT_COMMAND = 0
 STATUS_COMMAND = 4
 
 commands = (STAT_COMMAND, PREVIOUS_COMMAND, CURRENT_COMMAND, NEXT_COMMAND, STATUS_COMMAND)
@@ -87,46 +87,56 @@ def main_page():
     return str(about())
 
 @app.route("/action/previous")
-def previous_song():
+def previous_song_action():
     """
-    ask for the previous song
+    Pass to the previous song
     """
     return jsonify(mpd_command(PREVIOUS_COMMAND))
+@app.route("/action/next")
+def next_song_action():
+    """
+    Pass to the next song
+    """
+    return jsonify(mpd_command(NEXT_COMMAND))
+
+@app.route("/previous")
+def previous_song_info():
+    return jsonify(mpd_command(PREVIOUS_INFO))
 
 @app.route("/current")
 def current_song():
     """
     ask for the actual song
     """
-    return jsonify(mpd_command(CURRENT_COMMAND))
+    return jsonify(mpd_command(CURRENT_INFO))
 
 @app.route("/next")
-def next_song():
+def next_song_info():
     """
     ask for the next song
     """
-    return jsonify(mpd_command(NEXT_COMMAND))
+    return jsonify(mpd_command(NEXT_INFO))
 
 @app.route("/stats")
 def stats():
     """
     return general statistics about mpd
     """
-    return jsonify(mpd_command(STAT_COMMAND))
+    return jsonify(mpd_command(STAT_INFO))
 
 @app.route("/status")
 def status():
     """
     return the actual status of mpd
     """
-    return jsonify(mpd_command(STATUS_COMMAND))
+    return jsonify(mpd_command(STATUS_INFO))
 
 @app.route("/file")
 def download_file():
     """
     return the actual file played trough mpd
     """
-    file_path = mpd_command(CURRENT_COMMAND)['file']
+    file_path = mpd_command(CURRENT_INFO)['file']
     if file_path:
         return send_from_directory(MPD_ROOT, file_path, as_attachment=True)
     else:
