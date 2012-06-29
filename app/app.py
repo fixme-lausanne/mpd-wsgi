@@ -105,6 +105,7 @@ def previous_song_action():
     Pass to the previous song
     """
     return jsonify(mpd_command(PREVIOUS_COMMAND))
+
 @app.route("/action/next")
 def next_song_action():
     """
