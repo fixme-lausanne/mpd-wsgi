@@ -20,7 +20,6 @@ app = Flask(__name__)
 
 PREVIOUS_COMMAND = 1
 NEXT_COMMAND= 2
-j
 STAT_COMMAND = 0
 STATUS_COMMAND = 4
 
@@ -28,7 +27,7 @@ commands = (STAT_COMMAND, PREVIOUS_COMMAND, CURRENT_COMMAND, NEXT_COMMAND, STATU
 
 def mpd_connect():
     """
-    Simple wrapper to connect MPD.
+    Simple wrapper to disconnect MPD.
     """
     #connection to mpd
     client = MPDClient()
@@ -46,6 +45,9 @@ def mpd_connect():
     return client
 
 def mpd_disconnect(client):
+    """
+    Simple wrapper to disconnect the client to MPD.
+    """
     client.disconnect()
 
 def mpd_command(command):
