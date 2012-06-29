@@ -18,12 +18,18 @@ CON_ID = {'host':HOST, 'port':PORT}
 
 app = Flask(__name__)
 
-PREVIOUS_COMMAND = 1
-NEXT_COMMAND= 2
-STAT_COMMAND = 0
-STATUS_COMMAND = 4
 
-commands = (STAT_COMMAND, PREVIOUS_COMMAND, CURRENT_COMMAND, NEXT_COMMAND, STATUS_COMMAND)
+PREVIOUS_COMMAND = 0
+NEXT_COMMAND = 1
+PREVIOUS_INFO = 2
+CURRENT_INFO = 3
+NEXT_INFO = 4
+STAT_INFO = 5
+STATUS_INFO = 6
+
+
+
+commands = (PREVIOUS_COMMAND, NEXT_COMMAND, PREVIOUS_INFO, CURRENT_INFO, NEXT_INFO, STAT_INFO, STATUS_INFO)
 
 def mpd_connect():
     """
@@ -53,15 +59,20 @@ def mpd_disconnect(client):
 def mpd_command(command):
     client = mpd_connect()
     if client:
-        if command == STAT_COMMAND:
-            ret = client.stats()
-        elif command == PREVIOUS_COMMAND:
+    
+        if command == PREVIOUS_COMMAND: 
             ret = client.previous()
-        elif command == CURRENT_COMMAND:
-            ret = client.currentsong()
         elif command == NEXT_COMMAND:
             ret = client.next()
-        elif command == STATUS_COMMAND:
+        elif command == PREVIOUS_INFO:
+            pass
+        elif command == CURRENT_INFO:
+            ret = client.currentsong()
+        elif command == NEXT_INFO:
+            pass
+        elif command == STAT_INFO:
+            ret = client.stats()
+        elif command == STATUS_INFO:
             ret = client.status()
         else:
             raise NotImplemented()
@@ -85,7 +96,7 @@ def about():
 def main_page():
     """
     simply return the documentation concerning the app
-    """ 
+    """
     return str(about())
 
 @app.route("/action/previous")
