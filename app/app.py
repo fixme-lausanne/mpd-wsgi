@@ -20,16 +20,14 @@ app = Flask(__name__)
 
 
 PREVIOUS_COMMAND = 0
-NEXT_COMMAND = 1
-PREVIOUS_INFO = 2
+NEXT_COMMAND = 2
 CURRENT_INFO = 3
-NEXT_INFO = 4
-STAT_INFO = 5
-STATUS_INFO = 6
+STAT_INFO = 4
+STATUS_INFO = 5
 
 
 
-commands = (PREVIOUS_COMMAND, NEXT_COMMAND, PREVIOUS_INFO, CURRENT_INFO, NEXT_INFO, STAT_INFO, STATUS_INFO)
+commands = (PREVIOUS_COMMAND, NEXT_COMMAND, CURRENT_INFO, STAT_INFO, STATUS_INFO)
 
 def mpd_connect():
     """
@@ -59,17 +57,12 @@ def mpd_disconnect(client):
 def mpd_command(command):
     client = mpd_connect()
     if client:
-    
         if command == PREVIOUS_COMMAND: 
             ret = client.previous()
         elif command == NEXT_COMMAND:
             ret = client.next()
-        elif command == PREVIOUS_INFO:
-            pass
         elif command == CURRENT_INFO:
             ret = client.currentsong()
-        elif command == NEXT_INFO:
-            pass
         elif command == STAT_INFO:
             ret = client.stats()
         elif command == STATUS_INFO:
@@ -113,23 +106,12 @@ def next_song_action():
     """
     return jsonify(mpd_command(NEXT_COMMAND))
 
-@app.route("/previous")
-def previous_song_info():
-    return jsonify(mpd_command(PREVIOUS_INFO))
-
 @app.route("/current")
 def current_song():
     """
     ask for the actual song
     """
     return jsonify(mpd_command(CURRENT_INFO))
-
-@app.route("/next")
-def next_song_info():
-    """
-    ask for the next song
-    """
-    return jsonify(mpd_command(NEXT_INFO))
 
 @app.route("/stats")
 def stats():
