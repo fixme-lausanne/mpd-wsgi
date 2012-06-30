@@ -35,3 +35,11 @@ function nextSong() {
     xhr.open("GET", NEXT_SONG_URL, true);
     xhr.send(null);
 }
+
+var PREVIOUS_SONG_URL = "api/action/previous"
+
+function nextSong() {
+    var xhr = new XMLHttpRequest();
+    xhr.open("GET", PREVIOUS_SONG_URL, true);
+    xhr.send(null);
+}
