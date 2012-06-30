@@ -1,6 +1,7 @@
 function onLoad() {
     refreshCurrentSong()
 }
+
 var SONG_URL = "http://mpd.fixme.ch/api/current"
 
 function refreshCurrentSong() {
@@ -28,18 +29,25 @@ function refreshCurrentSong() {
     xhr.send(null);
 }
 
-var NEXT_SONG_URL = "api/action/next"
-
 function nextSong() {
-    var xhr = new XMLHttpRequest();
-    xhr.open("GET", NEXT_SONG_URL, true);
-    xhr.send(null);
+    var NEXT_SONG_URL = "api/action/next";
+    changeSong(NEXT_SONG_URL);
 }
 
-var PREVIOUS_SONG_URL = "api/action/previous"
 
 function previousSong() {
+    var PREVIOUS_SONG_URL = "api/action/previous";
+    changeSong(PREVIOUS_SONG_URL);
+}
+
+function changeSong(url) {
     var xhr = new XMLHttpRequest();
-    xhr.open("GET", PREVIOUS_SONG_URL, true);
+
+    xhr.open("GET", NEXT_SONG_URL, true);
+    xhr.onreadychange = function() {
+        if (xhr.readyStat == 4) {
+            refreshCurrentSong();
+        }
+    };
     xhr.send(null);
 }
