@@ -8,7 +8,7 @@ function refreshCurrentSong() {
     var xhr = new XMLHttpRequest();
 
     xhr.open("GET", SONG_URL, true);
-    
+
     xhr.onreadystatechange = function() {
       if ( xhr.readyState == 4) {
         if (xhr.status == 200) {
@@ -29,6 +29,18 @@ function refreshCurrentSong() {
     xhr.send(null);
 }
 
+function changeSong(url) {
+    var xhr = new XMLHttpRequest();
+
+    xhr.open("GET", url, true);
+    xhr.onreadychange = function() {
+        if (xhr.readyState == 4) {
+            refreshCurrentSong();
+        }
+    };
+    xhr.send(null);
+}
+
 function nextSong() {
     var NEXT_SONG_URL = "api/action/next";
     changeSong(NEXT_SONG_URL);
@@ -38,16 +50,4 @@ function nextSong() {
 function previousSong() {
     var PREVIOUS_SONG_URL = "api/action/previous";
     changeSong(PREVIOUS_SONG_URL);
-}
-
-function changeSong(url) {
-    var xhr = new XMLHttpRequest();
-
-    xhr.open("GET", url, true);
-    xhr.onreadychange = function() {
-        if (xhr.readyStat == 4) {
-            refreshCurrentSong();
-        }
-    };
-    xhr.send(null);
 }
