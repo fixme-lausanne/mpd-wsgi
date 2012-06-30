@@ -4,7 +4,6 @@ function onLoad() {
 var SONG_URL = "http://mpd.fixme.ch/api/current"
 
 function refreshCurrentSong() {
-    };
     var xhr = new XMLHttpRequest();
 
     xhr.open("GET", SONG_URL, true);
