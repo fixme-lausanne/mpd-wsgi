@@ -21,7 +21,7 @@ function refreshCurrentSong() {
                 return;
             }
             var actualBlock = document.getElementById("actual-song");
-            actualBlock.text = track;
+            actualBlock.innerHTML = track;
         }
         }
     };
