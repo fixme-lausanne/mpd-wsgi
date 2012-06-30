@@ -38,7 +38,7 @@ function nextSong() {
 
 var PREVIOUS_SONG_URL = "api/action/previous"
 
-function nextSong() {
+function previousSong() {
     var xhr = new XMLHttpRequest();
     xhr.open("GET", PREVIOUS_SONG_URL, true);
     xhr.send(null);
