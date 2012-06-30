@@ -1,8 +1,10 @@
 <html>
     <head>
         <link rel="stylesheet" href="http://foo.fixme.ch/style.css">
+        <title>Mpd interface</title>
     </head>
-    <body>
+    <body onload="onLoad()">
+        <script src="main.js"></script>
         <dir class="central-block">
             <br>
             The actual song is :
@@ -13,9 +15,6 @@
             <br>
             <input type="button" class="button" value="Download this song" onclick="downloadsong()">
             <br>
-            The previous song was :
-            <div class="song" id="previous-song">
-                le KAKA 2
             </div>
         </dir>
     </body>
