@@ -1,3 +1,4 @@
+
 <html>
     <head>
         <link rel="stylesheet" href="http://foo.fixme.ch/style.css">
@@ -6,19 +7,18 @@
     <body onload="onLoad()">
         <script src="main.js"></script>
         <script src="http://foo.fixme.ch/json_sans_eval.js"></script>
-        <dir class="central-block">
+        <div class="central-block">
             <br>
             The actual song is :
             <div class="song" id="actual-song" style="margin:4px">
                 Le kaka
             </div>
 
-            <INPUT TYPE="submit" VALUE="Next song" onclick="nextSong()">
-            <INPUT TYPE="submit" VALUE="Previous song" onclick="previousSong()">
+            <input type="submit" value="Next song" onclick="nextSong()">
+            <input type="submit" value="Previous song" onclick="previousSong()">
             <form method="get" action="api/file">
                 <input type="submit" value="Download this song">
             </form>
-            </div>
         </div>
     </body>
 </html>
