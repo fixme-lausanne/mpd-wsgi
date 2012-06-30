@@ -12,10 +12,14 @@
             <div class="song" id="actual-song" style="margin:4px">
                 Le kaka
             </div>
-            <input type="button" class="button" value="Pass this song" onclick="nextsong()">
-            <br>
-            <input type="button" class="button" value="Download this song" onclick="downloadsong()">
-            <br>
+
+            <FORM METHOD="LINK" ACTION="api/action/next">
+                <INPUT TYPE="submit" VALUE="Pass this song">
+            </FORM>
+            </br>
+            <form method="link" action="api/file">
+                <input type="submit" value="Download this song">
+            </form>
             </div>
         </dir>
     </body>
