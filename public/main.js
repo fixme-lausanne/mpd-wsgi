@@ -4,10 +4,11 @@ function onLoad() {
 var SONG_URL = "http://mpd.fixme.ch/api/current"
 
 function refreshCurrentSong() {
+    };
     var xhr = new XMLHttpRequest();
 
     xhr.open("GET", SONG_URL, true);
-
+    
     xhr.onreadystatechange = function() {
       if ( xhr.readyState == 4) {
         if (xhr.status == 200) {
@@ -28,10 +29,10 @@ function refreshCurrentSong() {
     xhr.send(null);
 }
 
+var NEXT_SONG_URL = "api/action/next"
+
 function nextSong() {
-
-}
-
-function requestJson() {
-
+    var xhr = new XMLHttpRequest();
+    xhr.open("GET", NEXT_SONG_URL, true);
+    xhr.send(null);
 }
