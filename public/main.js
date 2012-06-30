@@ -43,7 +43,7 @@ function previousSong() {
 function changeSong(url) {
     var xhr = new XMLHttpRequest();
 
-    xhr.open("GET", NEXT_SONG_URL, true);
+    xhr.open("GET", url, true);
     xhr.onreadychange = function() {
         if (xhr.readyStat == 4) {
             refreshCurrentSong();
