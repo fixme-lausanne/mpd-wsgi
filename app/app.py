@@ -3,7 +3,7 @@
 mpd mini interface
 """
 
-from flask import Flask, send_from_directory, abort, jsonify
+from flask import Flask, send_from_directory, abort, jsonify, render_template
 
 from mpd import MPDClient, CommandError
 from socket import error as SocketError
@@ -74,15 +74,13 @@ def mpd_command(command):
     else:
         abort(503)
 
-def about():
-    map = app.url_map
-    doc = "The URL you can access are : <br>"
-    for i in map.iter_rules():
+def generate_doc():
+    url_map = app.url_map
+    doc = list() 
+    for i in url_map.iter_rules():
         if "static" in i.rule:
             continue
-        url_name = i.rule
-        doc += url_name
-        doc += "<br>"
+        doc.append(dict(doc=eval(i.endpoint).__doc__, url=i.rule))
     return doc
 
 @app.route("/")
@@ -90,7 +88,7 @@ def main_page():
     """
     simply return the documentation concerning the app
     """
-    return str(about())
+    return render_template("help.html", doc=generate_doc())
 
 @app.route("/action/previous")
 def previous_song_action():
