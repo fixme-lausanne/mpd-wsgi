@@ -83,7 +83,7 @@ def generate_doc():
 @app.route("/")
 def main_page():
     """
-    simply return the documentation concerning the app
+    Simply return the documentation concerning the app.
     """
     global app_doc
     if not app_doc:
@@ -94,42 +94,42 @@ def main_page():
 @app.route("/action/previous")
 def previous_song_action():
     """
-    Pass to the previous song
+    Pass to the previous song.
     """
     return jsonify(mpd_command(PREVIOUS_COMMAND))
 
 @app.route("/action/next")
 def next_song_action():
     """
-    Pass to the next song
+    Pass to the next song.
     """
     return jsonify(mpd_command(NEXT_COMMAND))
 
 @app.route("/current")
 def current_song():
     """
-    Ask for the actual song
+    Ask for the actual song.
     """
     return jsonify(mpd_command(CURRENT_INFO))
 
 @app.route("/stats")
 def stats():
     """
-    Return general statistics about mpd
+    Return general statistics about mpd.
     """
     return jsonify(mpd_command(STAT_INFO))
 
 @app.route("/status")
 def status():
     """
-    Return the actual status of mpd
+    Return the actual status of mpd.
     """
     return jsonify(mpd_command(STATUS_INFO))
 
 @app.route("/file")
 def download_file():
     """
-    Return the actual file played trough mpd
+    Return the actual file played trough mpd.
     """
     file_path = mpd_command(CURRENT_INFO)['file']
     if file_path:
