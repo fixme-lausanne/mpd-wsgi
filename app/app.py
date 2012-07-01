@@ -137,5 +137,12 @@ def download_file():
     else:
         return ""
 
+@app.route("/update")
+def update_lib():
+    """
+    Update mpd and push the music from the ftp.
+    """
+    return "Not implemented yet"
+
 if __name__ == "__main__":
     app.run(debug=True)
