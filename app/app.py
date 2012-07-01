@@ -17,16 +17,13 @@ MPD_ROOT = "/media/disk1/music/"
 CON_ID = {'host':HOST, 'port':PORT}
 
 app = Flask(__name__)
-
+app_doc = None
 
 PREVIOUS_COMMAND = 0
 NEXT_COMMAND = 2
 CURRENT_INFO = 3
 STAT_INFO = 4
 STATUS_INFO = 5
-
-
-
 commands = (PREVIOUS_COMMAND, NEXT_COMMAND, CURRENT_INFO, STAT_INFO, STATUS_INFO)
 
 def mpd_connect():
@@ -88,7 +85,11 @@ def main_page():
     """
     simply return the documentation concerning the app
     """
-    return render_template("help.html", doc=generate_doc())
+    global app_doc
+    if not app_doc:
+        print("Generate doc")
+        app_doc = generate_doc()
+    return render_template("help.html", doc=app_doc)
 
 @app.route("/action/previous")
 def previous_song_action():
