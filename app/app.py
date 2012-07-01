@@ -108,28 +108,28 @@ def next_song_action():
 @app.route("/current")
 def current_song():
     """
-    ask for the actual song
+    Ask for the actual song
     """
     return jsonify(mpd_command(CURRENT_INFO))
 
 @app.route("/stats")
 def stats():
     """
-    return general statistics about mpd
+    Return general statistics about mpd
     """
     return jsonify(mpd_command(STAT_INFO))
 
 @app.route("/status")
 def status():
     """
-    return the actual status of mpd
+    Return the actual status of mpd
     """
     return jsonify(mpd_command(STATUS_INFO))
 
 @app.route("/file")
 def download_file():
     """
-    return the actual file played trough mpd
+    Return the actual file played trough mpd
     """
     file_path = mpd_command(CURRENT_INFO)['file']
     if file_path:
