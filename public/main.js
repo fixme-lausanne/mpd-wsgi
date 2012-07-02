@@ -18,7 +18,7 @@ function refreshCurrentSong() {
                 var title = parsed_text.title;
                 var artist = parsed_text.artist;
                 var track = parsed_text.file;
-                if (track == "undefined" and artist == "undefined") {
+                if (track == "undefined" && artist == "undefined") {
                     var info = title + " by " + artist;
                 } else {
                     var info = track;
