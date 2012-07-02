@@ -15,15 +15,21 @@ function refreshCurrentSong() {
             try {
                 var parsed_text = jsonParse(xhr.responseText);
                 var isOpen = parsed_text.open;
-                var track = parsed_text.title;
-                var artist = parsed_text.artist
+                var title = parsed_text.title;
+                var artist = parsed_text.artist;
+                var track = parsed_text.file;
+                if (track == "undefined" and artist == "undefined") {
+                    var info = title + " by " + artist;
+                } else {
+                    var info = track;
+                }
             } catch (err) {
                 //json parsing failed or doesn't contain the correct element
                 console.log(err);
                 return;
             }
             var actualBlock = document.getElementById("actual-song");
-            actualBlock.innerHTML = track + " by " + artist;
+            actualBlock.innerHTML = info;
         }
         }
     };
