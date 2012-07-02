@@ -3,7 +3,7 @@ import os
 import subprocess
 SCRIPT = "/home/sysadmin/script/update_music.sh"
 
-def update_library():
+def update_music():
     """
     simple wrapper around the update script
     """
@@ -11,7 +11,7 @@ def update_library():
         try:
             subprocess.call(SCRIPT)
             return True
-        catch:
+        except:
             return False
     else:
         return False

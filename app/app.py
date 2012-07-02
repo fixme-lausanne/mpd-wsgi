@@ -9,6 +9,7 @@ from mpd import MPDClient, CommandError
 from socket import error as SocketError
 import pydoc
 import inspect
+import update_music
 
 HOST = "localhost"
 PORT = 6600
@@ -71,13 +72,15 @@ def mpd_command(command):
     else:
         abort(503)
 
-def generate_doc():
+def generate_doc(base_url):
     url_map = app.url_map
     doc = list() 
     for i in url_map.iter_rules():
         if "static" in i.rule:
             continue
-        doc.append(dict(doc=eval(i.endpoint).__doc__, url=i.rule))
+        url = i.rule
+        abs_url = os.path.join(base_url, url)
+        doc.append(dict(doc=eval(i.endpoint).__doc__, url=abs_url))
     return doc
 
 @app.route("/")
@@ -88,7 +91,7 @@ def main_page():
     global app_doc
     if not app_doc:
         print("Generate doc")
-        app_doc = generate_doc()
+        app_doc = generate_doc(request.url_root)
     return render_template("help.html", doc=app_doc)
 
 @app.route("/action/previous")
@@ -142,6 +145,10 @@ def update_lib():
     """
     Update mpd and push the music from the ftp.
     """
+    if update_music.update_music():
+        return ""
+    else:
+        abort(501)
     return "Not implemented yet"
 
 if __name__ == "__main__":
