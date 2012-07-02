@@ -1,6 +1,6 @@
 The urls are
 <ul>
 {% for url in doc %}
-    <li><a href="{{ url.rel_url }}">{{ url.url }}</a> : {{ url.doc }} </li>
+    <li><a href="{{ url_for(url.method) }}">{{ url.url }}</a> : {{ url.doc }} </li>
 {% endfor %}
 </ul>
