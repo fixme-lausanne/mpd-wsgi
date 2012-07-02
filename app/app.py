@@ -3,13 +3,14 @@
 mpd mini interface
 """
 
-from flask import Flask, send_from_directory, abort, jsonify, render_template
+from flask import Flask, send_from_directory, abort, jsonify, render_template, request
 
 from mpd import MPDClient, CommandError
 from socket import error as SocketError
 import pydoc
 import inspect
 import update_music
+import os
 
 HOST = "localhost"
 PORT = 6600
