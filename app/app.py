@@ -73,14 +73,14 @@ def mpd_command(command):
     else:
         abort(503)
 
-def generate_doc(base_url):
+def generate_doc(root_url):
     url_map = app.url_map
     doc = list() 
     for i in url_map.iter_rules():
         if "static" in i.rule:
             continue
         url = i.rule
-        abs_url = os.path.join(base_url, url)
+        abs_url = os.path.join(root_url, url) 
         doc.append(dict(doc=eval(i.endpoint).__doc__, url=abs_url))
     return doc
 
