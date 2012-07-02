@@ -3,7 +3,7 @@
 mpd mini interface
 """
 
-from flask import Flask, send_from_directory, abort, jsonify, render_template, request
+from flask import Flask, send_from_directory, abort, jsonify, render_template
 
 from mpd import MPDClient, CommandError
 from socket import error as SocketError
@@ -73,15 +73,15 @@ def mpd_command(command):
     else:
         abort(503)
 
-def generate_doc(root_url):
+def generate_doc():
     url_map = app.url_map
     doc = list() 
     for i in url_map.iter_rules():
         if "static" in i.rule:
             continue
         url = i.rule
-        abs_url = os.path.join(root_url, url) 
-        doc.append(dict(doc=eval(i.endpoint).__doc__, url=abs_url))
+        rel_url = url.lstrip("/")
+        doc.append(dict(doc=eval(i.endpoint).__doc__, url=url, rel_url=rel_url))
     return doc
 
 @app.route("/")
@@ -92,7 +92,7 @@ def main_page():
     global app_doc
     if not app_doc:
         print("Generate doc")
-        app_doc = generate_doc(request.url_root)
+        app_doc = generate_doc()
     return render_template("help.html", doc=app_doc)
 
 @app.route("/action/previous")
