@@ -79,7 +79,7 @@ def generate_doc():
     for i in url_map.iter_rules():
         if "static" in i.rule:
             continue
-        url = app['APPLICATION_ROOT']
+        url = app.config['APPLICATION_ROOT']
         rel_url = url.lstrip("/")
         doc.append(dict(doc=eval(i.endpoint).__doc__, url=url, rel_url=rel_url))
     return doc
