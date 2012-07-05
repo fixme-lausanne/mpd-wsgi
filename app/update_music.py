@@ -1,7 +1,7 @@
 #/usr/bin/env python2
 import os
 import subprocess
-SCRIPT = "/home/sysadmin/script/update_music.sh"
+SCRIPT = "update_music.sh"
 
 def update_music():
     """
@@ -16,6 +16,5 @@ def update_music():
     else:
         return False
 
-    #we begin by changing the format of the wav file to mp3
 if __name__ == "__main__":
-    update_library()
+    update_music()
