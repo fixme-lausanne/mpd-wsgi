@@ -149,8 +149,7 @@ def update_lib():
     if update_music.update_music():
         return ""
     else:
-        abort(501)
-    return "Not implemented yet"
+        abort(501) #not imple
 
 @app.route("/poll")
 def poll_new_song():
@@ -158,6 +157,7 @@ def poll_new_song():
     block until a new song is played on mpd
     """
     abort(501)
+
     return "Not implemented yet"
 if __name__ == "__main__":
     app.run(debug=True)

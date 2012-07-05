@@ -16,5 +16,13 @@ def update_music():
     else:
         return False
 
+def update_music_py():
+    #transform all wav to ogg
+    #move all directory in music
+    #update group
+    #???
+    #profit
+    raise NotImplemented()
+
 if __name__ == "__main__":
     update_music()
