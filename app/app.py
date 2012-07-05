@@ -56,7 +56,7 @@ def mpd_disconnect(client):
 def mpd_command(command):
     client = mpd_connect()
     if client:
-        if command == PREVIOUS_COMMAND: 
+        if command == PREVIOUS_COMMAND:
             ret = client.previous()
         elif command == NEXT_COMMAND:
             ret = client.next()
@@ -75,7 +75,7 @@ def mpd_command(command):
 
 def generate_doc():
     url_map = app.url_map
-    doc = list() 
+    doc = list()
     for i in url_map.iter_rules():
         if "static" in i.rule:
             continue
@@ -152,5 +152,12 @@ def update_lib():
         abort(501)
     return "Not implemented yet"
 
+@app.route("/poll")
+def poll_new_song():
+    """
+    block until a new song is played on mpd
+    """
+    abort(501)
+    return "Not implemented yet"
 if __name__ == "__main__":
     app.run(debug=True)
