@@ -4,19 +4,13 @@ mpd mini interface
 """
 
 from flask import Flask, send_from_directory, abort, jsonify, render_template
-
-from mpd import MPDClient, CommandError
+import config
+from mpd import MPDClient, CommandError, ConnectionError
 from socket import error as SocketError
-import pydoc
-import inspect
 import update_music
-import os
+import logging
 
-HOST = "localhost"
-PORT = 6600
-PASSWORD = None
-MPD_ROOT = "/media/disk1/music/"
-CON_ID = {'host':HOST, 'port':PORT}
+CON_ID = {'host':config.HOST, 'port':config.PORT}
 
 app = Flask(__name__)
 app_doc = None
@@ -26,24 +20,31 @@ NEXT_COMMAND = 2
 CURRENT_INFO = 3
 STAT_INFO = 4
 STATUS_INFO = 5
-commands = (PREVIOUS_COMMAND, NEXT_COMMAND, CURRENT_INFO, STAT_INFO, STATUS_INFO)
+POLL_NEXT = 6
+UPDATE_LIBRARY = 7
+commands = (PREVIOUS_COMMAND, NEXT_COMMAND, CURRENT_INFO, STAT_INFO, STATUS_INFO, POLL_NEXT, UPDATE_LIBRARY)
 
 def mpd_connect():
     """
-    Simple wrapper to disconnect MPD.
+    Simple wrapper to connect MPD.
     """
     #connection to mpd
     client = MPDClient()
     try:
         client.connect(**CON_ID)
-    except SocketError:
+    except SocketError as e:
+        logging.error(e)
+        return None
+    except ConnectionError as e:
+        logging.error(e)
         return None
 
     # Auth if password is set non False
-    if PASSWORD:
+    if config.PASSWORD:
         try:
-            client.password(PASSWORD)
-        except CommandError:
+            client.password(config.PASSWORD)
+        except CommandError as e:
+            logging.error(e)
             return None
     return client
 
@@ -54,6 +55,9 @@ def mpd_disconnect(client):
     client.disconnect()
 
 def mpd_command(command):
+    """
+    Wrapper around the mpd commands.
+    """
     client = mpd_connect()
     if client:
         if command == PREVIOUS_COMMAND:
@@ -66,14 +70,20 @@ def mpd_command(command):
             ret = client.stats()
         elif command == STATUS_INFO:
             ret = client.status()
+        elif command == UPDATE_LIBRARY:
+            ret = client.update()
         else:
-            raise NotImplemented()
+            abort(501) #not implemented
         mpd_disconnect(client)
-        return ret or ""
+        return ret or {}
     else:
         abort(503)
 
 def generate_doc():
+    """
+    Generate a dictionnary for all the route for the application with the
+    route url as key and the docstring of the callback method as value.
+    """
     url_map = app.url_map
     doc = list()
     for i in url_map.iter_rules():
@@ -91,7 +101,7 @@ def main_page():
     """
     global app_doc
     if not app_doc:
-        print("Generate doc")
+        logging.info("Generate doc")
         app_doc = generate_doc()
     return render_template("help.html", doc=app_doc)
 
@@ -99,6 +109,8 @@ def main_page():
 def previous_song_action():
     """
     Pass to the previous song.
+
+    @return an empty json dictionnary.
     """
     return jsonify(mpd_command(PREVIOUS_COMMAND))
 
@@ -106,6 +118,8 @@ def previous_song_action():
 def next_song_action():
     """
     Pass to the next song.
+
+    @return an empty json dictionnary.
     """
     return jsonify(mpd_command(NEXT_COMMAND))
 
@@ -113,6 +127,8 @@ def next_song_action():
 def current_song():
     """
     Ask for the actual song.
+
+    @return a json dictionnary containing the information.
     """
     return jsonify(mpd_command(CURRENT_INFO))
 
@@ -120,24 +136,28 @@ def current_song():
 def stats():
     """
     Return general statistics about mpd.
+
+    @return a json dictionnary containing the general statistic for mpd.
     """
-    return jsonify(mpd_command(STAT_INFO))
+    return mpd_command(STAT_INFO)
 
 @app.route("/status")
 def status():
     """
     Return the actual status of mpd.
+
+    @return a json dictionnary containing the actual mpd status.
     """
     return jsonify(mpd_command(STATUS_INFO))
 
 @app.route("/file")
 def download_file():
     """
-    Return the actual file played trough mpd.
+    Return the actual file played trough mpd or an empty string if there is no file playing.
     """
-    file_path = mpd_command(CURRENT_INFO)['file']
+    file_path = mpd_command(CURRENT_INFO).get('file')
     if file_path:
-        return send_from_directory(MPD_ROOT, file_path, as_attachment=True)
+        return send_from_directory(config.MPD_ROOT, file_path, as_attachment=True)
     else:
         return ""
 
@@ -145,19 +165,24 @@ def download_file():
 def update_lib():
     """
     Update mpd and push the music from the ftp.
+
+    @return either an empty json or a json with a msg key containing the error message.
     """
-    if update_music.update_music():
-        return ""
+    if update_music.update_music(config.UPLOAD_DIR, config.MPD_ROOT):
+        try:
+            mpd_command(UPDATE_LIBRARY)
+        except CommandError:
+            return jsonify({"msg":"Update already started"})
+        return jsonify({})
     else:
-        abort(501) #not imple
+        abort(501) #not implemented yet
 
 @app.route("/poll")
 def poll_new_song():
     """
     block until a new song is played on mpd
     """
-    abort(501)
+    return jsonify(mpd_command(POLL_NEXT))
 
-    return "Not implemented yet"
 if __name__ == "__main__":
     app.run(debug=True)
