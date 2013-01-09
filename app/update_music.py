@@ -1,28 +1,31 @@
 #/usr/bin/env python2
 import os
-import subprocess
-SCRIPT = "update_music.sh"
+import shutil
+import logging
 
-def update_music():
+def update_music(upload_dir, music_dir):
     """
     simple wrapper around the update script
     """
-    if os.path.isfile(SCRIPT):
-        try:
-            subprocess.call(SCRIPT)
-            return True
-        except:
-            return False
-    else:
-        return False
+    #simple check
+    #move everything from UPLOAD_DIR to MUSIC_DIR
+    try:
+        dir_list = os.listdir(upload_dir)
+    except OSError as e:
+        logging.error(e)
+        return
+    root_path = os.path.abspath(upload_dir)
 
-def update_music_py():
-    #transform all wav to ogg
-    #move all directory in music
-    #update group
-    #???
-    #profit
-    raise NotImplemented()
+    #copy directory
+    for f in [os.path.join(root_path, f) for f in dir_list]:
+        try:
+            shutil.move(f, music_dir)
+        except OSError as e:
+            logging.error(e)
+
+    return True
+
 
 if __name__ == "__main__":
-    update_music()
+    import config
+    update_music(config.UPLOAD_DIR, config.MPD_ROOT)
