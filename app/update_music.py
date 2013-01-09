@@ -32,6 +32,6 @@ if __name__ == "__main__":
     print len(sys.argv)
     if len(sys.argv) == 3:
         update_music(sys.argv[1], sys.argv[2])
-        return
+        exit(0)
     import config
     update_music(config.UPLOAD_DIR, config.MPD_ROOT)
