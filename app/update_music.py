@@ -17,9 +17,10 @@ def update_music(upload_dir, music_dir):
     root_path = os.path.abspath(upload_dir)
 
     #copy directory
-    for f in [os.path.join(root_path, f) for f in dir_list]:
+    for f in dir_list:
+        abs_f = os.path.join(root_path, f)
         try:
-            shutil.move(f, music_dir)
+            shutil.move(abs_f, os.path.join(music_dir))
         except OSError as e:
             logging.error(e)
 
@@ -27,5 +28,10 @@ def update_music(upload_dir, music_dir):
 
 
 if __name__ == "__main__":
+    import sys
+    print len(sys.argv)
+    if len(sys.argv) == 3:
+        update_music(sys.argv[1], sys.argv[2])
+        return
     import config
     update_music(config.UPLOAD_DIR, config.MPD_ROOT)
