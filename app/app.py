@@ -9,6 +9,7 @@ from mpd import MPDClient, CommandError, ConnectionError
 from socket import error as SocketError
 import update_music
 import logging
+import threading
 
 CON_ID = {'host':config.HOST, 'port':config.PORT}
 
@@ -161,6 +162,16 @@ def download_file():
     else:
         return ""
 
+up_thread = threading.Event()
+
+def update_thread():
+    if update_music.update_music(config.UPLOAD_DIR, config.MPD_ROOT):
+        try:
+            mpd_command(UPDATE_LIBRARY)
+        except CommandError as e:
+            logging.error("Command error {!s}".format(e))
+    up_thread.clear()
+
 @app.route("/update")
 def update_lib():
     """
@@ -168,14 +179,10 @@ def update_lib():
 
     @return either an empty json or a json with a msg key containing the error message.
     """
-    if update_music.update_music(config.UPLOAD_DIR, config.MPD_ROOT):
-        try:
-            mpd_command(UPDATE_LIBRARY)
-        except CommandError:
-            return jsonify({"msg":"Update already started"})
-        return jsonify({})
-    else:
-        abort(501) #not implemented yet
+    if not up_thread.is_set():
+        up_thread.set()
+        threading.Thread(target=update_thread).start()
+    return jsonify({})
 
 @app.route("/poll")
 def poll_new_song():
