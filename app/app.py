@@ -160,7 +160,7 @@ def stats():
 
     @return a json dictionnary containing the general statistic for mpd.
     """
-    return mpd_command(STAT_INFO)
+    return jsonify(mpd_command(STAT_INFO))
 
 
 @app.route("/status")
@@ -184,7 +184,9 @@ def download_file():
     else:
         return ""
 
+
 up_thread = threading.Event()
+
 
 def update_thread():
     if update_music.update_music(config.UPLOAD_DIR, config.MPD_ROOT):
@@ -193,6 +195,7 @@ def update_thread():
         except CommandError as e:
             logging.error("Command error {!s}".format(e))
     up_thread.clear()
+
 
 @app.route("/update")
 def update_lib():
@@ -205,6 +208,7 @@ def update_lib():
         up_thread.set()
         threading.Thread(target=update_thread).start()
     return jsonify({})
+
 
 @app.route("/poll")
 def poll_new_song():
