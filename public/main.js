@@ -1,8 +1,8 @@
 function onLoad() {
-    refreshCurrentSong()
+    refreshCurrentSong();
 }
 
-var SONG_URL = "https://mpd.fixme.ch/api/current"
+var SONG_URL = "https://mpd.fixme.ch/api/current";
 
 function refreshCurrentSong() {
     var xhr = new XMLHttpRequest();
@@ -10,18 +10,19 @@ function refreshCurrentSong() {
     xhr.open("GET", SONG_URL, true);
 
     xhr.onreadystatechange = function() {
-      if ( xhr.readyState == 4) {
-        if (xhr.status == 200) {
+      if ( xhr.readyState === 4) {
+        if (xhr.status === 200) {
             try {
                 var parsed_text = jsonParse(xhr.responseText);
                 var isOpen = parsed_text.open;
                 var title = parsed_text.title;
                 var artist = parsed_text.artist;
                 var track = parsed_text.file;
-                if (track == "undefined" && artist == "undefined") {
-                    var info = title + " by " + artist;
+                var info;
+                if (track === "undefined" && artist === "undefined") {
+                    info = title + " by " + artist;
                 } else {
-                    var info = track;
+                    info = track;
                 }
             } catch (err) {
                 //json parsing failed or doesn't contain the correct element
@@ -41,7 +42,7 @@ function changeSong(url) {
 
     xhr.open("GET", url, true);
     xhr.onreadystatechange = function() {
-        if (xhr.readyState == 4) {
+        if (xhr.readyState === 4) {
             refreshCurrentSong();
         }
     };
