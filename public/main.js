@@ -48,6 +48,11 @@ function changeSong(url) {
     xhr.send(null);
 }
 
+function play() {
+    var PLAY_SONG_URL = "api/action/play";
+    changeSong(PLAY_SONG_URL);
+}
+
 function nextSong() {
     var NEXT_SONG_URL = "api/action/next";
     changeSong(NEXT_SONG_URL);

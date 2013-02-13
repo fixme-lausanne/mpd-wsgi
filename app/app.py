@@ -23,7 +23,9 @@ STAT_INFO = 4
 STATUS_INFO = 5
 POLL_NEXT = 6
 UPDATE_LIBRARY = 7
-commands = (PREVIOUS_COMMAND, NEXT_COMMAND, CURRENT_INFO, STAT_INFO, STATUS_INFO, POLL_NEXT, UPDATE_LIBRARY)
+TOGGLE_PLAY = 8
+commands = (PREVIOUS_COMMAND, NEXT_COMMAND, CURRENT_INFO, STAT_INFO,
+            STATUS_INFO, POLL_NEXT, UPDATE_LIBRARY, TOGGLE_PLAY)
 
 def mpd_connect():
     """
@@ -73,12 +75,15 @@ def mpd_command(command):
             ret = client.status()
         elif command == UPDATE_LIBRARY:
             ret = client.update()
+        elif command == TOGGLE_PLAY:
+            ret = client.play()
         else:
-            abort(501) #not implemented
+            abort(501)  # not implemented
         mpd_disconnect(client)
         return ret or {}
     else:
         abort(503)
+
 
 def generate_doc():
     """
@@ -95,6 +100,7 @@ def generate_doc():
         doc.append(dict(doc=eval(i.endpoint).__doc__, url=url, method=method))
     return doc
 
+
 @app.route("/")
 def main_page():
     """
@@ -106,6 +112,17 @@ def main_page():
         app_doc = generate_doc()
     return render_template("help.html", doc=app_doc)
 
+
+@app.route("/action/play")
+def toggle_play():
+    """
+    Play the actual.
+
+    @return an empty json dictionnary.
+    """
+    return jsonify(mpd_command(TOGGLE_PLAY))
+
+
 @app.route("/action/previous")
 def previous_song_action():
     """
@@ -114,6 +131,7 @@ def previous_song_action():
     @return an empty json dictionnary.
     """
     return jsonify(mpd_command(PREVIOUS_COMMAND))
+
 
 @app.route("/action/next")
 def next_song_action():
@@ -124,6 +142,7 @@ def next_song_action():
     """
     return jsonify(mpd_command(NEXT_COMMAND))
 
+
 @app.route("/current")
 def current_song():
     """
@@ -132,6 +151,7 @@ def current_song():
     @return a json dictionnary containing the information.
     """
     return jsonify(mpd_command(CURRENT_INFO))
+
 
 @app.route("/stats")
 def stats():
@@ -142,6 +162,7 @@ def stats():
     """
     return mpd_command(STAT_INFO)
 
+
 @app.route("/status")
 def status():
     """
@@ -150,6 +171,7 @@ def status():
     @return a json dictionnary containing the actual mpd status.
     """
     return jsonify(mpd_command(STATUS_INFO))
+
 
 @app.route("/file")
 def download_file():
