@@ -2,7 +2,7 @@ function onLoad() {
     refreshCurrentSong()
 }
 
-var SONG_URL = "http://mpd.fixme.ch/api/current"
+var SONG_URL = "https://mpd.fixme.ch/api/current"
 
 function refreshCurrentSong() {
     var xhr = new XMLHttpRequest();
