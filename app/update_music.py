@@ -23,7 +23,7 @@ def update_music(upload_dir, music_dir):
             shutil.move(abs_f, os.path.join(music_dir))
         except OSError as e:
             logging.error(e)
-        except Error as e:
+        except shutil.Error as e:
             logging.error(e)
 
 
