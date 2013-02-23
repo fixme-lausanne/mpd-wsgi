@@ -59,8 +59,12 @@ function nextSong() {
     changeSong(NEXT_SONG_URL);
 }
 
-
 function previousSong() {
     var PREVIOUS_SONG_URL = "api/action/previous";
     changeSong(PREVIOUS_SONG_URL);
+}
+
+function updateLibrary() {
+    var UPDATE_URL = "api/update";
+    changeSong(UPDATE_URL);
 }
