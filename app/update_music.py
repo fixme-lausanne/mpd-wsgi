@@ -25,7 +25,12 @@ def update_music(upload_dir, music_dir):
             logging.error(e)
         except shutil.Error as e:
             logging.error(e)
-
+        #clean that repo
+        try:
+           if os.path.isfile(abs_f):
+               os.unlink(abs_f)
+        except Error as e:
+            logging.error(e)
 
     return True
 
