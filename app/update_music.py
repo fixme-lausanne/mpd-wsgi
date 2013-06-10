@@ -29,7 +29,7 @@ def update_music(upload_dir, music_dir):
         try:
            if os.path.isfile(abs_f):
                os.unlink(abs_f)
-        except Error as e:
+        except Exception as e:
             logging.error(e)
 
     return True
