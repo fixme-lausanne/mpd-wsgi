@@ -3,6 +3,7 @@ function onLoad() {
 }
 
 var SONG_URL = "https://mpd.fixme.ch/api/current";
+var PLAYLIST_URL = "https://mpd.fixme.ch/api/playlist";
 
 function refreshCurrentSong() {
     var xhr = new XMLHttpRequest();
@@ -35,6 +36,26 @@ function refreshCurrentSong() {
         }
     };
     xhr.send(null);
+}
+
+function togglePlaylist() {
+    var playlist_block = document.getElementById("playlist");
+    if (playlist_block) {
+	    playlist_block.remove();
+    } else {
+	    var xhr = new XMLHttpRequest();
+	    xhr.open("GET", PLAYLIST_URL, true);
+
+	    xhr.onreadystatechange = function() {
+		  var d = document.getElementById('wrapper');
+		  var playlist_block  = document.createElement('div');
+		  playlist_block.id = "playlist";
+		  playlist_block.class = "central-block";
+		  playlist_block.textContent = data;
+		  d.appendChild(playlist_block);
+	    }
+
+    }
 }
 
 function changeSong(url) {
