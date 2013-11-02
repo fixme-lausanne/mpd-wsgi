@@ -47,6 +47,7 @@ function togglePlaylist() {
         xhr.open("GET", PLAYLIST_URL, true);
 
         xhr.onreadystatechange = function() {
+          if ( xhr.readyState === 4) {
         if (xhr.status === 200) {
             try {
               var d = document.getElementById('wrapper');
@@ -61,8 +62,10 @@ function togglePlaylist() {
             return;
             }
         }
+	  }
 
     }
+    xhr.send(null);
 }
 }
 
