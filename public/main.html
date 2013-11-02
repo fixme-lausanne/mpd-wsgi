@@ -1,27 +1,29 @@
 
 <html>
     <head>
-        <link rel="stylesheet" href="https://foo.fixme.ch/style.css">
+        <link rel="stylesheet" href="https://foo.fixme.ch/style.cssAAA">
+        <link rel="stylesheet" href="file:///C:/Users/sacha_000/Projets/fixme/leds/style.css">
         <title>Mpd interface</title>
     </head>
     <body onload="onLoad()">
         <script src="main.js"></script>
         <script src="https://foo.fixme.ch/json_sans_eval.js"></script>
-        <div class="central-block">
-            <br>
-            The actual song is :
-            <div class="song" id="actual-song" style="margin:4px">
-                Le kaka
-            </div>
+        <div id="container">
+            <div id="wrapper">
+                <div class="central-block">
+                    <h1>You are listening to...</h1>
+                    <h3 class="song" id="actual-song">Le kaka</h3>
 
-            <input type="submit" value="Previous song" onclick="previousSong()">
-            <input type="submit" value="Play" onclick="play()">
-            <input type="submit" value="Next song" onclick="nextSong()">
-            <form method="get" action="api/file">
-                <input type="submit" value="Download this song">
-            </form>
-            <input type="submit" value="Update the library" onclick="updateLibrary()">
-            <input type="submit" value="Stats" onclick="window.location='https://foo.fixme.ch/mpd-stats.html'">
+                    <input type="submit" value="Previous song" onclick="previousSong()">
+                    <input type="submit" value="Play" onclick="play()">
+                    <input type="submit" value="Next song" onclick="nextSong()">
+                    <form method="get" action="api/file">
+                        <input type="submit" value="Download this song" class="big">
+                    </form>
+                    <input type="submit" value="Update the library" onclick="updateLibrary()" class="big">
+                    <input type="submit" value="Stats" onclick="window.location='https://foo.fixme.ch/mpd-stats.html'">
+                </div>
+            </div>
         </div>
     </body>
 </html>
