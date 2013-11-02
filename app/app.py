@@ -24,7 +24,7 @@ STATUS_INFO = 5
 POLL_NEXT = 6
 UPDATE_LIBRARY = 7
 TOGGLE_PLAY = 8
-PLAYLIST = 8
+PLAYLIST = 9
 commands = (PREVIOUS_COMMAND, NEXT_COMMAND, CURRENT_INFO, STAT_INFO,
             STATUS_INFO, POLL_NEXT, UPDATE_LIBRARY, TOGGLE_PLAY, PLAYLIST)
 
@@ -80,6 +80,7 @@ def mpd_command(command):
             ret = client.play()
         elif command == PLAYLIST:
             ret = client.playlist()
+            ret = {'songs':ret}
         else:
             abort(501)  # not implemented
         mpd_disconnect(client)
