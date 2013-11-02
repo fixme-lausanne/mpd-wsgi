@@ -24,8 +24,9 @@ STATUS_INFO = 5
 POLL_NEXT = 6
 UPDATE_LIBRARY = 7
 TOGGLE_PLAY = 8
+PLAYLIST = 8
 commands = (PREVIOUS_COMMAND, NEXT_COMMAND, CURRENT_INFO, STAT_INFO,
-            STATUS_INFO, POLL_NEXT, UPDATE_LIBRARY, TOGGLE_PLAY)
+            STATUS_INFO, POLL_NEXT, UPDATE_LIBRARY, TOGGLE_PLAY, PLAYLIST)
 
 def mpd_connect():
     """
@@ -62,6 +63,8 @@ def mpd_command(command):
     Wrapper around the mpd commands.
     """
     client = mpd_connect()
+    import IPython
+    IPython.embed()
     if client:
         if command == PREVIOUS_COMMAND:
             ret = client.previous()
@@ -77,6 +80,8 @@ def mpd_command(command):
             ret = client.update()
         elif command == TOGGLE_PLAY:
             ret = client.play()
+        elif command == PLAYLIST:
+            ret = client.playlist()
         else:
             abort(501)  # not implemented
         mpd_disconnect(client)
@@ -162,6 +167,11 @@ def stats():
     """
     return jsonify(mpd_command(STAT_INFO))
 
+@app.route("/playlist")
+def playlist():
+    """Return the playlist of the next song to be played
+    """
+    return jsonify(mpd_command(PLAYLIST))
 
 @app.route("/status")
 def status():
