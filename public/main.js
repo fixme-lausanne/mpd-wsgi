@@ -54,8 +54,9 @@ function togglePlaylist() {
               var playlist_block  = document.createElement('div');
               playlist_block.id = "playlist";
               playlist_block.class = "central-block";
+              var parsed_text = jsonParse(xhr.responseText);
 	      var songs = parsed_text.songs;
-              playlist_block.innerHtml = songs.join("<br>");
+              playlist_block.innerHTML = songs.join("<br>");
               d.appendChild(playlist_block);
             } catch (err) {
             //json parsing failed or doesn't contain the correct element
