@@ -63,8 +63,6 @@ def mpd_command(command):
     Wrapper around the mpd commands.
     """
     client = mpd_connect()
-    import IPython
-    IPython.embed()
     if client:
         if command == PREVIOUS_COMMAND:
             ret = client.previous()
