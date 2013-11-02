@@ -57,7 +57,7 @@ function togglePlaylist() {
               var parsed_text = jsonParse(xhr.responseText);
 	      var songs = parsed_text.songs;
 	      var songs_list = document.createElement("lu")
-	      for (var i = 0; i++;i < songs.length) {
+	      for (var i = 0; i < songs.length;i++) {
 		var song = songs[i];
 		var song_block = document.createElement("li");
 		song_block.textContent = song;
