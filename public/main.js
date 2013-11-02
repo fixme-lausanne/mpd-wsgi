@@ -41,28 +41,29 @@ function refreshCurrentSong() {
 function togglePlaylist() {
     var playlist_block = document.getElementById("playlist");
     if (playlist_block) {
-	    playlist_block.remove();
+        playlist_block.remove();
     } else {
-	    var xhr = new XMLHttpRequest();
-	    xhr.open("GET", PLAYLIST_URL, true);
+        var xhr = new XMLHttpRequest();
+        xhr.open("GET", PLAYLIST_URL, true);
 
-	    xhr.onreadystatechange = function() {
-		if (xhr.status === 200) {
-		    try {
-			  var d = document.getElementById('wrapper');
-			  var playlist_block  = document.createElement('div');
-			  playlist_block.id = "playlist";
-			  playlist_block.class = "central-block";
-			  playlist_block.textContent = data;
-			  d.appendChild(playlist_block);
-		    } catch (err) {
-			//json parsing failed or doesn't contain the correct element
-			console.log(err);
-			return;
+        xhr.onreadystatechange = function() {
+        if (xhr.status === 200) {
+            try {
+              var d = document.getElementById('wrapper');
+              var playlist_block  = document.createElement('div');
+              playlist_block.id = "playlist";
+              playlist_block.class = "central-block";
+              playlist_block.textContent = data;
+              d.appendChild(playlist_block);
+            } catch (err) {
+            //json parsing failed or doesn't contain the correct element
+            console.log(err);
+            return;
             }
-	    }
+        }
 
     }
+}
 }
 
 function changeSong(url) {
