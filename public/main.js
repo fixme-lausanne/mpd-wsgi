@@ -19,10 +19,10 @@ function refreshCurrentSong() {
                 var artist = parsed_text.artist;
                 var track = parsed_text.file;
                 var info;
-                if (track === "undefined" && artist === "undefined") {
+                if (track !== "undefined" && artist !== "undefined") {
                     info = title + " by " + artist;
                 } else {
-                    info = track;
+                    info = file;
                 }
             } catch (err) {
                 //json parsing failed or doesn't contain the correct element
@@ -30,7 +30,7 @@ function refreshCurrentSong() {
                 return;
             }
             var actualBlock = document.getElementById("actual-song");
-            actualBlock.innerHTML = info;
+            actualBlock.text(info);
         }
         }
     };
