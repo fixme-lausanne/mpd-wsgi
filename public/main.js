@@ -56,7 +56,14 @@ function togglePlaylist() {
               playlist_block.class = "central-block";
               var parsed_text = jsonParse(xhr.responseText);
 	      var songs = parsed_text.songs;
-              playlist_block.innerHTML = songs.join("<br>");
+	      var songs_list = document.createElement("lu")
+	      for (var i = 0; i++;i < songs.length) {
+		var song = songs[i];
+		var song_block = document.createElement("li");
+		song_block.textContent = song;
+		songs_list.appendChild(song_block);
+	      }
+	      playlist_block.appendChild(songs_list);
               d.appendChild(playlist_block);
             } catch (err) {
             //json parsing failed or doesn't contain the correct element
