@@ -47,12 +47,19 @@ function togglePlaylist() {
 	    xhr.open("GET", PLAYLIST_URL, true);
 
 	    xhr.onreadystatechange = function() {
-		  var d = document.getElementById('wrapper');
-		  var playlist_block  = document.createElement('div');
-		  playlist_block.id = "playlist";
-		  playlist_block.class = "central-block";
-		  playlist_block.textContent = data;
-		  d.appendChild(playlist_block);
+		if (xhr.status === 200) {
+		    try {
+			  var d = document.getElementById('wrapper');
+			  var playlist_block  = document.createElement('div');
+			  playlist_block.id = "playlist";
+			  playlist_block.class = "central-block";
+			  playlist_block.textContent = data;
+			  d.appendChild(playlist_block);
+		    } catch (err) {
+			//json parsing failed or doesn't contain the correct element
+			console.log(err);
+			return;
+            }
 	    }
 
     }
