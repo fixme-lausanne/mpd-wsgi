@@ -30,7 +30,7 @@ function refreshCurrentSong() {
                 return;
             }
             var actualBlock = document.getElementById("actual-song");
-            actualBlock.text(info);
+            actualBlock.textContent = info;
         }
         }
     };
