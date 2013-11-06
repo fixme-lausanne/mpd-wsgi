@@ -41,7 +41,7 @@ function refreshCurrentSong() {
 function togglePlaylist() {
     var playlist_block = document.getElementById("playlist");
     if (playlist_block) {
-        playlist_block.parentChild.removeChild(playlist_block);
+        playlist_block.parentNode.removeChild(playlist_block);
     } else {
         var xhr = new XMLHttpRequest();
         xhr.open("GET", PLAYLIST_URL, true);
