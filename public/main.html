@@ -5,6 +5,7 @@
         <title>Mpd interface</title>
     </head>
     <body onload="onLoad()">
+        <script src="alphabet.js"></script>
         <script src="main.js"></script>
         <script src="https://foo.fixme.ch/json_sans_eval.js"></script>
         <div id="container">
@@ -12,6 +13,11 @@
                 <div class="central-block">
                     <h1>You are listening to...</h1>
                     <h3 class="song marquee" id="actual-song">Le kaka </h3>
+
+                    <canvas id='canvas' style='width:700px; height 400px'>
+
+                     </canvas>
+
                     <input type="submit" value="Previous song" onclick="previousSong()">
                     <input type="submit" value="Play" onclick="play()">
                     <input type="submit" value="Next song" onclick="nextSong()">

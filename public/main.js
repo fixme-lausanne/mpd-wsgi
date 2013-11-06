@@ -1,4 +1,219 @@
+
+var ctx = null;
+
+
+// Man paul irish
+var requestAnimFrame = (function() {
+  return window.requestAnimationFrame ||
+     window.webkitRequestAnimationFrame ||
+     window.mozRequestAnimationFrame ||
+     window.oRequestAnimationFrame ||
+     window.msRequestAnimationFrame ||
+     function(/* function FrameRequestCallback */ callback, /* DOMElement Element */ element) {
+       window.setTimeout(callback, 1000/60);
+     };
+})();
+
+
+function drawIt(pattern, x, y, s)
+{
+    var i = 0;
+    while (i < pattern.length)
+    {
+        var row = pattern[i];
+        var j = 0;
+        while (j < row.length)
+        {
+            if (row[j])
+            {
+                
+                /*
+                ctx.beginPath();  
+                ctx.arc(x + j * 5, y + i * 5,2.5,0,Math.PI*2,true);
+                ctx.fill();
+                ctx.closePath();
+                */
+                ctx.fillRect(x + j * s, y + i * s, s, s);
+            }
+            ++j;
+        }
+        ++i;
+    }
+}
+
+function drawText(text, x, y, s)
+{
+    var i = 0;
+    while (i < text.length)
+    {
+        var letter = alphabet[text[i]];
+        drawIt(letter, x / 2  + x, y, s);
+        x += letter[0].length * s + s ;
+        ++i;
+    }
+}
+
+
+
+var TextFade = function()
+{
+    this.PARTICLES = [];
+    this.life = 0;
+    this.callBack = null;
+
+    this.setCallBack = function(callBack)
+    {
+        this.callback = callBack;
+    }
+
+    this.addIt = function(pattern, x, y, s)
+    {
+        var i = 0;
+        while (i < pattern.length)
+        {
+            var row = pattern[i];
+            var j = 0;
+            while (j < row.length)
+            {
+                if (row[j])
+                {
+                    this.PARTICLES.push({
+                        x : x + j * s,
+                        y : y + i * s,
+                        l : 50 - i * 2,
+                        s : s,
+                        t : 1
+                    });
+                }
+                ++j;
+            }
+            ++i;
+        }
+    }
+
+    this.init = function(text, x, y, s)
+    {
+        var i = 0;
+        while (i < text.length)
+        {
+            var letter = alphabet[text[i]];
+            this.addIt(letter, x / 2  + x, y, s);
+            x += letter[0].length * s + s ;
+            ++i;
+        }
+        this.life = 0;
+    };
+
+    this.render = function()
+    {
+        ctx.fillStyle= '#101010';
+        ctx.fillRect(0,0,800,600);
+        ctx.fillStyle= '#888';
+        renderParticles();
+    }
+
+    this.animate = function()
+    {
+        this.life++;
+        var PARTICLES = this.PARTICLES;
+        var i = 0;
+        while (i < PARTICLES.length)
+        {
+            var p = PARTICLES[i];
+            if (p.l < this.life)
+            {
+                p.y += Math.random() * 20  + 5| 0;
+                if (p.y > 600)
+                {
+                    PARTICLES.splice(i, 1); 
+                    --i;
+                }   
+            }
+            ++i;
+        }
+        if (PARTICLES.length == 0)
+        {
+            GameObject = this.callback;
+        }
+    }
+    this.update = function()
+    {
+        this.render();
+        this.animate();
+    };
+
+    this.input = function()
+    {
+    };
+}
+
+var textFade = new TextFade();
+
+
+function renderParticles()
+        {
+            var PARTICLES = textFade.PARTICLES;
+            var i         = 0;
+
+            while (i < PARTICLES.length)
+            {
+                var p = PARTICLES[i];
+                if (p.t == 1)
+                {
+                    ctx.fillRect(p.x, p.y, p.s, p.s);
+                }
+                if (p.t == 2)
+                {
+                    ctx.fillRect(p.x, p.y, p.s, p.s * 5);
+                }
+                if (p.t == 3)
+                {
+                    ctx.fillStyle = '#fe0061';
+                    ctx.fillRect(p.x, p.y, 10, 2);
+                    ctx.fillStyle = '#FFF';
+                }
+                ++i;
+            }
+        }
+
+
+function setActualSound(txt) {
+    TEXT = txt;
+}
+
+var TEXT = 'Playing';
+var CYCLE = 0;
+
+function run() {
+    console.log('run');
+    requestAnimFrame(run);
+    if (!ctx) {return};
+    ctx.fillStyle = '#101010';
+    ctx.fillRect(0,0,700,400);
+    ctx.fillStyle = '#888';
+    if (CYCLE < 100) {
+        drawText(TEXT.toUpperCase(), 700 - CYCLE * 7 + 10, 10, 2);
+    }
+    if (CYCLE == 100) {
+        textFade.init(TEXT.toUpperCase(), 10, 10, 2);
+    }
+    if (CYCLE > 100) {
+        textFade.render();
+        textFade.animate();       
+    }
+
+    CYCLE++;
+    if (CYCLE > 200) {
+        CYCLE = 0;
+    }
+
+}
+
+run();
+
+
 function onLoad() {
+    ctx = document.getElementById('canvas').getContext('2d');
     refreshCurrentSong();
 }
 
@@ -30,13 +245,13 @@ function refreshCurrentSong() {
                 console.log(err);
                 return;
             }
-            var actualBlock = document.getElementById("actual-song");
-            actualBlock.textContent = info;
+            setActualSound(info);
         }
         }
     };
     xhr.send(null);
 }
+
 
 function togglePlaylist() {
     var playlist_block = document.getElementById("playlist");
