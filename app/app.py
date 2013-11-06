@@ -25,8 +25,12 @@ POLL_NEXT = 6
 UPDATE_LIBRARY = 7
 TOGGLE_PLAY = 8
 PLAYLIST = 9
+PLAY = 10
+PAUSE = 11
+
 commands = (PREVIOUS_COMMAND, NEXT_COMMAND, CURRENT_INFO, STAT_INFO,
-            STATUS_INFO, POLL_NEXT, UPDATE_LIBRARY, TOGGLE_PLAY, PLAYLIST)
+            STATUS_INFO, POLL_NEXT, UPDATE_LIBRARY, TOGGLE_PLAY, 
+            PLAYLIST, PLAY, PAUSE, )
 
 def mpd_connect():
     """
@@ -77,10 +81,18 @@ def mpd_command(command):
         elif command == UPDATE_LIBRARY:
             ret = client.update()
         elif command == TOGGLE_PLAY:
+            if client.status()['state'] == 'play':
+                ret = client.pause()
+            else:
+                ret = client.play()
+        elif command == PLAY:
             ret = client.play()
+        elif command == PAUSE:
+            ret = client.pause()
         elif command == PLAYLIST:
-            ret = client.playlist()
-            ret = {'songs':ret}
+            playlist_raw = client.playlist()
+            ret_files = map(lambda a: a.split(':', 1)[1], playlist_raw)
+            ret = {'songs':ret_files}
         else:
             abort(501)  # not implemented
         mpd_disconnect(client)
@@ -117,10 +129,28 @@ def main_page():
     return render_template("help.html", doc=app_doc)
 
 
+@app.route("/action/pause")
+def pause():
+    """
+    Pause the actual song.
+
+    @return an empty json dictionnary.
+    """
+    return jsonify(mpd_command(PAUSE))
+
 @app.route("/action/play")
+def play():
+    """
+    Play the actual song.
+
+    @return an empty json dictionnary.
+    """
+    return jsonify(mpd_command(PLAY))
+
+@app.route("/action/play_pause")
 def toggle_play():
     """
-    Play the actual.
+    Toggle the actual state from pause to play and from play to pause.
 
     @return an empty json dictionnary.
     """

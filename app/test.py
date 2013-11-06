@@ -22,6 +22,18 @@ class AppTestCase(unittest.TestCase):
         response = self.client.get('/action/previous')
         self.assertEqual(json.loads(response.data), {})
 
+    def test_toggle(self):
+        def get_state():
+            response = self.client.get('/status')
+            return json.loads(response.data)['state']
+
+        self.client.get("/action/play")
+        self.assertEqual(get_state(), 'play')
+        self.client.get("/action/play_pause")
+        self.assertEqual(get_state(), 'pause')
+        self.client.get("/action/play_pause")
+        self.assertEqual(get_state(), 'play')
+    
     def test_stat(self):
         response = self.client.get('/status')
         response_json = json.loads(response.data)

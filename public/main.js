@@ -236,7 +236,7 @@ function refreshCurrentSong() {
                 var artist = parsed_text.artist;
                 var track = parsed_text.file;
                 var info;
-                if (track !== "undefined" && artist !== "undefined") {
+                if (track !== undefined && artist !== undefined) {
                     info = title + " by " + artist;
                 } else {
                     info = file;
@@ -306,8 +306,8 @@ function changeSong(url) {
     xhr.send(null);
 }
 
-function play() {
-    var PLAY_SONG_URL = "api/action/play";
+function toggle_play() {
+    var PLAY_SONG_URL = "api/action/play_pause";
     changeSong(PLAY_SONG_URL);
 }
 
