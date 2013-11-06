@@ -107,7 +107,7 @@ var TextFade = function()
     this.render = function()
     {
         ctx.fillStyle= '#101010';
-        ctx.fillRect(0,0,800,600);
+        ctx.fillRect(0,0,1400,800);
         ctx.fillStyle= '#888';
         renderParticles();
     }
@@ -179,6 +179,7 @@ function renderParticles()
 
 function setActualSound(txt) {
     TEXT = txt;
+    //document.getElementById('actual-song').textContent = txt;
 }
 
 var TEXT = 'Playing';
@@ -189,7 +190,7 @@ function run() {
     requestAnimFrame(run);
     if (!ctx) {return};
     ctx.fillStyle = '#101010';
-    ctx.fillRect(0,0,700,400);
+    ctx.fillRect(0,0,1400, 800);
     ctx.fillStyle = '#888';
     if (CYCLE < 100) {
         drawText(TEXT.toUpperCase(), 700 - CYCLE * 7 + 10, 10, 2);
