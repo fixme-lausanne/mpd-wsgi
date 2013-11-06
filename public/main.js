@@ -191,12 +191,12 @@ function run() {
     if (!ctx) {return};
     ctx.fillStyle = '#101010';
     ctx.fillRect(0,0,1400, 800);
-    ctx.fillStyle = '#888';
+    ctx.fillStyle = '#fff';
     if (CYCLE < 100) {
-        drawText(TEXT.toUpperCase(), 700 - CYCLE * 7 + 10, 10, 2);
+        drawText(TEXT.toUpperCase(), 700 - CYCLE * 7 + 10, 10, 3);
     }
     if (CYCLE == 100) {
-        textFade.init(TEXT.toUpperCase(), 10, 10, 2);
+        textFade.init(TEXT.toUpperCase(), 10, 10, 3);
     }
     if (CYCLE > 100) {
         textFade.render();
