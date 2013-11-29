@@ -5,45 +5,58 @@ mpd mini interface
 
 from flask import Flask, send_from_directory, abort, jsonify, render_template
 import config
-from mpd import MPDClient, CommandError, ConnectionError
+import mpd
 from socket import error as SocketError
 import update_music
 import logging
 import threading
 
-CON_ID = {'host':config.HOST, 'port':config.PORT}
 
 app = Flask(__name__)
 app_doc = None
 
-PREVIOUS_COMMAND = 0
-NEXT_COMMAND = 2
-CURRENT_INFO = 3
-STAT_INFO = 4
-STATUS_INFO = 5
-POLL_NEXT = 6
-UPDATE_LIBRARY = 7
-TOGGLE_PLAY = 8
-PLAYLIST = 9
-PLAY = 10
-PAUSE = 11
+class MpdClient(mpd.MPDClient):
+    """Enumeration of the commands available.
+    """
+    Authorized_commands = (
+    )
 
-commands = (PREVIOUS_COMMAND, NEXT_COMMAND, CURRENT_INFO, STAT_INFO,
-            STATUS_INFO, POLL_NEXT, UPDATE_LIBRARY, TOGGLE_PLAY, 
-            PLAYLIST, PLAY, PAUSE, )
 
-def mpd_connect():
+    def execute_command(self, command, *args, **kwargs):
+        if command in MpdClient.Authorized_commands:
+            ret = getattr(self, command)(*args, **kwargs)
+            if ret:
+                ret = dict(ret)
+            else:
+                ret = {}
+            ret['status'] = 'success'
+            return ret
+
+
+    def toggle_play(self):
+        if self.status()['state'] == 'play':
+            self.pause()
+        else:
+            self.pause()
+
+    def playlist(self):
+        playlist_raw = super(MpdClient, self).playlist()
+        ret_files = map(lambda a: a.split(':', 1)[1], playlist_raw)
+        ret = {'songs':ret_files}
+
+
+def mpd_connect(command, *args, **kwargs):
     """
     Simple wrapper to connect MPD.
     """
     #connection to mpd
-    client = MPDClient()
+    client = mpd.MPDClient()
     try:
-        client.connect(**CON_ID)
+        client.connect(host=config.HOST, port=config.PORT)
     except SocketError as e:
         logging.error(e)
         return None
-    except ConnectionError as e:
+    except mpd.ConnectionError as e:
         logging.error(e)
         return None
 
@@ -51,54 +64,22 @@ def mpd_connect():
     if config.PASSWORD:
         try:
             client.password(config.PASSWORD)
-        except CommandError as e:
+        except mpd.CommandError as e:
             logging.error(e)
             return None
     return client
 
-def mpd_disconnect(client):
-    """
-    Simple wrapper to disconnect the client to MPD.
-    """
-    client.disconnect()
-
-def mpd_command(command):
+def mpd_command(command, *args, **kwargs):
     """
     Wrapper around the mpd commands.
     """
     client = mpd_connect()
     if client:
-        if command == PREVIOUS_COMMAND:
-            ret = client.previous()
-        elif command == NEXT_COMMAND:
-            ret = client.next()
-        elif command == CURRENT_INFO:
-            ret = client.currentsong()
-        elif command == STAT_INFO:
-            ret = client.stats()
-        elif command == STATUS_INFO:
-            ret = client.status()
-        elif command == UPDATE_LIBRARY:
-            ret = client.update()
-        elif command == TOGGLE_PLAY:
-            if client.status()['state'] == 'play':
-                ret = client.pause()
-            else:
-                ret = client.play()
-        elif command == PLAY:
-            ret = client.play()
-        elif command == PAUSE:
-            ret = client.pause()
-        elif command == PLAYLIST:
-            playlist_raw = client.playlist()
-            ret_files = map(lambda a: a.split(':', 1)[1], playlist_raw)
-            ret = {'songs':ret_files}
-        else:
-            abort(501)  # not implemented
-        mpd_disconnect(client)
-        return ret or {}
+        ret = client.execute(command, *args, **kwargs)
     else:
-        abort(503)
+        abort(501)  # not implemented
+        client.disconnect()
+        return ret
 
 
 def generate_doc():
