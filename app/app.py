@@ -5,100 +5,83 @@ mpd mini interface
 
 from flask import Flask, send_from_directory, abort, jsonify, render_template
 import config
-from mpd import MPDClient, CommandError, ConnectionError
+import mpd
 from socket import error as SocketError
 import update_music
 import logging
 import threading
 
-CON_ID = {'host':config.HOST, 'port':config.PORT}
 
 app = Flask(__name__)
 app_doc = None
 
-PREVIOUS_COMMAND = 0
-NEXT_COMMAND = 2
-CURRENT_INFO = 3
-STAT_INFO = 4
-STATUS_INFO = 5
-POLL_NEXT = 6
-UPDATE_LIBRARY = 7
-TOGGLE_PLAY = 8
-PLAYLIST = 9
-PLAY = 10
-PAUSE = 11
-
-commands = (PREVIOUS_COMMAND, NEXT_COMMAND, CURRENT_INFO, STAT_INFO,
-            STATUS_INFO, POLL_NEXT, UPDATE_LIBRARY, TOGGLE_PLAY, 
-            PLAYLIST, PLAY, PAUSE, )
-
-def mpd_connect():
+class MpdClient(mpd.MPDClient):
+    """Enumeration of the commands available.
     """
-    Simple wrapper to connect MPD.
-    """
-    #connection to mpd
-    client = MPDClient()
-    try:
-        client.connect(**CON_ID)
-    except SocketError as e:
-        logging.error(e)
-        return None
-    except ConnectionError as e:
-        logging.error(e)
-        return None
+    Authorized_commands = ('play', 'pause', 'toggle_play', 'playlist', 'currentsong', 'next', 'previous', 'status')
 
-    # Auth if password is set non False
-    if config.PASSWORD:
+    def execute_command(self, command, *args, **kwargs):
+        if command in MpdClient.Authorized_commands:
+            command_function = getattr(self, command, None)
+            if not command_function:
+                abort(400)
+            else:
+                ret = command_function(*args, **kwargs)
+                if ret:
+                    ret = dict(ret)
+                else:
+                    ret = {}
+                ret['status'] = 'success'
+                return ret
+        else:
+            abort(401)
+
+
+    def toggle_play(self):
+        if self.status()['state'] == 'play':
+            self.pause()
+        else:
+            self.pause()
+
+    def playlist(self):
+        playlist_raw = super(MpdClient, self).playlist()
+        ret_files = map(lambda a: a.split(':', 1)[1], playlist_raw)
+        ret = {'songs':ret_files}
+        return ret
+
+    @staticmethod
+    def connect_mpd():
+        """
+        Simple wrapper to connect MPD. This method will use the flask configuration.
+        """
+        #connection to mpd
+        client = MpdClient()
         try:
-            client.password(config.PASSWORD)
-        except CommandError as e:
+            client.connect(host=config.HOST, port=config.PORT)
+        except SocketError as e:
             logging.error(e)
-            return None
-    return client
+            abort(500)
+        except mpd.ConnectionError as e:
+            logging.error(e)
+            abort(500)
 
-def mpd_disconnect(client):
-    """
-    Simple wrapper to disconnect the client to MPD.
-    """
-    client.disconnect()
+        # Auth if password is set non False
+        if config.PASSWORD:
+            try:
+                client.password(config.PASSWORD)
+            except mpd.CommandError as e:
+                logging.error(e)
+                abort(500)
+        return client
 
-def mpd_command(command):
+def mpd_command(command, *args, **kwargs):
     """
     Wrapper around the mpd commands.
     """
-    client = mpd_connect()
-    if client:
-        if command == PREVIOUS_COMMAND:
-            ret = client.previous()
-        elif command == NEXT_COMMAND:
-            ret = client.next()
-        elif command == CURRENT_INFO:
-            ret = client.currentsong()
-        elif command == STAT_INFO:
-            ret = client.stats()
-        elif command == STATUS_INFO:
-            ret = client.status()
-        elif command == UPDATE_LIBRARY:
-            ret = client.update()
-        elif command == TOGGLE_PLAY:
-            if client.status()['state'] == 'play':
-                ret = client.pause()
-            else:
-                ret = client.play()
-        elif command == PLAY:
-            ret = client.play()
-        elif command == PAUSE:
-            ret = client.pause()
-        elif command == PLAYLIST:
-            playlist_raw = client.playlist()
-            ret_files = map(lambda a: a.split(':', 1)[1], playlist_raw)
-            ret = {'songs':ret_files}
-        else:
-            abort(501)  # not implemented
-        mpd_disconnect(client)
-        return ret or {}
-    else:
-        abort(503)
+    client = MpdClient.connect_mpd()
+    ret = client.execute_command(command, *args, **kwargs)
+    client.disconnect()
+    return ret
 
 
 def generate_doc():
@@ -136,7 +119,7 @@ def pause():
 
     @return an empty json dictionnary.
     """
-    return jsonify(mpd_command(PAUSE))
+    return jsonify(mpd_command('pause'))
 
 @app.route("/action/play")
 def play():
@@ -145,7 +128,7 @@ def play():
 
     @return an empty json dictionnary.
     """
-    return jsonify(mpd_command(PLAY))
+    return jsonify(mpd_command('play'))
 
 @app.route("/action/play_pause")
 def toggle_play():
@@ -154,7 +137,7 @@ def toggle_play():
 
     @return an empty json dictionnary.
     """
-    return jsonify(mpd_command(TOGGLE_PLAY))
+    return jsonify(mpd_command('toggle_play'))
 
 
 @app.route("/action/previous")
@@ -164,7 +147,7 @@ def previous_song_action():
 
     @return an empty json dictionnary.
     """
-    return jsonify(mpd_command(PREVIOUS_COMMAND))
+    return jsonify(mpd_command('previous'))
 
 
 @app.route("/action/next")
@@ -174,8 +157,7 @@ def next_song_action():
 
     @return an empty json dictionnary.
     """
-    return jsonify(mpd_command(NEXT_COMMAND))
-
+    return jsonify(mpd_command('next'))
 
 @app.route("/current")
 def current_song():
@@ -184,7 +166,7 @@ def current_song():
 
     @return a json dictionnary containing the information.
     """
-    return jsonify(mpd_command(CURRENT_INFO))
+    return jsonify(mpd_command('currentsong'))
 
 
 @app.route("/stats")
@@ -194,13 +176,13 @@ def stats():
 
     @return a json dictionnary containing the general statistic for mpd.
     """
-    return jsonify(mpd_command(STAT_INFO))
+    return jsonify(mpd_command('stat_info'))
 
 @app.route("/playlist")
 def playlist():
     """Return the playlist of the next song to be played
     """
-    return jsonify(mpd_command(PLAYLIST))
+    return jsonify(mpd_command('playlist'))
 
 @app.route("/status")
 def status():
@@ -209,7 +191,7 @@ def status():
 
     @return a json dictionnary containing the actual mpd status.
     """
-    return jsonify(mpd_command(STATUS_INFO))
+    return jsonify(mpd_command('status'))
 
 
 @app.route("/file")
@@ -217,7 +199,7 @@ def download_file():
     """
     Return the actual file played trough mpd or an empty string if there is no file playing.
     """
-    file_path = mpd_command(CURRENT_INFO).get('file')
+    file_path = mpd_command('currentsong').get('file')
     if file_path:
         return send_from_directory(config.MPD_ROOT, file_path, as_attachment=True)
     else:
@@ -226,11 +208,10 @@ def download_file():
 
 up_thread = threading.Event()
 
-
 def update_thread():
     if update_music.update_music(config.UPLOAD_DIR, config.MPD_ROOT):
         try:
-            mpd_command(UPDATE_LIBRARY)
+            mpd_command('update_library')
         except CommandError as e:
             logging.error("Command error {!s}".format(e))
     up_thread.clear()
@@ -247,14 +228,6 @@ def update_lib():
         up_thread.set()
         threading.Thread(target=update_thread).start()
     return jsonify({})
-
-
-@app.route("/poll")
-def poll_new_song():
-    """
-    block until a new song is played on mpd
-    """
-    return jsonify(mpd_command(POLL_NEXT))
 
 if __name__ == "__main__":
     app.run(debug=True)

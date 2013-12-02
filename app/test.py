@@ -14,13 +14,13 @@ class AppTestCase(unittest.TestCase):
 
     def test_current(self):
         response = self.client.get('/current')
-        self.assertEqual(json.loads(response.data), {})
+        self.assertEqual(json.loads(response.data), {'status': 'success'})
 
     def test_action(self):
         response = self.client.get('/action/next')
-        self.assertEqual(json.loads(response.data), {})
+        self.assertEqual(json.loads(response.data), {'status': 'success'})
         response = self.client.get('/action/previous')
-        self.assertEqual(json.loads(response.data), {})
+        self.assertEqual(json.loads(response.data), {'status': 'success'})
 
     def test_toggle(self):
         def get_state():
@@ -33,11 +33,11 @@ class AppTestCase(unittest.TestCase):
         self.assertEqual(get_state(), 'pause')
         self.client.get("/action/play_pause")
         self.assertEqual(get_state(), 'play')
-    
+
     def test_stat(self):
         response = self.client.get('/status')
         response_json = json.loads(response.data)
-        self.assertEqual(set(response_json), {u'playlist', u'volume', u'state',
+        self.assertEqual(set(response_json), {u'playlist', u'volume', u'state', u'status',
         u'mixrampdb', u'repeat', u'consume', u'random', u'xfade', u'playlistlength', u'single',
         u'mixrampdelay'})
 
