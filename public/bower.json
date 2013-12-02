@@ -3,7 +3,8 @@
   "version": "0.0.0",
   "dependencies": {
     "jquery": "~1.10.2",
-    "foundation": "~5.0.2"
+    "foundation": "~5.0.2",
+    "ember": "~1.2.0"
   },
   "devDependencies": {},
   "resolutions": {

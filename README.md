@@ -21,6 +21,7 @@ You may wanna either run the server side code and point it to your own
 mpd server by changing the config.py `MPD_HOST` variable and call the flask api from your javascript.
 
 ## Step by step
+### Installation
 Installation of yeoman (with sudo)
     # npm install yo
 
@@ -29,4 +30,7 @@ Install the basic `webapp` generator and scaffold a new app
     $ yo webapp --coffee
 
 Install Foundation
-    $ bower install foundation
+    $ bower install foundation --save
+
+Install Ember
+    $ bower install ember --save
