@@ -37,3 +37,9 @@ Install Ember
 
 Enable the frameworks previously installed
     $ grunt bower-install
+
+### Testing
+You can run test with a grunt task
+    $ grunt test
+
+The default behavior of grunt is to run `jshint`, all tests and build everything.
