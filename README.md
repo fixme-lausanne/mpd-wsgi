@@ -27,3 +27,6 @@ Installation of yeoman (with sudo)
 Install the basic `webapp` generator and scaffold a new app
     $ npm install -g generator-webapp
     $ yo webapp --coffee
+
+Install Foundation
+    $ bower install foundation
