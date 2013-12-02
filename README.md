@@ -43,6 +43,18 @@ Enable the frameworks previously installed
 
     $ grunt bower-install
 
+Install Ruby and the Compass gem
+    $ rvm install 2.0.0
+    $ rvm use 2.0.0
+    $ gem install compass
+
+### Run
+Use the command
+
+    $ grunt serve
+
+to start a development server.
+
 ### Testing
 You can run test with a grunt task
 
