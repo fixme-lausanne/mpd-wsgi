@@ -14,13 +14,13 @@ class AppTestCase(unittest.TestCase):
 
     def test_current(self):
         response = self.client.get('/current')
-        self.assertEqual(json.loads(response.data), {})
+        self.assertEqual(json.loads(response.data), {'status': 'success'})
 
     def test_action(self):
         response = self.client.get('/action/next')
-        self.assertEqual(json.loads(response.data), {})
+        self.assertEqual(json.loads(response.data), {'status': 'success'})
         response = self.client.get('/action/previous')
-        self.assertEqual(json.loads(response.data), {})
+        self.assertEqual(json.loads(response.data), {'status': 'success'})
 
     def test_toggle(self):
         def get_state():
@@ -33,7 +33,9 @@ class AppTestCase(unittest.TestCase):
         self.assertEqual(get_state(), 'pause')
         self.client.get("/action/play_pause")
         self.assertEqual(get_state(), 'play')
-    
+
+    def bad_command(self):
+        self.client.get('')
     def test_stat(self):
         response = self.client.get('/status')
         response_json = json.loads(response.data)
