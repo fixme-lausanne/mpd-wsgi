@@ -10,6 +10,7 @@ from socket import error as SocketError
 import update_music
 import logging
 import threading
+import lastfm
 
 
 app = Flask(__name__)
@@ -19,6 +20,10 @@ class MpdClient(mpd.MPDClient):
     """Enumeration of the commands available.
     """
     Authorized_commands = ('play', 'pause', 'toggle_play', 'playlist', 'currentsong', 'next', 'previous', 'status')
+
+    def __init__(self, *args, **kwargs):
+        self.lastfm_api = lastfm.Api(config.LAST_FM_KEY)
+
 
     def execute_command(self, command, *args, **kwargs):
         if command in MpdClient.Authorized_commands:
@@ -35,6 +40,11 @@ class MpdClient(mpd.MPDClient):
                 return ret
         else:
             abort(401)
+
+    def cover(self):
+        current = self.current()
+        album = self.lastfm_api.get_album(current.get('album', ''), current.get('artist', ''))
+        return album.image
 
 
     def toggle_play(self):
@@ -129,6 +139,14 @@ def play():
     @return an empty json dictionnary.
     """
     return jsonify(mpd_command('play'))
+
+@app.route("/cover")
+def cover():
+    """
+
+    @return the cover image
+    """
+    return jsonify(mpd_command('cover'))
 
 @app.route("/action/play_pause")
 def toggle_play():
