@@ -34,3 +34,6 @@ Install Foundation
 
 Install Ember
     $ bower install ember --save
+
+Enable the frameworks previously installed
+    $ grunt bower-install
