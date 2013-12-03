@@ -22,7 +22,8 @@ class MpdClient(mpd.MPDClient):
     Authorized_commands = ('play', 'pause', 'toggle_play', 'playlist', 'currentsong', 'next', 'previous', 'status')
 
     def __init__(self, *args, **kwargs):
-        self.lastfm_api = lastfm.Api(config.LAST_FM_KEY)
+        super(MpdClient, self).__init__(*args, **kwargs)
+        self.lastfm_api = lastfm.Api(config.LASTFM_KEY)
 
 
     def execute_command(self, command, *args, **kwargs):
@@ -144,7 +145,12 @@ def play():
 def cover():
     """
 
-    @return the cover image
+    @return a json with three keys which values are the images corresponding to the size of the key. they are:
+      -extralarge
+      -large
+      -medium
+      -small
+      the response can contain any one of those keys
     """
     return jsonify(mpd_command('cover'))
 
