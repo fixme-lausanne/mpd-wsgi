@@ -1,12 +1,12 @@
 # MPD WSGI
-This is a project to manage an mpd server by using a HTTP wrapper around the mpc client. 
+This is a project to manage an mpd server by using a HTTP wrapper around the mpc client.
 
 # Server side code
 ## Dependencies
 You will need at least:
 
 - python-mpd2
-- flask 
+- flask
 - nosetest
 
 _TODO Develop this section_
@@ -31,9 +31,15 @@ Install the basic `webapp` generator and scaffold a new app
     $ npm install -g generator-webapp
     $ yo webapp --coffee
 
-Install Foundation
+Install Ruby and the Compass gem
 
-    $ bower install foundation --save
+    $ rvm install 2.0.0
+    $ rvm use 2.0.0
+    $ gem install compass
+
+Install Foundation cli
+
+    $ bower install foundation --sav
 
 Install Ember
 
@@ -43,10 +49,6 @@ Enable the frameworks previously installed
 
     $ grunt bower-install
 
-Install Ruby and the Compass gem
-    $ rvm install 2.0.0
-    $ rvm use 2.0.0
-    $ gem install compass
 
 ### Run
 Use the command
