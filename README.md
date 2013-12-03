@@ -41,9 +41,9 @@ Install Foundation cli
 
     $ bower install foundation --sav
 
-Install Ember
+Install knockout
 
-    $ bower install ember --save
+    $ bower install knockout --save
 
 Enable the frameworks previously installed
 
@@ -61,7 +61,7 @@ You can run test with a grunt task
 
     $ grunt test
 
-The default behavior of grunt is to run `jshint`, all tests and build everything.
+The default behavior of grunt is to run `jshint`, all tests and to build everything.
 
 ## Dev notes
 ### Stylesheet

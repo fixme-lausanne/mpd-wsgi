@@ -4,7 +4,7 @@
   "dependencies": {
     "jquery": "~1.10.2",
     "foundation": "~5.0.2",
-    "ember": "~1.2.0"
+    "knockout": "~3.0.0"
   },
   "devDependencies": {},
   "resolutions": {
