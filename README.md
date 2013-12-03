@@ -49,7 +49,6 @@ Enable the frameworks previously installed
 
     $ grunt bower-install
 
-
 ### Run
 Use the command
 
@@ -63,3 +62,9 @@ You can run test with a grunt task
     $ grunt test
 
 The default behavior of grunt is to run `jshint`, all tests and build everything.
+
+## Dev notes
+### Stylesheet
+`@import` pathes are related to the _bower_components_ folder.
+
+

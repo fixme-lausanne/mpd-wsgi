@@ -1,0 +1,90 @@
+@import 'foundation/scss/foundation';
+
+
+// Variables
+
+$header-line-color-base: rgb(57, 175, 255);
+$header-line-colors: $header-line-color-base, darken($header-line-color-base, 20%), darken($header-line-color-base, 40%);
+$header-line-height: 3px;
+
+// Base
+
+h1, h2, h3, h4 {
+  color: rgb(227, 227, 227);
+}
+
+body {
+  background-color: rgb(39, 39, 39);
+  color: rgb(193, 193, 193);
+}
+
+li {
+  list-style: none;
+}
+
+button {
+  background-color: inherit;
+
+  &:hover {
+    background-color: rgb(207, 124, 85);
+  }
+}
+
+div {
+  // border: 1px red solid;
+}
+
+
+// Header
+body header {
+  padding-top: 15px;
+  padding-bottom: 48px;
+}
+
+#title {
+  margin-left: 30px;
+  font-size: 2em;
+  font-weight: bold;
+}
+
+#logo {
+  font-weight: bold;
+  color: rgb(255, 102, 0);
+}
+
+#header-line {
+  padding-top: 10px;
+
+  @for $i from 1 through length($header-line-colors) {
+    div:nth-child(#{$i}) {
+      background-color: nth($header-line-colors, $i);
+    }
+  }
+
+  & > div {
+    height: $header-line-height;
+  }
+}
+
+// Current track
+
+#current-track {
+
+}
+
+#album-cover {
+  padding: 40px;
+}
+
+// Player
+
+#loading-bar {
+  height: 60px;
+  background-color: rgb(51, 51, 51);
+}
+
+#current-load {
+  height: 100%;
+  width: 20%;
+  background-color: rgb(255, 168, 89);
+}

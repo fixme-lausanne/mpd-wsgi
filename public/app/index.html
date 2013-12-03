@@ -1,61 +1,120 @@
 <!doctype html>
-<!--[if lt IE 7]>      <html class="no-js lt-ie9 lt-ie8 lt-ie7"> <![endif]-->
-<!--[if IE 7]>         <html class="no-js lt-ie9 lt-ie8"> <![endif]-->
-<!--[if IE 8]>         <html class="no-js lt-ie9"> <![endif]-->
-<!--[if gt IE 8]><!--> <html class="no-js"> <!--<![endif]-->
-    <head>
-        <meta charset="utf-8">
-        <meta http-equiv="X-UA-Compatible" content="IE=edge">
-        <title>public</title>
-        <meta name="description" content="">
-        <meta name="viewport" content="width=device-width">
-        <!-- Place favicon.ico and apple-touch-icon.png in the root directory -->
-        <!-- build:css(.tmp) styles/main.css -->
-        <link rel="stylesheet" href="styles/main.css">
-        <!-- endbuild -->
-    </head>
-    <body>
-        <!--[if lt IE 10]>
-            <p class="browsehappy">You are using an <strong>outdated</strong> browser. Please <a href="http://browsehappy.com/">upgrade your browser</a> to improve your experience.</p>
-        <![endif]-->
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <title>public</title>
+    <meta name="description" content="">
+    <meta name="viewport" content="width=device-width">
+    <link href="//netdna.bootstrapcdn.com/font-awesome/4.0.3/css/font-awesome.css" rel="stylesheet">
+    <!-- Place favicon.ico and apple-touch-icon.png in the root directory -->
+    <!-- build:css(.tmp) styles/main.css -->
+    <link rel="stylesheet" href="styles/stysheet.css">
+    <!-- endbuild -->
+</head>
+<body>
+
+<header class="row">
+    <div class="row">
+        <div id="title" class="columns">{ <b id="logo">fmm:</b> 'fix my music' }</div>
+    </div>
+    <div id="header-line" class="row">
+        <div id="header-line-1" class="columns small-1"></div>
+        <div id="header-line-2" class="columns small-1"></div>
+        <div id="header-line-3" class="columns small-10"></div>
+    </div>
+</header>
 
 
-        <div class="hero-unit">
-          <h1>'Allo, 'Allo!</h1>
-          <p>You now have</p>
-          <ul>
-            <li>HTML5 Boilerplate</li>
+<section id="player-section">
+    <div class="row medium-centered">
 
-          </ul>
+        <div class="columns small-6">
+            <div id="current-track" class="small-7 medium-10 large-12 large-centered">
+                Current music, by Beethoven the great
+            </div>
+
+            <div id="album-cover">
+                <img src="http://mathfiles.files.wordpress.com/2010/05/uni080528_grnalbm_front2.jpg"
+                     alt="album picture">
+            </div>
+
+
+            <!-- Player -->
+            <div id="player" class="row">
+                <div id="loading-bar" class="row">
+                    <div id="current-load"></div>
+                </div>
+                <div id="player-actions" class="row">
+                    <button id="action-previous" class="action columns small-3"><i class="fa fa-backward"></i></button>
+                    <button id="action-pause" class="action columns small-3"><i class="fa fa-pause"></i></button>
+                    <button id="action-play" class="action columns small-3"><i class="fa fa-play"></i></button>
+                    <button id="action-next" class="action columns small-3"><i class="fa fa-forward"></i></button>
+                </div>
+            </div>
+
         </div>
 
 
-        <!-- build:js scripts/vendor.js -->
-        <!-- bower:js -->
-        <script src="bower_components/modernizr/modernizr.js"></script>
-        <script src="bower_components/jquery/jquery.js"></script>
-        <script src="bower_components/foundation/js/foundation.js"></script>
-        <script src="bower_components/handlebars/handlebars.js"></script>
-        <script src="bower_components/ember/ember.js"></script>
-        <!-- endbower -->
-        <!-- endbuild -->
+        <!-- Playlist and search tabs -->
+        <div id="tabs-tracks" class="columns small-6">
+            <dl class="tabs" data-tab>
+                <dd id="playlist-tab" class="active"><a href="#playlist-panel">Playlist</a></dd>
+                <dd id="search-tab"><a href="#search-panel">Search</a></dd>
+            </dl>
+            <div class="tabs-content">
+                <div class="content active" id="playlist-panel">
+                    <ul>
+                        <li>Title 1, artist 1</li>
+                        <li>Title 2, artist 2</li>
+                        <li>Title 3, artist 3</li>
+                        <li>Title 4, artist 4</li>
+                        <li>Title 5, artist 5</li>
+                        <li>Title 6, artist 6</li>
+                        <li>Title 7, artist 7</li>
+                        <li>Title 8, artist 8</li>
+                        <li>Title 9, artist 9</li>
+                        <li>Title 10, artist 10</li>
+                    </ul>
+                </div>
+                <div class="content" id="search-panel">
+                    <form>
+                        <input type="text" placeholder="Type something"/>
+                    </form>
+                    <ul>
+                        <li>Result 1</li>
+                        <li>Result 2</li>
+                        <li>Result 3</li>
+                        <li>Result 4</li>
+                        <li>Result 5</li>
+                        <li>Result 6</li>
+                        <li>Result 7</li>
+                        <li>Result 8</li>
+                        <li>Result 9</li>
+                        <li>Result 10</li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
 
-        <!-- Google Analytics: change UA-XXXXX-X to be your site's ID. -->
-        <script>
-            (function(b,o,i,l,e,r){b.GoogleAnalyticsObject=l;b[l]||(b[l]=
-            function(){(b[l].q=b[l].q||[]).push(arguments)});b[l].l=+new Date;
-            e=o.createElement(i);r=o.getElementsByTagName(i)[0];
-            e.src='//www.google-analytics.com/analytics.js';
-            r.parentNode.insertBefore(e,r)}(window,document,'script','ga'));
-            ga('create','UA-XXXXX-X');ga('send','pageview');
-        </script>
+<!-- build:js scripts/vendor.js -->
+<!-- bower:js -->
+<script src="bower_components/modernizr/modernizr.js"></script>
+<script src="bower_components/jquery/jquery.js"></script>
+<script src="bower_components/foundation/js/foundation.js"></script>
+<script src="bower_components/handlebars/handlebars.js"></script>
+<script src="bower_components/ember/ember.js"></script>
+<!-- endbower -->
+<!-- endbuild -->
 
-        <!-- build:js scripts/main.js -->
-        <script src="scripts/main.js"></script>
-        <!-- endbuild -->
+<!-- build:js scripts/main.js -->
+<script src="scripts/main.js"></script>
+<!-- endbuild -->
 
-        <!-- build:js(.tmp) scripts/coffee.js -->
-        <script src="scripts/hello.js"></script>
-        <!-- endbuild -->
+<!-- build:js(.tmp) scripts/coffee.js -->
+<script src="scripts/hello.js"></script>
+<!-- endbuild -->
+
 </body>
 </html>
