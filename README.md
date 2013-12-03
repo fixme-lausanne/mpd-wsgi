@@ -67,4 +67,5 @@ The default behavior of grunt is to run `jshint`, all tests and to build everyth
 ### Stylesheet
 `@import` pathes are related to the _bower_components_ folder.
 
-
+## Screenshot
+![First mockup](http://i.imgur.com/H3tAnib.png)
