@@ -230,11 +230,13 @@ def update_lib():
         threading.Thread(target=update_thread).start()
     return jsonify({})
 
+
 @app.route("/playlist", methods=['GET'])
 def playlist():
     """Return the playlist of the next song to be played
     """
     return jsonify(mpd_command('playlist'))
+
 
 @app.route("/playlist", methods=['PUT'])
 def playlist_add():
@@ -245,13 +247,17 @@ def playlist_add():
         print "nup"
         abort(400)
 
+
 @app.route("/playlist", methods=['DELETE'])
 def playlist_delete():
     """Clean the playlist by removing all the elements in it.
     """
     return jsonify(mpd_command('clear'))
 
+
 SEARCH_TERMS = ['any', 'artist', 'album', 'title']
+
+
 @app.route("/search")
 def search():
     """Search a song for any of this component or any
@@ -266,6 +272,7 @@ def search():
             return jsonify(mpd_command('search', search_term, request.args[search_term]))
     else:
         abort(400)
+
 
 if __name__ == "__main__":
     app.run(debug=True)
