@@ -234,6 +234,6 @@ def update_lib():
 @socket.route('/player_change')
 def player_change(ws):
     while True:
+        #blocking method
         mpd_command('idle', 'player')
         ws.send(mpd_command('currentsong'))
-
