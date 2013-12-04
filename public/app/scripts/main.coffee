@@ -19,17 +19,6 @@ class Song
     @artist = data.artist || 'unknown artist'
     @album = data.album   || 'unknown album'
 
-class CurrentSongViewModel
-  constructor: ->
-    self = this
-    self.current = ko.observable('')
-
-    $.getJSON urlCurrent, (data) ->
-      self.current(new Song(data))
-
-ko.applyBindings new CurrentSongViewModel(), document.getElementById('current-track')
-
-
 
 # Player actions
 class PlayerActions
@@ -49,11 +38,17 @@ class PlayerActions
   play: ->
     $.getJSON(url + '/action/play')
 
-class PlayerActionsViewModel
+
+# ViewModel
+class PlayerViewModel
   constructor: ->
     self = this
+    self.current = ko.observable('')
     self.actions = ko.observable(new PlayerActions())
-    console.log self.actions
+
+    $.getJSON urlCurrent, (data) ->
+      self.current(new Song(data))
 
 
-ko.applyBindings new PlayerActionsViewModel(), document.getElementById('player-actions')
+# Apply the bindings
+ko.applyBindings new PlayerViewModel()
