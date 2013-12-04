@@ -16,10 +16,11 @@ import lastfm
 app = Flask(__name__)
 app_doc = None
 
+
 class MpdClient(mpd.MPDClient):
     """Enumeration of the commands available.
     """
-    Authorized_commands = ('play', 'pause', 'toggle_play', 'playlist', 'currentsong', 'next', 'previous', 'status')
+    Authorized_commands = ('play', 'pause', 'toggle_play', 'playlist', 'currentsong', 'next', 'previous', 'status', 'cover', 'stats')
 
     def __init__(self, *args, **kwargs):
         super(MpdClient, self).__init__(*args, **kwargs)
@@ -43,10 +44,12 @@ class MpdClient(mpd.MPDClient):
             abort(401)
 
     def cover(self):
-        current = self.current()
+        d = {"extralarge": None, "large": None, "medium": None, "mega": None, "small": None}
+        current = self.currentsong()
         album = self.lastfm_api.get_album(current.get('album', ''), current.get('artist', ''))
-        return album.image
-
+        if album.id:
+            d.update(album.image)
+        return d
 
     def toggle_play(self):
         if self.status()['state'] == 'play':
@@ -150,7 +153,8 @@ def cover():
       -large
       -medium
       -small
-      the response can contain any one of those keys
+
+    and the usual success key.
     """
     return jsonify(mpd_command('cover'))
 
@@ -200,7 +204,7 @@ def stats():
 
     @return a json dictionnary containing the general statistic for mpd.
     """
-    return jsonify(mpd_command('stat_info'))
+    return jsonify(mpd_command('stats'))
 
 @app.route("/playlist")
 def playlist():
@@ -234,10 +238,7 @@ up_thread = threading.Event()
 
 def update_thread():
     if update_music.update_music(config.UPLOAD_DIR, config.MPD_ROOT):
-        try:
-            mpd_command('update_library')
-        except CommandError as e:
-            logging.error("Command error {!s}".format(e))
+        mpd_command('update_library')
     up_thread.clear()
 
 
