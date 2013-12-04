@@ -2,7 +2,6 @@
 """
 mpd mini interface
 """
-
 from flask import Flask, send_from_directory, abort, jsonify, render_template
 from flask_sockets import Sockets
 import config
@@ -238,5 +237,3 @@ def player_change(ws):
         mpd_command('idle', 'player')
         ws.send(mpd_command('currentsong'))
 
-if __name__ == "__main__":
-    app.run(debug=True)
