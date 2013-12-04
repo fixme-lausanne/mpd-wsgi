@@ -3,7 +3,7 @@
 mpd mini interface
 """
 
-from flask import Flask, send_from_directory, abort, jsonify, render_template
+from flask import Flask, send_from_directory, abort, jsonify, render_template, request
 import config
 import mpd
 from socket import error as SocketError
@@ -18,7 +18,7 @@ app_doc = None
 class MpdClient(mpd.MPDClient):
     """Enumeration of the commands available.
     """
-    Authorized_commands = ('play', 'pause', 'toggle_play', 'playlist', 'currentsong', 'next', 'previous', 'status')
+    Authorized_commands = ('play', 'pause', 'toggle_play', 'playlist', 'currentsong', 'next', 'previous', 'status', 'search', 'clear', 'addid')
 
     def execute_command(self, command, *args, **kwargs):
         if command in MpdClient.Authorized_commands:
@@ -35,6 +35,10 @@ class MpdClient(mpd.MPDClient):
                 return ret
         else:
             abort(401)
+
+    def search(self, *args, **kwargs):
+        results = super(MpdClient, self).search(*args, **kwargs)
+        return {'results':results}
 
 
     def toggle_play(self):
@@ -178,11 +182,6 @@ def stats():
     """
     return jsonify(mpd_command('stat_info'))
 
-@app.route("/playlist")
-def playlist():
-    """Return the playlist of the next song to be played
-    """
-    return jsonify(mpd_command('playlist'))
 
 @app.route("/status")
 def status():
@@ -228,6 +227,42 @@ def update_lib():
         up_thread.set()
         threading.Thread(target=update_thread).start()
     return jsonify({})
+
+@app.route("/playlist", methods=['GET'])
+def playlist():
+    """Return the playlist of the next song to be played
+    """
+    return jsonify(mpd_command('playlist'))
+
+@app.route("/playlist", methods=['PUT'])
+def playlist_add():
+    if 'id' in requests.json:
+        return jsonify(mpd_command('addid', id))
+    else:
+        abort(400)
+
+@app.route("/playlist", methods=['DELETE'])
+def playlist_delete():
+    """Clean the playlist by removing all the elements in it.
+    """
+    return jsonify(mpd_command('clear'))
+
+SEARCH_TERMS = ['any', 'artist', 'album', 'title']
+@app.route("/search")
+def search():
+    """Search a song for any of this component or any
+    any
+    artist
+    album,
+    title
+    @param a json with any of the submentioned key for a search
+    """
+    print request.args
+    for search_term in SEARCH_TERMS:
+        if search_term in request.args:
+            return jsonify(mpd_command('search', search_term, request.args[search_term]))
+    else:
+        abort(400)
 
 if __name__ == "__main__":
     app.run(debug=True)

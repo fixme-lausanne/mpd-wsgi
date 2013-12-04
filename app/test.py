@@ -14,7 +14,8 @@ class AppTestCase(unittest.TestCase):
 
     def test_current(self):
         response = self.client.get('/current')
-        self.assertEqual(json.loads(response.data), {'status': 'success'})
+        json_resp = json.loads(response.data)
+        self.assertIn("status", json_resp.keys())
 
     def test_action(self):
         response = self.client.get('/action/next')
@@ -37,15 +38,21 @@ class AppTestCase(unittest.TestCase):
     def test_stat(self):
         response = self.client.get('/status')
         response_json = json.loads(response.data)
-        self.assertEqual(set(response_json), {u'playlist', u'volume', u'state', u'status',
-        u'mixrampdb', u'repeat', u'consume', u'random', u'xfade', u'playlistlength', u'single',
-        u'mixrampdelay'})
+        key_set = {u'nextsong', u'mixrampdb', u'repeat', u'consume', u'xfade', u'song', u'volume', u'random', u'songid', u'elapsed', u'playlist', u'playlistlength', u'single', u'mixrampdelay', u'status', u'state', u'time', u'audio', u'bitrate', u'nextsongid'}
+        self.assertEqual(set(response_json.keys()), key_set)
 
     def empty_json_dict(self, d):
         self.assertEqual(d, {})
 
     def test_previous(self):
         self.client.get('/previous')
+
+    def test_search(self):
+        ret = self.client.get('/search')
+        self.assertEqual(ret.status_code, 400)
+        for i in ['album', 'artist', 'title', 'any']:
+            ret = self.client.get('/search?{}='.format(i))
+            self.assertEqual(ret.status_code, 200)
 
 
 if __name__ == '__main__':
