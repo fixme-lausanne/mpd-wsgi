@@ -38,8 +38,8 @@ class AppTestCase(unittest.TestCase):
         response = self.client.get('/status')
         response_json = json.loads(response.data)
         self.assertEqual(set(response_json), {u'playlist', u'volume', u'state', u'status',
-        u'mixrampdb', u'repeat', u'consume', u'random', u'xfade', u'playlistlength', u'single',
-        u'mixrampdelay'})
+                                              u'mixrampdb', u'repeat', u'consume', u'random', u'xfade', u'playlistlength', u'single',
+                                              u'mixrampdelay'})
 
     def empty_json_dict(self, d):
         self.assertEqual(d, {})
@@ -47,6 +47,16 @@ class AppTestCase(unittest.TestCase):
     def test_previous(self):
         self.client.get('/previous')
 
+    def test_cover(self):
+        response = self.client.get('/cover')
+        response_json = json.loads(response.data)
+        response_key = response_json.keys()
+        self.assertIn('small', response_key)
+        self.assertIn('extralarge', response_key)
+        self.assertIn('large', response_key)
+        self.assertIn('mega', response_key)
+        self.assertIn('medium', response_key)
+        self.assertIn('success', response_key)
 
 if __name__ == '__main__':
     unittest.main()
