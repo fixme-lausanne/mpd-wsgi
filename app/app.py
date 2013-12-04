@@ -49,9 +49,9 @@ class MpdClient(mpd.MPDClient):
         return {'songs':ret}
 
 
-    def search(self, *args, **kwargs):
+    def search(self, limit, *args, **kwargs):
         results = super(MpdClient, self).search(*args, **kwargs)
-        return {'results':results}
+        return {'songs': results[:limit]}
 
     def cover(self):
         d = {"extralarge": None, "large": None, "medium": None, "mega": None, "small": None}
@@ -282,9 +282,15 @@ def search():
     title
     @param a json with any of the submentioned key for a search
     """
+    limit = config.LIMIT_SEARCH
+    if 'limit' in request.args:
+        try:
+            limit = int(request.args['limit'])
+        except ValueError:
+            pass
     for search_term in SEARCH_TERMS:
         if search_term in request.args and request.args[search_term]:
-            return jsonify(mpd_command('search', search_term, request.args[search_term]))
+            return jsonify(mpd_command('search', limit, search_term, request.args[search_term]))
     else:
         abort(400)
 
