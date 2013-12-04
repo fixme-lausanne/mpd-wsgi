@@ -18,11 +18,9 @@ app_doc = None
 class MpdClient(mpd.MPDClient):
     """Enumeration of the commands available.
     """
-    Authorized_commands = ('play', 'pause', 'toggle_play', 'playlist', 'currentsong', 'next', 'previous', 'status', 'search', 'clear', 'add')
+    Authorized_commands = ('play', 'pause', 'toggle_play', 'playlistinfo', 'currentsong', 'next', 'previous', 'status', 'search', 'clear', 'add')
 
     def execute_command(self, command, *args, **kwargs):
-        print command
-        print args
         if command in MpdClient.Authorized_commands:
             command_function = getattr(self, command, None)
             if not command_function:
@@ -38,6 +36,11 @@ class MpdClient(mpd.MPDClient):
         else:
             abort(401)
 
+    def playlistinfo(self, *args, **kwargs):
+        ret = super(mpd.MPDClient, self).playlistinfo(*args, **kwargs)
+        return {'songs':ret}
+
+
     def search(self, *args, **kwargs):
         results = super(MpdClient, self).search(*args, **kwargs)
         return {'results':results}
@@ -48,12 +51,6 @@ class MpdClient(mpd.MPDClient):
             self.pause()
         else:
             self.pause()
-
-    def playlist(self):
-        playlist_raw = super(MpdClient, self).playlist()
-        ret_files = map(lambda a: a.split(':', 1)[1].strip(), playlist_raw)
-        ret = {'songs':ret_files}
-        return ret
 
     @staticmethod
     def connect_mpd():
@@ -235,7 +232,7 @@ def update_lib():
 def playlist():
     """Return the playlist of the next song to be played
     """
-    return jsonify(mpd_command('playlist'))
+    return jsonify(mpd_command('playlistinfo'))
 
 
 @app.route("/playlist", methods=['PUT'])
