@@ -35,11 +35,12 @@ class AppTestCase(unittest.TestCase):
         self.client.get("/action/play_pause")
         self.assertEqual(get_state(), 'play')
 
-    def test_stat(self):
+    def test_status(self):
         response = self.client.get('/status')
         response_json = json.loads(response.data)
         key_set = {u'nextsong', u'mixrampdb', u'repeat', u'consume', u'xfade', u'song', u'volume', u'random', u'songid', u'elapsed', u'playlist', u'playlistlength', u'single', u'mixrampdelay', u'status', u'state', u'time', u'audio', u'bitrate', u'nextsongid'}
-        self.assertEqual(set(response_json.keys()), key_set)
+        for k in response_json:
+            self.assertIn(k, key_set)
 
     def test_previous(self):
         old_song = json.loads(self.client.get('/current').data)
@@ -66,11 +67,22 @@ class AppTestCase(unittest.TestCase):
         self.client.delete('/playlist')
         self.assertEqual(len(get_playlist()['songs']), 0)
         for i, song in enumerate(old_playlist['songs']):
-            ret = self.client.put('/playlist', data={'song': song['filename']})
-            print ret.data
+            print song
+            ret = self.client.put('/playlist', data={'song': song['file']})
             self.assertEqual(ret.status_code, 200)
             self.assertEqual(len(get_playlist()['songs']), i + 1)
-        self.assertEqual(get_playlist(), old_playlist)
+        self.assertEqual([song['file'] for song in get_playlist()['songs']], [song['file'] for song in old_playlist['songs']])
+
+    def test_cover(self):
+        response = self.client.get('/cover')
+        response_json = json.loads(response.data)
+        response_key = response_json.keys()
+        self.assertIn('small', response_key)
+        self.assertIn('extralarge', response_key)
+        self.assertIn('large', response_key)
+        self.assertIn('mega', response_key)
+        self.assertIn('medium', response_key)
+        self.assertIn('status', response_key)
 
 if __name__ == '__main__':
     unittest.main()
