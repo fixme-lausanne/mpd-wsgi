@@ -4,6 +4,7 @@ mpd mini interface
 """
 
 from flask import Flask, send_from_directory, abort, jsonify, render_template
+from flask_sockets import Sockets
 import config
 import mpd
 from socket import error as SocketError
@@ -14,6 +15,8 @@ import threading
 
 app = Flask(__name__)
 app_doc = None
+
+socket = Sockets(app)
 
 class MpdClient(mpd.MPDClient):
     """Enumeration of the commands available.
@@ -228,6 +231,12 @@ def update_lib():
         up_thread.set()
         threading.Thread(target=update_thread).start()
     return jsonify({})
+
+@socket.route('/player_change')
+def player_change(ws):
+    while True:
+        mpd_command('idle', 'player')
+        ws.send(mpd_command('currentsong'))
 
 if __name__ == "__main__":
     app.run(debug=True)
