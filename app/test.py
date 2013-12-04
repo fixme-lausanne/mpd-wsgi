@@ -14,7 +14,8 @@ class AppTestCase(unittest.TestCase):
 
     def test_current(self):
         response = self.client.get('/current')
-        self.assertEqual(json.loads(response.data), {'status': 'success'})
+        json_resp = json.loads(response.data)
+        self.assertIn("status", json_resp.keys())
 
     def test_action(self):
         response = self.client.get('/action/next')
@@ -37,20 +38,39 @@ class AppTestCase(unittest.TestCase):
     def test_status(self):
         response = self.client.get('/status')
         response_json = json.loads(response.data)
-        self.assertEqual(set(response_json), {u'playlist', u'volume', u'state', u'status',
-                                              u'mixrampdb', u'repeat', u'consume', u'random', u'xfade', u'playlistlength', u'single',
-                                              u'mixrampdelay'})
-
-    def test_stats(self):
-        response = self.client.get('/stats')
-        response_json = json.loads(response.data)
-        self.assertIn('status', response_json)
-
-    def empty_json_dict(self, d):
-        self.assertEqual(d, {})
+        key_set = {u'nextsong', u'mixrampdb', u'repeat', u'consume', u'xfade', u'song', u'volume', u'random', u'songid', u'elapsed', u'playlist', u'playlistlength', u'single', u'mixrampdelay', u'status', u'state', u'time', u'audio', u'bitrate', u'nextsongid'}
+        for k in response_json:
+            self.assertIn(k, key_set)
 
     def test_previous(self):
-        self.client.get('/previous')
+        old_song = json.loads(self.client.get('/current').data)
+        ret = self.client.get('/action/next')
+        self.assertEqual(ret.status_code, 200)
+        ret = self.client.get('/action/previous')
+        self.assertEqual(ret.status_code, 200)
+        current_song = json.loads(self.client.get('/current').data)
+        self.assertEqual(current_song, old_song)
+
+
+    def test_search(self):
+        ret = self.client.get('/search')
+        self.assertEqual(ret.status_code, 400)
+        for i in ['album', 'artist', 'title', 'any']:
+            ret = self.client.get('/search?{}='.format(i))
+            self.assertEqual(ret.status_code, 200)
+
+    def test_playlist_manipulation(self):
+        def get_playlist():
+            ret = self.client.get('/playlist')
+            return json.loads(ret.data)
+        old_playlist = get_playlist()
+        self.client.delete('/playlist')
+        self.assertEqual(len(get_playlist()['songs']), 0)
+        for i, song in enumerate(old_playlist['songs']):
+            ret = self.client.put('/playlist', data={'song': song['file']})
+            self.assertEqual(ret.status_code, 200)
+            self.assertEqual(len(get_playlist()['songs']), i + 1)
+        self.assertEqual([song['file'] for song in get_playlist()['songs']], [song['file'] for song in old_playlist['songs']])
 
     def test_cover(self):
         response = self.client.get('/cover')
@@ -61,7 +81,7 @@ class AppTestCase(unittest.TestCase):
         self.assertIn('large', response_key)
         self.assertIn('mega', response_key)
         self.assertIn('medium', response_key)
-        self.assertIn('success', response_key)
+        self.assertIn('status', response_key)
 
 if __name__ == '__main__':
     unittest.main()
