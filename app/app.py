@@ -4,6 +4,7 @@ mpd mini interface
 """
 
 from flask import Flask, send_from_directory, abort, jsonify, render_template, request
+from flask_sockets import Sockets
 import config
 import mpd
 from socket import error as SocketError
@@ -16,6 +17,7 @@ import lastfm
 app = Flask(__name__)
 app_doc = None
 
+socket = Sockets(app)
 
 class MpdClient(mpd.MPDClient):
     """Enumeration of the commands available.
@@ -293,5 +295,19 @@ def search():
         abort(400)
 
 
-if __name__ == "__main__":
-    app.run(debug=True)
+@socket.route('/player_change')
+def player_change(ws):
+    """Blocking call, will send a message when the state of the player has changed (next, pause, play, time)
+    """
+    while True:
+        #blocking method
+        mpd_command('idle', 'player')
+        ws.send(mpd_command('currentsong'))
+
+@socket.route("/playlist_change")
+def playlist_change(ws):
+    """Blocking call, will send the playlist if it has changed
+    """
+    while True:
+        mpd_command('idle', 'playlist')
+        ws.send(mpd_command('playlist'))
