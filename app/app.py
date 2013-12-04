@@ -18,9 +18,11 @@ app_doc = None
 class MpdClient(mpd.MPDClient):
     """Enumeration of the commands available.
     """
-    Authorized_commands = ('play', 'pause', 'toggle_play', 'playlist', 'currentsong', 'next', 'previous', 'status', 'search', 'clear', 'addid')
+    Authorized_commands = ('play', 'pause', 'toggle_play', 'playlist', 'currentsong', 'next', 'previous', 'status', 'search', 'clear', 'add')
 
     def execute_command(self, command, *args, **kwargs):
+        print command
+        print args
         if command in MpdClient.Authorized_commands:
             command_function = getattr(self, command, None)
             if not command_function:
@@ -49,7 +51,7 @@ class MpdClient(mpd.MPDClient):
 
     def playlist(self):
         playlist_raw = super(MpdClient, self).playlist()
-        ret_files = map(lambda a: a.split(':', 1)[1], playlist_raw)
+        ret_files = map(lambda a: a.split(':', 1)[1].strip(), playlist_raw)
         ret = {'songs':ret_files}
         return ret
 
@@ -236,9 +238,11 @@ def playlist():
 
 @app.route("/playlist", methods=['PUT'])
 def playlist_add():
-    if 'id' in requests.json:
-        return jsonify(mpd_command('addid', id))
+    if 'song' in request.form:
+        print request.form['song']
+        return jsonify(mpd_command('add', request.form['song']))
     else:
+        print "nup"
         abort(400)
 
 @app.route("/playlist", methods=['DELETE'])
@@ -257,7 +261,6 @@ def search():
     title
     @param a json with any of the submentioned key for a search
     """
-    print request.args
     for search_term in SEARCH_TERMS:
         if search_term in request.args:
             return jsonify(mpd_command('search', search_term, request.args[search_term]))
