@@ -66,7 +66,7 @@ class AppTestCase(unittest.TestCase):
         self.client.delete('/playlist')
         self.assertEqual(len(get_playlist()['songs']), 0)
         for i, song in enumerate(old_playlist['songs']):
-            ret = self.client.put('/playlist', data={'song': song})
+            ret = self.client.put('/playlist', data={'song': song['filename']})
             print ret.data
             self.assertEqual(ret.status_code, 200)
             self.assertEqual(len(get_playlist()['songs']), i + 1)
