@@ -27,4 +27,33 @@ class CurrentSongViewModel
     $.getJSON urlCurrent, (data) ->
       self.current(new Song(data))
 
-ko.applyBindings new CurrentSongViewModel()
+ko.applyBindings new CurrentSongViewModel(), document.getElementById('current-track')
+
+
+
+# Player actions
+class PlayerActions
+  previous: ->
+    console.log 'previous'
+    $.getJSON url + '/action/previous', (data) ->
+      console.log data
+
+  next: ->
+    console.log 'next'
+    $.getJSON url + '/action/next', (data) ->
+      console.log data
+
+  pause: ->
+    $.getJSON(url + '/action/pause')
+
+  play: ->
+    $.getJSON(url + '/action/play')
+
+class PlayerActionsViewModel
+  constructor: ->
+    self = this
+    self.actions = ko.observable(new PlayerActions())
+    console.log self.actions
+
+
+ko.applyBindings new PlayerActionsViewModel(), document.getElementById('player-actions')

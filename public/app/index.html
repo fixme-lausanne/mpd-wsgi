@@ -46,10 +46,10 @@
                     <div id="current-load"></div>
                 </div>
                 <div id="player-actions" class="row">
-                    <button id="action-previous" class="action columns small-3"><i class="fa fa-backward"></i></button>
-                    <button id="action-pause" class="action columns small-3"><i class="fa fa-pause"></i></button>
-                    <button id="action-play" class="action columns small-3"><i class="fa fa-play"></i></button>
-                    <button id="action-next" class="action columns small-3"><i class="fa fa-forward"></i></button>
+                    <button id="action-previous" class="action columns small-3" data-bind="click: actions().previous"><i class="fa fa-backward"></i></button>
+                    <button id="action-pause" class="action columns small-3" data-bind="click: actions().pause"><i class="fa fa-pause"></i></button>
+                    <button id="action-play" class="action columns small-3" data-bind="click: actions().play"><i class="fa fa-play"></i></button>
+                    <button id="action-next" class="action columns small-3" data-bind="click: actions().next"><i class="fa fa-forward"></i></button>
                 </div>
             </div>
 
