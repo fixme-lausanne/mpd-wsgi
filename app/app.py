@@ -56,9 +56,10 @@ class MpdClient(mpd.MPDClient):
     def cover(self):
         d = {"extralarge": None, "large": None, "medium": None, "mega": None, "small": None}
         current = self.currentsong()
-        album = self.lastfm_api.get_album(current.get('album', ''), current.get('artist', ''))
-        if album.id:
-            d.update(album.image)
+        if 'album' in current or 'artist' in current:
+            album = self.lastfm_api.get_album(current.get('album', ''), current.get('artist', ''))
+            if album.id:
+                d.update(album.image)
         return d
 
     def toggle_play(self):
@@ -150,8 +151,7 @@ def play():
 
 @app.route("/cover")
 def cover():
-    """
-
+    """return a list of cover of different sizes.
     @return a json with three keys which values are the images corresponding to the size of the key. they are:
       -extralarge
       -large
@@ -164,8 +164,7 @@ def cover():
 
 @app.route("/action/play_pause")
 def toggle_play():
-    """
-    Toggle the actual state from pause to play and from play to pause.
+    """Toggle the actual state from pause to play and from play to pause.
 
     @return an empty json dictionnary.
     """
@@ -174,8 +173,7 @@ def toggle_play():
 
 @app.route("/action/previous")
 def previous_song_action():
-    """
-    Pass to the previous song.
+    """Pass to the previous song.
 
     @return an empty json dictionnary.
     """
@@ -184,8 +182,7 @@ def previous_song_action():
 
 @app.route("/action/next")
 def next_song_action():
-    """
-    Pass to the next song.
+    """Pass to the next song.
 
     @return an empty json dictionnary.
     """
@@ -193,8 +190,7 @@ def next_song_action():
 
 @app.route("/current")
 def current_song():
-    """
-    Ask for the actual song.
+    """Ask for the actual song.
 
     @return a json dictionnary containing the information.
     """
@@ -203,8 +199,7 @@ def current_song():
 
 @app.route("/stats")
 def stats():
-    """
-    Return general statistics about mpd.
+    """Return general statistics about mpd.
 
     @return a json dictionnary containing the general statistic for mpd.
     """
@@ -213,8 +208,7 @@ def stats():
 
 @app.route("/status")
 def status():
-    """
-    Return the actual status of mpd.
+    """Return the actual status of mpd.
 
     @return a json dictionnary containing the actual mpd status.
     """
@@ -223,8 +217,7 @@ def status():
 
 @app.route("/file")
 def download_file():
-    """
-    Return the actual file played trough mpd or an empty string if there is no file playing.
+    """Return the actual file played trough mpd or an empty string if there is no file playing.
     """
     file_path = mpd_command('currentsong').get('file')
     if file_path:
@@ -243,8 +236,7 @@ def update_thread():
 
 @app.route("/update")
 def update_lib():
-    """
-    Update mpd and push the music from the ftp.
+    """Update mpd and push the music from the ftp.
 
     @return either an empty json or a json with a msg key containing the error message.
     """
@@ -263,6 +255,8 @@ def playlist():
 
 @app.route("/playlist", methods=['PUT'])
 def playlist_add():
+    """
+    """
     if 'song' in request.form:
         return jsonify(mpd_command('add', request.form['song']))
     else:
