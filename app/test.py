@@ -56,7 +56,7 @@ class AppTestCase(unittest.TestCase):
         ret = self.client.get('/search')
         self.assertEqual(ret.status_code, 400)
         for i in ['album', 'artist', 'title', 'any']:
-            ret = self.client.get('/search?{}='.format(i))
+            ret = self.client.get('/search?{}=1'.format(i))
             self.assertEqual(ret.status_code, 200)
 
     def test_playlist_manipulation(self):
