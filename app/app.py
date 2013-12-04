@@ -10,6 +10,7 @@ from socket import error as SocketError
 import update_music
 import logging
 import threading
+import lastfm
 
 
 app = Flask(__name__)
@@ -20,7 +21,12 @@ socket = Sockets(app)
 class MpdClient(mpd.MPDClient):
     """Enumeration of the commands available.
     """
-    Authorized_commands = ('play', 'pause', 'toggle_play', 'playlist', 'currentsong', 'next', 'previous', 'status')
+    Authorized_commands = ('play', 'pause', 'toggle_play', 'playlist', 'currentsong', 'next', 'previous', 'status', 'cover', 'stats')
+
+    def __init__(self, *args, **kwargs):
+        super(MpdClient, self).__init__(*args, **kwargs)
+        self.lastfm_api = lastfm.Api(config.LASTFM_KEY)
+
 
     def execute_command(self, command, *args, **kwargs):
         if command in MpdClient.Authorized_commands:
@@ -38,6 +44,13 @@ class MpdClient(mpd.MPDClient):
         else:
             abort(401)
 
+    def cover(self):
+        d = {"extralarge": None, "large": None, "medium": None, "mega": None, "small": None}
+        current = self.currentsong()
+        album = self.lastfm_api.get_album(current.get('album', ''), current.get('artist', ''))
+        if album.id:
+            d.update(album.image)
+        return d
 
     def toggle_play(self):
         if self.status()['state'] == 'play':
@@ -132,6 +145,20 @@ def play():
     """
     return jsonify(mpd_command('play'))
 
+@app.route("/cover")
+def cover():
+    """
+
+    @return a json with three keys which values are the images corresponding to the size of the key. they are:
+      -extralarge
+      -large
+      -medium
+      -small
+
+    and the usual success key.
+    """
+    return jsonify(mpd_command('cover'))
+
 @app.route("/action/play_pause")
 def toggle_play():
     """
@@ -178,7 +205,7 @@ def stats():
 
     @return a json dictionnary containing the general statistic for mpd.
     """
-    return jsonify(mpd_command('stat_info'))
+    return jsonify(mpd_command('stats'))
 
 @app.route("/playlist")
 def playlist():
@@ -212,10 +239,7 @@ up_thread = threading.Event()
 
 def update_thread():
     if update_music.update_music(config.UPLOAD_DIR, config.MPD_ROOT):
-        try:
-            mpd_command('update_library')
-        except CommandError as e:
-            logging.error("Command error {!s}".format(e))
+        mpd_command('update_library')
     up_thread.clear()
 
 
