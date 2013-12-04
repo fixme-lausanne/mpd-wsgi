@@ -8,8 +8,13 @@ You will need at least:
 - python-mpd2
 - flask 
 - nosetest
+- flask-sockets
 
-_TODO Develop this section_
+To run the webserver, you will also need to have gunicorn installed and run it with:
+
+    gunicorn -k flask_sockets.worker hello:app
+
+In the app directory.
 
 ##Testing and dev
 The server side code has a test suite linked to it, you can simply run:
