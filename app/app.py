@@ -283,7 +283,7 @@ def search():
     @param a json with any of the submentioned key for a search
     """
     for search_term in SEARCH_TERMS:
-        if search_term in request.args:
+        if search_term in request.args and request.args[search_term]:
             return jsonify(mpd_command('search', search_term, request.args[search_term]))
     else:
         abort(400)
@@ -297,6 +297,7 @@ def player_change(ws):
         #blocking method
         mpd_command('idle', 'player')
         ws.send(mpd_command('currentsong'))
+
 
 @socket.route("/playlist_change")
 def playlist_change(ws):
