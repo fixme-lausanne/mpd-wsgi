@@ -12,6 +12,7 @@ urlCurrent = url + '/current'
 urlPlaylist = url + '/playlist'
 urlActions = url + '/action'
 urlCover = url + '/cover'
+urlSearch = url + '/search'
 
 
 # Current song
@@ -46,6 +47,9 @@ class PlayerViewModel
     self.actions = ko.observable(new PlayerActions())
     self.playlist = ko.observableArray([])
     self.covers = ko.observable('')
+    self.searchText = ko.observable('')
+    self.searchResult = ko.observableArray []
+
 
     # Current song
     $.getJSON urlCurrent, (data) ->
@@ -60,5 +64,18 @@ class PlayerViewModel
     $.getJSON urlCover, (data) ->
       self.covers(data)
 
+viewModel = new PlayerViewModel()
+
+viewModel.searchText.subscribe (newValue) ->
+  console.log 'NEW             VALUE'
+  console.log newValue
+  if newValue.length > 3
+    $.getJSON urlSearch + '?any=' + newValue + '&limit=20', (searchData) ->
+      console.log searchData
+      viewModel.searchResult $.map(searchData.songs, (item) ->
+        new Song(item))
+  else
+    viewModel.searchResult []
+
 # Apply the bindings
-ko.applyBindings new PlayerViewModel()
+ko.applyBindings viewModel
