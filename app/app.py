@@ -56,7 +56,7 @@ class MpdClient(mpd.MPDClient):
     def cover(self):
         d = {"extralarge": None, "large": None, "medium": None, "mega": None, "small": None}
         current = self.currentsong()
-        if 'album' in current or 'artist' in current:
+        if 'album' in current and 'artist' in current:
             album = self.lastfm_api.get_album(current.get('album', ''), current.get('artist', ''))
             if album.id:
                 d.update(album.image)
