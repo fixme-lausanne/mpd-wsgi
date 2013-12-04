@@ -41,11 +41,15 @@ class AppTestCase(unittest.TestCase):
         key_set = {u'nextsong', u'mixrampdb', u'repeat', u'consume', u'xfade', u'song', u'volume', u'random', u'songid', u'elapsed', u'playlist', u'playlistlength', u'single', u'mixrampdelay', u'status', u'state', u'time', u'audio', u'bitrate', u'nextsongid'}
         self.assertEqual(set(response_json.keys()), key_set)
 
-    def empty_json_dict(self, d):
-        self.assertEqual(d, {})
-
     def test_previous(self):
-        self.client.get('/previous')
+        old_song = json.loads(self.client.get('/current').data)
+        ret = self.client.get('/action/next')
+        self.assertEqual(ret.status_code, 200)
+        ret = self.client.get('/action/previous')
+        self.assertEqual(ret.status_code, 200)
+        current_song = json.loads(self.client.get('/current').data)
+        self.assertEqual(current_song, old_song)
+
 
     def test_search(self):
         ret = self.client.get('/search')
