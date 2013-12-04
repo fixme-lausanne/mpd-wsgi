@@ -63,18 +63,13 @@
                 <dd id="search-tab"><a href="#search-panel">Search</a></dd>
             </dl>
             <div class="tabs-content">
-                <div class="content active" id="playlist-panel">
+                <div class="content active" id="playlist-panel" data-bind="foreach: playlist">
                     <ul>
-                        <li>Title 1, artist 1</li>
-                        <li>Title 2, artist 2</li>
-                        <li>Title 3, artist 3</li>
-                        <li>Title 4, artist 4</li>
-                        <li>Title 5, artist 5</li>
-                        <li>Title 6, artist 6</li>
-                        <li>Title 7, artist 7</li>
-                        <li>Title 8, artist 8</li>
-                        <li>Title 9, artist 9</li>
-                        <li>Title 10, artist 10</li>
+                        <li>
+                            <span class="playlist-title" data-bind="text: title"></span>
+                            <span class="playlist-artist" data-bind="text: artist"></span>
+                            <span class="playlist-album" data-bind="text: album"></span>
+                        </li>
                     </ul>
                 </div>
                 <div class="content" id="search-panel">

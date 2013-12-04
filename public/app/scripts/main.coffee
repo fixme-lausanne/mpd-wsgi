@@ -9,13 +9,14 @@ $(document).foundation
 
 url = 'http://mpd.fixme.ch/api'
 urlCurrent = url + '/current'
+urlPlaylist = url + '/playlist'
+urlActions = url + '/action'
 
 
 # Current song
 class Song
   constructor: (data) ->
-    console.log data
-    @title = data.title   || 'unkown title'
+    @title = data.title   || 'unknown title'
     @artist = data.artist || 'unknown artist'
     @album = data.album   || 'unknown album'
 
@@ -24,19 +25,17 @@ class Song
 class PlayerActions
   previous: ->
     console.log 'previous'
-    $.getJSON url + '/action/previous', (data) ->
-      console.log data
+    $.getJSON urlActions + '/previous', (data)
 
   next: ->
     console.log 'next'
-    $.getJSON url + '/action/next', (data) ->
-      console.log data
+    $.getJSON urlActions + '/next'
 
   pause: ->
-    $.getJSON(url + '/action/pause')
+    $.getJSON urlActions + '/pause'
 
   play: ->
-    $.getJSON(url + '/action/play')
+    $.getJSON urlActions + '/play'
 
 
 # ViewModel
@@ -45,10 +44,16 @@ class PlayerViewModel
     self = this
     self.current = ko.observable('')
     self.actions = ko.observable(new PlayerActions())
+    self.playlist = ko.observableArray([])
 
+    # Current song
     $.getJSON urlCurrent, (data) ->
       self.current(new Song(data))
 
+    # Playlist
+    $.getJSON urlPlaylist, (data) ->
+      self.playlist $.map(data.songs, (item) ->
+        new Song(item))
 
 # Apply the bindings
 ko.applyBindings new PlayerViewModel()
