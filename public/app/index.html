@@ -29,7 +29,9 @@
 
         <div class="columns small-6">
             <div id="current-track" class="small-7 medium-10 large-12 large-centered">
-                Current music, by Beethoven the great
+                <h4 id="current-album" data-bind="text: current().album"></h4>
+                <h4 id="current-title" data-bind="text: current().title"></h4>
+                <h4 id="current-artist" data-bind="text: current().artist"></h4>
             </div>
 
             <div id="album-cover">
