@@ -233,7 +233,17 @@ def update_lib():
 
 @socket.route('/player_change')
 def player_change(ws):
+    """Blocking call, will send a message when the state of the player has changed (next, pause, play, time)
+    """
     while True:
         #blocking method
         mpd_command('idle', 'player')
         ws.send(mpd_command('currentsong'))
+
+@socket.route("/playlist_change")
+def playlist_change(ws):
+    """Blocking call, will send the playlist if it has changed
+    """
+    while True:
+        mpd_command('idle', 'playlist')
+        ws.send(mpd_command('playlist'))
