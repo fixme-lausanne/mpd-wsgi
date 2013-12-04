@@ -1,3 +1,5 @@
+
+# Foundation, callback for tabs
 $(document).foundation
   tab:
     callback: (tab) ->

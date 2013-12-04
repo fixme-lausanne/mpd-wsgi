@@ -41,9 +41,12 @@ Install Foundation cli
 
     $ bower install foundation --sav
 
-Install knockout
+Install knockout and build it
 
-    $ bower install knockout --save
+    $ bower install knockoutjs --save
+    $ cd app/bower_components/knockoutjs/
+    $ npm install
+    $ grunt build
 
 Enable the frameworks previously installed
 
