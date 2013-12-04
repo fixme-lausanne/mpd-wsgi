@@ -37,7 +37,7 @@ class MpdClient(mpd.MPDClient):
             abort(401)
 
     def playlistinfo(self, *args, **kwargs):
-        ret = super(mpd.MPDClient, self).playlistinfo(*args, **kwargs)
+        ret = super(MpdClient, self).playlistinfo(*args, **kwargs)
         return {'songs':ret}
 
 
