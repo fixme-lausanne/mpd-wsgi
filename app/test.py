@@ -58,6 +58,19 @@ class AppTestCase(unittest.TestCase):
             ret = self.client.get('/search?{}='.format(i))
             self.assertEqual(ret.status_code, 200)
 
+    def test_playlist_manipulation(self):
+        def get_playlist():
+            ret = self.client.get('/playlist')
+            return json.loads(ret.data)
+        old_playlist = get_playlist()
+        self.client.delete('/playlist')
+        self.assertEqual(len(get_playlist()['songs']), 0)
+        for i, song in enumerate(old_playlist['songs']):
+            ret = self.client.put('/playlist', data={'song': song})
+            print ret.data
+            self.assertEqual(ret.status_code, 200)
+            self.assertEqual(len(get_playlist()['songs']), i + 1)
+        self.assertEqual(get_playlist(), old_playlist)
 
 if __name__ == '__main__':
     unittest.main()
