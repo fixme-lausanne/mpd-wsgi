@@ -10,6 +10,11 @@ You will need at least:
 - nosetest
 - flask-sockets
 
+To install those requirement, first install python pip
+Then you can install the dependencies by runnningc.
+    
+    pip install -r app/requirements.txt
+
 To run the webserver, you will also need to have gunicorn installed and run it with:
 
     gunicorn -k flask_sockets.worker hello:app

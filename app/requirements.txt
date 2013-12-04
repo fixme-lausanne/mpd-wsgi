@@ -2,3 +2,4 @@ stdeb
 lastfm
 flask
 flask-sockets
+nose
