@@ -115,7 +115,8 @@ def generate_doc():
             continue
         url = i.rule
         method = i.endpoint
-        doc.append(dict(doc=eval(i.endpoint).__doc__, url=url, method=method))
+        methods = i.methods
+        doc.append(dict(doc=eval(i.endpoint).__doc__, url=url, method=method, methods=methods))
     return doc
 
 
