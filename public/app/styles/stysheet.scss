@@ -40,6 +40,14 @@ div {
   // border: 1px red solid;
 }
 
+a {
+  color: inherit;
+
+  &:hover {
+    color: inherit;
+  }
+}
+
 section {
   padding-left: 50px;
   padding-right: 50px;
