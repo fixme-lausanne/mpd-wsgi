@@ -14,6 +14,7 @@ urlActions = url + '/action'
 urlCover = url + '/cover'
 urlSearch = url + '/search'
 urlFile = url + '/file'
+urlUpdate = url + '/update'
 
 
 # Current song
@@ -38,6 +39,9 @@ class PlayerActions
 
   play: ->
     $.getJSON urlActions + '/play'
+
+  update: ->
+    $.getJSON urlUpdate
 
 
 # ViewModel
