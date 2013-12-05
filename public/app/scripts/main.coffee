@@ -18,6 +18,12 @@ urlUpdate = url + '/update'
 
 searchLimit = 20 # Maximal number of songs the search will return
 
+defaultCover =
+  extralarge: 'images/default_album_xlarge.jpg'
+  large: 'images/default_album_large.jpg'
+  medium: 'images/default_album_medium.jpg'
+  small: 'images/default_album_small.jpg'
+
 # Current song
 class Song
   constructor: (data) ->
@@ -67,7 +73,7 @@ class PlayerViewModel
 
     # Covers
     $.getJSON urlCover, (data) ->
-      self.covers(data)
+      self.covers data ? defaultCover
 
 # Instanciate the ViewModel
 viewModel = new PlayerViewModel()
