@@ -3,7 +3,7 @@
 $(document).foundation
   tab:
     callback: (tab) ->
-      console.log tab
+
 
 # KnockoutJS
 
@@ -28,11 +28,9 @@ class Song
 # Player actions
 class PlayerActions
   previous: ->
-    console.log 'previous'
     $.getJSON urlActions + '/previous', (data)
 
   next: ->
-    console.log 'next'
     $.getJSON urlActions + '/next'
 
   pause: ->
@@ -78,9 +76,7 @@ viewModel = new PlayerViewModel()
 viewModel.searchText.subscribe (newValue) ->
   filter = $('input[name=filters]:checked').val()
   if newValue.length > 3
-    console.log newValue
     $.getJSON urlSearch + "?#{filter}=#{newValue}&limit=#{searchLimit}", (searchData) ->
-      console.log searchData
       viewModel.searchResult $.map(searchData.songs, (item) ->
         new Song(item))
   else
