@@ -10,7 +10,7 @@ $header-line-height: 3px;
 $text-color: rgb(227, 227, 227);
 $background-color: rgb(39, 39, 39);
 
-$primary-color: rgb(234, 97, 0);
+$primary-color: rgb(59, 136, 97);
 $secondary-color: lighten($primary-color, 15%);
 $tertiary-color: lighten($primary-color, 20%);
 
@@ -40,6 +40,10 @@ div {
   // border: 1px red solid;
 }
 
+section {
+  padding-left: 50px;
+  padding-right: 50px;
+}
 
 // Header
 body header {
@@ -74,7 +78,7 @@ body header {
 
 // Current track
 
-#current-track {
+#current-track > h4 {
 
 }
 
@@ -86,11 +90,34 @@ body header {
 
 #loading-bar {
   height: 60px;
-  background-color: rgb(51, 51, 51);
+  background-color: lighten($background-color, 5%);
 }
 
 #current-load {
   height: 100%;
   width: 20%;
   background-color: $tertiary-color;
+}
+
+// Playlist and Search
+
+#tabs-tracks {
+  padding-left: 20px;
+}
+
+.tabs dd {
+  &.active > a {
+    background-color: $secondary-color;
+    color: lighten($text-color, 20%);
+    font-weight: bolder;
+  }
+
+  &:not(.active) > a {
+    background-color: lighten($background-color, 10%);
+    color: $text-color;
+
+    &:hover {
+      background-color: lighten($background-color, 12%);
+    }
+  }
 }
