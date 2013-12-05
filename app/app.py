@@ -115,7 +115,7 @@ def generate_doc():
             continue
         url = i.rule
         method = i.endpoint
-        methods = i.methods
+        methods = filter(lambda a: a not in ['HEAD', 'OPTIONS'], i.methods)
         doc.append(dict(doc=eval(i.endpoint).__doc__, url=url, method=method, methods=methods))
     return doc
 
