@@ -20,55 +20,54 @@ The server side code has a test suite linked to it, you can simply run:
 You may wanna either run the server side code and point it to your own
 mpd server by changing the config.py `MPD_HOST` variable and call the flask api from your javascript.
 
-## Step by step
+## Dependencies
+* node and npm
+* yeoman (yo, bower, grunt)
+* rvm (or ruby 2.0.0)
+
 ### Installation
 Installation of yeoman (with sudo)
 
-    # npm install yo
+    # npm install -g yo
 
-Install the basic `webapp` generator and scaffold a new app
+Install grunt packages
 
-    $ npm install -g generator-webapp
-    $ yo webapp --coffee
+    $ npm install
 
-Install Ruby and the Compass gem
+Install bower packages
+
+    $ bower install
+
+Build KnockoutJS
+
+    $ cd app/bower_components/knockoutjs/
+    $ npm install
+    $ grunt build
+
+Install Ruby and the Compass gem. You don't need `rvm` statements if you already have a working version of Ruby 2.0.0 .
 
     $ rvm install 2.0.0
     $ rvm use 2.0.0
     $ gem install compass
 
-Install Foundation cli
+## Run
+Use the command `grunt serve` to start a development server.
 
-    $ bower install foundation --sav
+If you encounter the following error I'm betting you don't use the correct rvm environment.
 
-Install knockout and build it
+> Warning: You need to have Ruby and Compass installed and in your system PATH for this task to work.
 
-    $ bower install knockoutjs --save
-    $ cd app/bower_components/knockoutjs/
-    $ npm install
-    $ grunt build
+Check that you have correctly select it by using the command `rvm use 2.0.0` and retry.
 
-Enable the frameworks previously installed
+If the problem persists it seems you don't have installed the Compass gem.
 
-    $ grunt bower-install
-
-### Run
-Use the command
-
-    $ grunt serve
-
-to start a development server.
-
-### Testing
+## Testing
 You can run test with a grunt task
 
     $ grunt test
 
-The default behavior of grunt is to run `jshint`, all tests and to build everything.
+The default behavior of grunt is to run `jshint`, all tests and finally to build everything.
 
-## Dev notes
-### Stylesheet
-`@import` pathes are related to the _bower_components_ folder.
-
-## Screenshot
+# Screenshots
+### A first mockup
 ![First mockup](http://i.imgur.com/H3tAnib.png)
