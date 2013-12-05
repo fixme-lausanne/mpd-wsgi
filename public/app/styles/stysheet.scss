@@ -121,3 +121,31 @@ body header {
     }
   }
 }
+
+#search-panel {
+  input[type='radio'] {
+    display: none;
+
+    & + label {
+      display: inline-block;
+      width: 6em;
+      height: 3em;
+      margin-left: 0;
+      margin-top: 0;
+      margin-right: 0;
+      padding-left: 1.5em;
+      padding-top: 1em;
+      color: darken($text-color, 30%);
+    }
+
+
+    &:checked + label {
+      background-color: $primary-color;
+      color: $text-color;
+    }
+  }
+
+  #label-radio-any {
+    width: 4em;
+  }
+}

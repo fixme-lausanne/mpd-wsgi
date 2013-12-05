@@ -70,13 +70,15 @@ class PlayerViewModel
     $.getJSON urlCover, (data) ->
       self.covers(data)
 
+# Instanciate the ViewModel
 viewModel = new PlayerViewModel()
 
+# Search
 viewModel.searchText.subscribe (newValue) ->
-  console.log 'NEW             VALUE'
-  console.log newValue
+  filter = $('input[name=filters]:checked').val()
   if newValue.length > 3
-    $.getJSON urlSearch + '?any=' + newValue + '&limit=20', (searchData) ->
+    console.log newValue
+    $.getJSON urlSearch + "?#{filter}=#{newValue}&limit=20", (searchData) ->
       console.log searchData
       viewModel.searchResult $.map(searchData.songs, (item) ->
         new Song(item))

@@ -82,7 +82,19 @@
                 </div>
                 <div class="content" id="search-panel">
                     <input type="text" placeholder="Type something" data-bind="value: searchText, valueUpdate: 'afterkeydown'"/>
-                    <ul data-bind="foreach: searchResult">
+
+                    <!-- Filter -->
+                    <input checked="checked" name="filters" value="any" id="radio-any" type="radio" class="search-filter">
+                    <label for="radio-any" id="label-radio-any"><i class="fa fa-asterisk"></i></label>
+                    <input name="filters" value="title" id="radio-title" type="radio" class="search-filter">
+                    <label for="radio-title">Title</label>
+                    <input name="filters" value="album" id="radio-album" type="radio" class="search-filter">
+                    <label for="radio-album">Album</label>
+                    <input name="filters" value="artist" id="radio-artist" type="radio" class="search-filter">
+                    <label for="radio-artist">Artist</label>
+
+                    <!-- Results -->
+                    <ul id="search-result" data-bind="foreach: searchResult">
                         <li>
                             <span class="search-title" data-bind="text: title"></span>
                             <span class="search-artist" data-bind="text: artist"></span>
