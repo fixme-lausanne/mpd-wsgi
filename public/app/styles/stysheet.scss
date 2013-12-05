@@ -7,26 +7,32 @@ $header-line-color-base: rgb(57, 175, 255);
 $header-line-colors: $header-line-color-base, darken($header-line-color-base, 20%), darken($header-line-color-base, 40%);
 $header-line-height: 3px;
 
+$text-color: rgb(227, 227, 227);
+$background-color: rgb(39, 39, 39);
+
+$primary-color: rgb(234, 97, 0);
+$secondary-color: lighten($primary-color, 15%);
+$tertiary-color: lighten($primary-color, 20%);
+
 // Base
 
-h1, h2, h3, h4 {
-  color: rgb(227, 227, 227);
+h1, h2, h3, h4, body {
+  color: $text-color;
 }
 
 body {
-  background-color: rgb(39, 39, 39);
-  color: rgb(193, 193, 193);
+  background-color: $background-color;
 }
 
 li {
   list-style: none;
 }
 
-button {
+button, input[type='submit'] {
   background-color: inherit;
 
   &:hover {
-    background-color: rgb(207, 124, 85);
+    background-color: $secondary-color;
   }
 }
 
@@ -49,7 +55,7 @@ body header {
 
 #logo {
   font-weight: bold;
-  color: rgb(255, 102, 0);
+  color: $primary-color;
 }
 
 #header-line {
@@ -86,5 +92,5 @@ body header {
 #current-load {
   height: 100%;
   width: 20%;
-  background-color: rgb(255, 168, 89);
+  background-color: $tertiary-color;
 }
