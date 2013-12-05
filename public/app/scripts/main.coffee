@@ -16,6 +16,7 @@ urlSearch = url + '/search'
 urlFile = url + '/file'
 urlUpdate = url + '/update'
 
+searchLimit = 20 # Maximal number of songs the search will return
 
 # Current song
 class Song
@@ -78,7 +79,7 @@ viewModel.searchText.subscribe (newValue) ->
   filter = $('input[name=filters]:checked').val()
   if newValue.length > 3
     console.log newValue
-    $.getJSON urlSearch + "?#{filter}=#{newValue}&limit=20", (searchData) ->
+    $.getJSON urlSearch + "?#{filter}=#{newValue}&limit=#{searchLimit}", (searchData) ->
       console.log searchData
       viewModel.searchResult $.map(searchData.songs, (item) ->
         new Song(item))
