@@ -7,12 +7,13 @@ $(document).foundation
 
 # KnockoutJS
 
-url = 'http://62.220.135.223:8000'  #'http://mpd.fixme.ch/api'
+url = 'http://mpd.fixme.ch/api'
 urlCurrent = url + '/current'
 urlPlaylist = url + '/playlist'
 urlActions = url + '/action'
 urlCover = url + '/cover'
 urlSearch = url + '/search'
+urlFile = url + '/file'
 
 
 # Current song
@@ -49,6 +50,7 @@ class PlayerViewModel
     self.covers = ko.observable('')
     self.searchText = ko.observable('')
     self.searchResult = ko.observableArray []
+    self.fileUrl = ko.observable(urlFile)
 
 
     # Current song
