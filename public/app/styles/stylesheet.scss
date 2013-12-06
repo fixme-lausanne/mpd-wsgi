@@ -1,0 +1,164 @@
+@import 'foundation/scss/foundation';
+
+
+// Variables
+
+$header-line-color-base: rgb(57, 175, 255);
+$header-line-colors: $header-line-color-base, darken($header-line-color-base, 20%), darken($header-line-color-base, 40%);
+$header-line-height: 3px;
+
+$text-color: rgb(227, 227, 227);
+$background-color: rgb(39, 39, 39);
+
+$primary-color: rgb(59, 136, 97);
+$secondary-color: lighten($primary-color, 15%);
+$tertiary-color: lighten($primary-color, 20%);
+
+// Base
+
+h1, h2, h3, h4, body {
+  color: $text-color;
+}
+
+body {
+  background-color: $background-color;
+}
+
+li {
+  list-style: none;
+}
+
+button, input[type='submit'] {
+  background-color: inherit;
+
+  &:hover {
+    background-color: $secondary-color;
+  }
+}
+
+div {
+  // border: 1px red solid;
+}
+
+a {
+  color: inherit;
+
+  &:hover {
+    color: inherit;
+  }
+}
+
+section {
+  padding-left: 50px;
+  padding-right: 50px;
+}
+
+// Header
+body header {
+  padding-top: 15px;
+  padding-bottom: 48px;
+}
+
+#title {
+  margin-left: 30px;
+  font-size: 2em;
+  font-weight: bold;
+}
+
+#logo {
+  font-weight: bold;
+  color: $primary-color;
+}
+
+#header-line {
+  padding-top: 10px;
+
+  @for $i from 1 through length($header-line-colors) {
+    div:nth-child(#{$i}) {
+      background-color: nth($header-line-colors, $i);
+    }
+  }
+
+  & > div {
+    height: $header-line-height;
+  }
+}
+
+// Current track
+
+#current-track > h4 {
+
+}
+
+#album-cover {
+  padding: 40px;
+}
+
+// Player
+
+#loading-bar {
+  height: 60px;
+  background-color: lighten($background-color, 5%);
+}
+
+#current-load {
+  height: 100%;
+  width: 20%;
+  background-color: $tertiary-color;
+}
+
+// Playlist and Search
+
+#tabs-tracks {
+  padding-left: 20px;
+}
+
+.tabs dd {
+  &.active > a {
+    background-color: $secondary-color;
+    color: lighten($text-color, 20%);
+    font-weight: bolder;
+  }
+
+  &:not(.active) > a {
+    background-color: lighten($background-color, 10%);
+    color: $text-color;
+
+    &:hover {
+      background-color: lighten($background-color, 12%);
+    }
+  }
+}
+
+#search-panel {
+  input[type='radio'] {
+    display: none;
+
+    & + label {
+      display: inline-block;
+      width: 6em;
+      height: 3em;
+      margin-left: 0;
+      margin-top: 0;
+      margin-right: 0;
+      padding-left: 1.5em;
+      padding-top: 1em;
+      color: darken($text-color, 30%);
+    }
+
+
+    &:checked + label {
+      background-color: $primary-color;
+      color: $text-color;
+    }
+  }
+
+  #label-radio-any {
+    width: 4em;
+  }
+}
+
+// Error pages (404, etc.)
+.error-section {
+  margin-top: 100px;
+}

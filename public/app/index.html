@@ -1,0 +1,124 @@
+<!doctype html>
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <title>FMM</title>
+    <meta name="description" content="">
+    <meta name="viewport" content="width=device-width">
+    <link href="//netdna.bootstrapcdn.com/font-awesome/4.0.3/css/font-awesome.css" rel="stylesheet">
+    <!-- Place favicon.ico and apple-touch-icon.png in the root directory -->
+    <!-- build:css(.tmp) styles/main.css -->
+    <link rel="stylesheet" href="styles/stylesheet.css">
+    <!-- endbuild -->
+</head>
+<body>
+
+<header class="row">
+    <div class="row">
+        <div id="title" class="columns"><a href="/">{ <b id="logo">fmm:</b> 'fix my music' }</a></div>
+    </div>
+    <div id="header-line" class="row">
+        <div id="header-line-1" class="columns small-1"></div>
+        <div id="header-line-2" class="columns small-1"></div>
+        <div id="header-line-3" class="columns small-10"></div>
+    </div>
+</header>
+
+<section id="player-section">
+    <div class="row medium-centered">
+
+        <div class="columns small-6">
+            <div id="current-track" class="small-7 medium-10 large-12 large-centered">
+                <h4 id="current-title" data-bind="text: current().title"></h4>
+                <p id="current-album" data-bind="text: current().album"></p>
+                <h4 id="current-artist" data-bind="text: current().artist"></h4>
+            </div>
+
+            <div id="album-cover">
+                <img src="images/default_album_xlarge.jpg"
+                     alt="album picture" data-bind="attr: {src: covers().extralarge}">
+            </div>
+
+
+            <!-- Player -->
+            <div id="player" class="row">
+                <div id="loading-bar" class="row">
+                    <div id="current-load"></div>
+                </div>
+                <div id="player-actions" class="row">
+                    <!-- Player actions -->
+                    <button id="action-previous" class="action columns small-2" data-bind="click: actions().previous"><i class="fa fa-backward"></i></button>
+                    <button id="action-pause" class="action columns small-4" data-bind="click: actions().pause"><i class="fa fa-pause"></i></button>
+                    <button id="action-play" class="hide action columns small-4" data-bind="click: actions().play"><i class="fa fa-play"></i></button>
+                    <button id="action-next" class="action columns small-2" data-bind="click: actions().next"><i class="fa fa-forward"></i></button>
+
+                    <!-- Download the current file -->
+                    <form data-bind="attr: {action: fileUrl}">
+                        <button id="action-download" class="action columns small-2"><i class="fa fa-download"></i></button>
+                    </form>
+
+                    <!-- Refresh the mpd library -->
+                    <button id="action-update" class="action columns small-2" data-bind="click: actions().update"><i class="fa fa-repeat"></i></button>
+                </div>
+            </div>
+        </div>
+
+
+        <!-- Playlist and search tabs -->
+        <div id="tabs-tracks" class="columns small-6 medium-5">
+            <dl class="tabs" data-tab>
+                <dd id="playlist-tab" class="active"><a href="#playlist-panel">Playlist</a></dd>
+                <dd id="search-tab"><a href="#search-panel">Search</a></dd>
+            </dl>
+            <div class="tabs-content">
+                <div class="content active" id="playlist-panel" data-bind="foreach: playlist">
+                    <ul>
+                        <li>
+                            <span class="playlist-title" data-bind="text: title"></span>
+                            <span class="playlist-artist" data-bind="text: artist"></span>
+                            <span class="playlist-album" data-bind="text: album"></span>
+                        </li>
+                    </ul>
+                </div>
+                <div class="content" id="search-panel">
+                    <input type="text" placeholder="Type something" data-bind="value: searchText, valueUpdate: 'afterkeydown'"/>
+
+                    <!-- Filter -->
+                    <input checked="checked" name="filters" value="any" id="radio-any" type="radio" class="search-filter">
+                    <label for="radio-any" id="label-radio-any"><i class="fa fa-asterisk"></i></label>
+                    <input name="filters" value="title" id="radio-title" type="radio" class="search-filter">
+                    <label for="radio-title">Title</label>
+                    <input name="filters" value="album" id="radio-album" type="radio" class="search-filter">
+                    <label for="radio-album">Album</label>
+                    <input name="filters" value="artist" id="radio-artist" type="radio" class="search-filter">
+                    <label for="radio-artist">Artist</label>
+
+                    <!-- Results -->
+                    <ul id="search-result" data-bind="foreach: searchResult">
+                        <li>
+                            <span class="search-title" data-bind="text: title"></span>
+                            <span class="search-artist" data-bind="text: artist"></span>
+                            <span class="search-album" data-bind="text: album"></span>
+                        </li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- build:js scripts/vendor.js -->
+<!-- bower:js -->
+<script src="bower_components/modernizr/modernizr.js"></script>
+<script src="bower_components/jquery/jquery.js"></script>
+<script src="bower_components/foundation/js/foundation.js"></script>
+<script src="bower_components/knockoutjs/build/output/knockout-latest.js"></script>
+<!-- endbower -->
+<!-- endbuild -->
+
+<!-- build:js(.tmp) scripts/main.js -->
+<script src="scripts/main.js"></script>
+<!-- endbuild -->
+
+</body>
+</html>
