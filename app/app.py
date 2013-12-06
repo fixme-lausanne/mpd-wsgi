@@ -19,10 +19,14 @@ app_doc = None
 
 socket = Sockets(app)
 
+
 class MpdClient(mpd.MPDClient):
     """Enumeration of the commands available.
     """
-    Authorized_commands = ('stats', 'play', 'pause', 'toggle_play', 'playlistinfo', 'currentsong', 'next', 'previous', 'status', 'search', 'clear', 'add', 'cover')
+    Authorized_commands = ('stats', 'play', 'pause', 'toggle_play',
+                           'playlistinfo', 'currentsong', 'next',
+                           'previous', 'status', 'search', 'clear',
+                           'add', 'cover')
 
     def __init__(self, *args, **kwargs):
         super(MpdClient, self).__init__(*args, **kwargs)
@@ -92,6 +96,7 @@ class MpdClient(mpd.MPDClient):
                 logging.error(e)
                 abort(500)
         return client
+
 
 def mpd_command(command, *args, **kwargs):
     """
