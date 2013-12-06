@@ -5,7 +5,8 @@ The urls are
         <a href="{{ url_for(url.method) }}">
             {{ url.url }}
         </a>
-    http methods: {%for method in url.methods%} {{ method }} {%endfor%}
+    <br />
+    {%for method in url.methods%} {{ method }} {%endfor%}
     <pre>{{ url.doc }}</pre> 
     </li>
 {% endfor %}
