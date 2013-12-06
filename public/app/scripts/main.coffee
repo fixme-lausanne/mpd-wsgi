@@ -34,7 +34,7 @@ class Song
 # Player actions
 class PlayerActions
   previous: ->
-    $.getJSON urlActions + '/previous', (data)
+    $.getJSON urlActions + '/previous'
 
   next: ->
     $.getJSON urlActions + '/next'
