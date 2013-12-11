@@ -34,8 +34,8 @@ defaultCover =
 
 # Handle functions
 logFailure = (callerName, data) ->
-  console.log "#{callerName} has failed"
-  console.log data
+  console.error "#{callerName} has failed"
+  console.error data
 
 fnName = (fn) ->
   # fn.toString().match( /function ([^\(]+)/ )[1]
