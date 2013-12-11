@@ -33,9 +33,13 @@ defaultCover =
 
 
 # Handle functions
-logFailure = (args, data) ->
-  console.log "#{args.callee.toString()} has failed"
+logFailure = (callerName, data) ->
+  console.log "#{callerName} has failed"
   console.log data
+
+fnName = (fn) ->
+  # fn.toString().match( /function ([^\(]+)/ )[1]
+  null
 
 # Current song
 class Song
@@ -89,32 +93,32 @@ class PlayerViewModel
     self.getCover()
 
   # Current song
-  getCurrent: ->
-    $.getJSON urlCurrent, (data) ->
-      self.current new Song(data)
-    .fail (data) ->
-        logFailure arguments, data
+  getCurrent: =>
+    $.getJSON urlCurrent, (data) =>
+      @current new Song(data)
+    .fail (data) =>
+        logFailure 'getCurent', data
         badSong = {title: 'Title: Error', artist: 'Artist: Error', album: 'Album: Error'}
-        self.current badSong
+        @current badSong
 
   # Playlist
-  getPlaylist: ->
-    $.getJSON urlPlaylist, (data) ->
-      self.playlist $.map(data.songs, (item) ->
+  getPlaylist: =>
+    $.getJSON urlPlaylist, (data) =>
+      @playlist $.map(data.songs, (item) ->
         new Song(item))
-    .fail (data) ->
-        logFailure arguments, data
-        self.playlist [
+    .fail (data) =>
+        logFailure 'getPlaylist', data
+        @playlist [
           {error: 'Playlist: Error'}
         ]
 
   # Covers
-  getCover: ->
-    $.getJSON urlCover, (data) ->
-      self.covers data ? defaultCover
-    .fail (data) ->
-        logFailure arguments, data
-        self.covers errorCover
+  getCover: =>
+    $.getJSON urlCover, (data) =>
+      @covers data ? defaultCover
+    .fail (data) =>
+        logFailure 'getCover', data
+        @covers errorCover
 
 
 # Instanciate the ViewModel
