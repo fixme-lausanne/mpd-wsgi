@@ -80,13 +80,13 @@ class PlayerActions
 class PlayerViewModel
   constructor: ->
     self = this
-    self.current = ko.observable('')
+    self.current = ko.observable ''
     self.actions = ko.observable(new PlayerActions())
-    self.playlist = ko.observableArray([])
-    self.covers = ko.observable('')
-    self.searchText = ko.observable('')
+    self.playlist = ko.observableArray []
+    self.covers = ko.observable ''
+    self.searchText = ko.observable ''
     self.searchResult = ko.observableArray []
-    self.fileUrl = ko.observable(urlFile)
+    self.fileUrl = ko.observable urlFile
 
     self.getCurrent()
     self.getPlaylist()
