@@ -131,8 +131,11 @@ class PlayerViewModel
       $.getJSON url, (searchData) =>
         @searchResult $.map(searchData.songs, (item) ->
           new Song(item))
-      .fail (data) ->
+      .fail (data) =>
           logFailure 'search', data
+          @searchResult [
+            {error: 'Search: Error'}
+          ]
     else
       @searchResult []
 

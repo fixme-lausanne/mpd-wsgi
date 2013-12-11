@@ -71,7 +71,15 @@
                 <dd id="search-tab"><a href="#search-panel">Search</a></dd>
             </dl>
             <div class="tabs-content">
-                <div class="content active" id="playlist-panel" data-bind="foreach: playlist">
+                <div class="content active" id="playlist-panel">
+
+                    <!-- Playlist elements -->
+                    <!-- ko foreach: playlist -->
+                    <!-- ko if: error -->
+                    <div class="error-message" data-bind="text: error"></div>
+                    <!-- /ko -->
+
+                    <!-- ko ifnot: error -->
                     <ul>
                         <li>
                             <span class="playlist-title" data-bind="text: title"></span>
@@ -79,6 +87,9 @@
                             <span class="playlist-album" data-bind="text: album"></span>
                         </li>
                     </ul>
+                    <!-- /ko -->
+                    <!-- /ko -->
+
                 </div>
                 <div class="content" id="search-panel">
                     <input type="text" placeholder="Type something" data-bind="value: searchText, valueUpdate: 'afterkeydown'"/>
@@ -94,13 +105,22 @@
                     <label for="radio-artist">Artist</label>
 
                     <!-- Results -->
-                    <ul id="search-result" data-bind="foreach: searchResult">
+                    <!-- ko foreach: searchResult -->
+                    <!-- ko if: error -->
+                    <div class="error-message" data-bind="text: error"></div>
+                    <!-- /ko -->
+
+                    <!-- ko ifnot: error -->
+                    <ul id="search-result">
                         <li>
                             <span class="search-title" data-bind="text: title"></span>
                             <span class="search-artist" data-bind="text: artist"></span>
                             <span class="search-album" data-bind="text: album"></span>
                         </li>
                     </ul>
+                    <!-- /ko -->
+                    <!-- /ko -->
+
                 </div>
             </div>
         </div>
