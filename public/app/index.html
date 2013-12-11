@@ -84,13 +84,13 @@
                     <input type="text" placeholder="Type something" data-bind="value: searchText, valueUpdate: 'afterkeydown'"/>
 
                     <!-- Filter -->
-                    <input checked="checked" name="filters" value="any" id="radio-any" type="radio" class="search-filter">
+                    <input checked="checked" name="filters" value="any" id="radio-any" type="radio" class="search-filter" data-bind="checked: searchFilter">
                     <label for="radio-any" id="label-radio-any"><i class="fa fa-asterisk"></i></label>
-                    <input name="filters" value="title" id="radio-title" type="radio" class="search-filter">
+                    <input name="filters" value="title" id="radio-title" type="radio" class="search-filter" data-bind="checked: searchFilter">
                     <label for="radio-title">Title</label>
-                    <input name="filters" value="album" id="radio-album" type="radio" class="search-filter">
+                    <input name="filters" value="album" id="radio-album" type="radio" class="search-filter" data-bind="checked: searchFilter">
                     <label for="radio-album">Album</label>
-                    <input name="filters" value="artist" id="radio-artist" type="radio" class="search-filter">
+                    <input name="filters" value="artist" id="radio-artist" type="radio" class="search-filter" data-bind="checked: searchFilter">
                     <label for="radio-artist">Artist</label>
 
                     <!-- Results -->

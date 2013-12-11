@@ -85,6 +85,7 @@ class PlayerViewModel
     self.playlist = ko.observableArray []
     self.covers = ko.observable ''
     self.searchText = ko.observable ''
+    self.searchFilter = ko.observable 'any'
     self.searchResult = ko.observableArray []
     self.fileUrl = ko.observable urlFile
 
@@ -120,19 +121,31 @@ class PlayerViewModel
         logFailure 'getCover', data
         @covers errorCover
 
+  # Search
+  search: =>
+    searchString = @searchText()
+    filter = @searchFilter()
+
+    if searchString.length > 3
+      url = "#{urlSearch}?#{filter}=#{searchString}&limit=#{searchLimit}"
+      $.getJSON url, (searchData) =>
+        @searchResult $.map(searchData.songs, (item) ->
+          new Song(item))
+      .fail (data) ->
+          logFailure 'search', data
+    else
+      @searchResult []
+
 
 # Instanciate the ViewModel
 viewModel = new PlayerViewModel()
 
-# Search
-viewModel.searchText.subscribe (newValue) ->
-  filter = $('input[name=filters]:checked').val()
-  if newValue.length > 3
-    $.getJSON urlSearch + "?#{filter}=#{newValue}&limit=#{searchLimit}", (searchData) ->
-      viewModel.searchResult $.map(searchData.songs, (item) ->
-        new Song(item))
-  else
-    viewModel.searchResult []
+# Search on change
+viewModel.searchText.subscribe (newValue) =>
+  viewModel.search()
+
+viewModel.searchFilter.subscribe (newValue) =>
+  viewModel.search()
 
 # Apply the bindings
 ko.applyBindings viewModel
