@@ -50,25 +50,25 @@ class Song
 
 # Player actions
 class PlayerActions
-  previous: ->
-    @_send()
+  @previous: ->
+    PlayerActions._send('previous')
 
-  next: ->
-    @_send()
+  @next: ->
+    PlayerActions._send('next')
 
-  pause: ->
-    @_send()
+  @pause: ->
+    PlayerActions._send('pause')
 
-  play: ->
-    @_send()
+  @play: ->
+    PlayerActions._send('play')
 
-  update: ->
-    $.getJSON urlUpdate
+  @update: ->
+    PlayerActions._send('update', urlUpdate)
 
 
   # private
-  _send: (url = "") ->
-    caller = arguments.callee.caller.name
+  @_send: (caller, url = null) ->
+#    caller = fnName arguments.callee.caller
     url = url || "#{urlActions}/#{caller}"
 
     $.getJSON(url)
@@ -81,7 +81,7 @@ class PlayerViewModel
   constructor: ->
     self = this
     self.current = ko.observable ''
-    self.actions = ko.observable(new PlayerActions())
+    self.actions = PlayerActions
     self.playlist = ko.observableArray []
     self.covers = ko.observable ''
     self.searchText = ko.observable ''
