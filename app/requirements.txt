@@ -3,3 +3,4 @@ lastfm
 flask
 flask-sockets
 nose
+celementtree
