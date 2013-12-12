@@ -19,10 +19,14 @@ app_doc = None
 
 socket = Sockets(app)
 
+
 class MpdClient(mpd.MPDClient):
     """Enumeration of the commands available.
     """
-    Authorized_commands = ('stats', 'play', 'pause', 'toggle_play', 'playlistinfo', 'currentsong', 'next', 'previous', 'status', 'search', 'clear', 'add', 'cover')
+    Authorized_commands = ('stats', 'play', 'pause', 'toggle_play',
+                           'playlistinfo', 'currentsong', 'next',
+                           'previous', 'status', 'search', 'clear',
+                           'add', 'cover')
 
     def __init__(self, *args, **kwargs):
         super(MpdClient, self).__init__(*args, **kwargs)
@@ -93,6 +97,7 @@ class MpdClient(mpd.MPDClient):
                 abort(500)
         return client
 
+
 def mpd_command(command, *args, **kwargs):
     """
     Wrapper around the mpd commands.
@@ -115,7 +120,8 @@ def generate_doc():
             continue
         url = i.rule
         method = i.endpoint
-        doc.append(dict(doc=eval(i.endpoint).__doc__, url=url, method=method))
+        methods = filter(lambda a: a not in ['HEAD', 'OPTIONS'], i.methods)
+        doc.append(dict(doc=eval(i.endpoint).__doc__, url=url, method=method, methods=methods))
     return doc
 
 

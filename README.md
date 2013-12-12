@@ -5,10 +5,9 @@ This is a project to manage an mpd server by using a HTTP wrapper around the mpc
 ## Dependencies
 You will need at least:
 
-- python-mpd2
-- flask
-- nosetest
-- flask-sockets
+* python-mpd2
+* python 2.7
+* gunicorn
 
 To install those requirement, first install python pip
 Then you can install the dependencies by runnningc.
@@ -17,7 +16,7 @@ Then you can install the dependencies by runnningc.
 
 To run the webserver, you will also need to have gunicorn installed and run it with:
 
-    gunicorn -k flask_sockets.worker hello:app
+    gunicorn -k flask_sockets.worker app:app
 
 In the app directory.
 
