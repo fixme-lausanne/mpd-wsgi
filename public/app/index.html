@@ -73,12 +73,12 @@
             <div class="content active" id="playlist-panel">
 
                 <!-- Playlist elements -->
-                <!-- ko foreach: playlist -->
-                <!-- ko if: error -->
+                <!-- ko with: playlist.error -->
                 <div class="error-message" data-bind="text: error"></div>
                 <!-- /ko -->
 
-                <!-- ko ifnot: error -->
+                <!-- ko ifnot: playlist.error -->
+                <!-- ko foreach: playlist -->
                 <ul>
                     <li>
                         <span class="playlist-title" data-bind="text: title"></span>
@@ -104,12 +104,12 @@
                 <label for="radio-artist">Artist</label>
 
                 <!-- Results -->
-                <!-- ko foreach: searchResult -->
-                <!-- ko if: error -->
+                <!-- ko if: playlist.error -->
                 <div class="error-message" data-bind="text: error"></div>
                 <!-- /ko -->
 
-                <!-- ko ifnot: error -->
+                <!-- ko ifnot: playlist.error -->
+                <!-- ko foreach: searchResult -->
                 <ul id="search-result">
                     <li>
                         <span class="search-title" data-bind="text: title"></span>
