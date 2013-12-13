@@ -43,10 +43,10 @@
         <div id="player" class="row">
             <div id="player-actions" class="row">
                 <!-- Player actions -->
-                <button id="action-previous" class="action columns small-2" data-bind="click: actions.previous"><i class="fa fa-backward"></i></button>
-                <button id="action-pause" class="action columns small-4" data-bind="click: actions.pause, visible: status().state == 'play'"><i class="fa fa-pause"></i></button>
-                <button id="action-play" class="action columns small-4" data-bind="click: actions.play, visible: status().state == 'pause' || status == 'stop'"><i class="fa fa-play"></i></button>
-                <button id="action-next" class="action columns small-2" data-bind="click: actions.next"><i class="fa fa-forward"></i></button>
+                <button id="action-previous" class="action columns small-2" data-bind="click: playerActions.previous"><i class="fa fa-backward"></i></button>
+                <button id="action-pause" class="action columns small-4" data-bind="click: playerActions.pause, visible: status().state == 'play'"><i class="fa fa-pause"></i></button>
+                <button id="action-play" class="action columns small-4" data-bind="click: playerActions.play, visible: status().state == 'pause' || status == 'stop'"><i class="fa fa-play"></i></button>
+                <button id="action-next" class="action columns small-2" data-bind="click: playerActions.next"><i class="fa fa-forward"></i></button>
 
                 <!-- Download the current file -->
                 <form data-bind="attr: {action: fileUrl}">
@@ -54,7 +54,7 @@
                 </form>
 
                 <!-- Refresh the mpd library -->
-                <button id="action-update" class="action columns small-2" data-bind="click: actions.update"><i class="fa fa-repeat"></i></button>
+                <button id="action-update" class="action columns small-2" data-bind="click: playerActions.update"><i class="fa fa-repeat"></i></button>
             </div>
             <div id="loading-bar" class="row">
                 <div id="current-load"></div>
@@ -71,6 +71,9 @@
         </dl>
         <div class="tabs-content">
             <div class="content active result-panel" id="playlist-panel">
+
+                <!-- Playlist actions -->
+                <button data-bind="click: playlistActions.clear"><i class="fa fa-trash-o"></i></button>
 
                 <!-- Playlist elements -->
                 <!-- ko with: playlist.error -->

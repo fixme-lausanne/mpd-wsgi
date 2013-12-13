@@ -79,12 +79,31 @@ class PlayerActions
         logFailure(caller, data)
 
 
+class PlaylistActions
+  @add: (filename) ->
+    PlaylistActions._send('PUT', filename)
+
+  @clear: ->
+    PlaylistActions._send('DELETE')
+
+  @_send: (type, data = null) ->
+    url = "#{urlPlaylist}"
+
+    $.ajax({url: url, type: type, data: data})
+    .done (data) ->
+        viewModel.getCurrent()
+        viewModel.getPlaylist()
+    .fail (data) ->
+        logFailure('PlaylistActions._send', data)
+
+
 # ViewModel
 class PlayerViewModel
   constructor: ->
     self = this
     self.current = ko.observable ''
-    self.actions = PlayerActions
+    self.playerActions = PlayerActions
+    self.playlistActions = PlaylistActions
     self.playlist = ko.observableArray []
     self.covers = ko.observable ''
     self.searchText = ko.observable ''
@@ -151,7 +170,6 @@ class PlayerViewModel
           ]
     else
       @searchResult []
-
 
 # Instanciate the ViewModel
 viewModel = new PlayerViewModel()
