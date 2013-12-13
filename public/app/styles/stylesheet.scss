@@ -114,7 +114,6 @@ body header {
 
 // Player section
 #player-section {
-  padding-top: 10%;
   padding-left: 0;
   padding-right: 0;
   position: relative;
@@ -127,9 +126,10 @@ body header {
 // Current track
 #current-track {
   position: absolute;
-  z-index: 9999;
+  z-index: 500;
   background-color: $background-color;
   width: 100%;
+  margin-top: 10%;
 
   & > p {
     margin: 0;
@@ -151,7 +151,7 @@ body header {
 }
 
 #album-cover {
-  top: 15vh;
+  top: 24vh;
   max-width: 350px;
 }
 
@@ -160,7 +160,7 @@ body header {
 #player {
   position: absolute;
   bottom: 1.2vh;
-  width: inherit;
+  width: 100%;
 }
 
 #loading-bar {
@@ -187,11 +187,17 @@ body header {
   width: 100%; // Override Foundation's default
 }
 
-#tabs-tracks {
-  padding-left: 20px;
+#tabs-section {
+  padding-left: 0;
+  padding-right: 0;
+  position: relative;
 }
 
-.tabs dd {
+#tabs-header {
+  margin-top: 58px;
+}
+
+#tabs-header dd {
   padding-left: 0;
   padding-right: 0;
 
@@ -237,6 +243,19 @@ body header {
     width: 4em;
   }
 }
+
+
+
+// Misc
+.link-go-to {
+  float: right;
+}
+
+.content-go-to {
+  @extend button;
+}
+
+
 
 // Error messages
 .error-message {

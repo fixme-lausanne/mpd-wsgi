@@ -26,6 +26,7 @@
 
 <main class="row medium-centered">
     <section id="player-section" class="columns small-12 large-7" >
+        <a class="show-for-medium-down link-go-to" href="#tabs-section"><div class="content-go-to"><i class="fa fa-list-ul"></i></div></a>
         <div id="current-track" class="small-7 medium-10 large-12 large-centered">
             <p id="current-title" data-bind="text: current().title"></p>
             <p id="current-album" data-bind="text: current().album"></p>
@@ -67,7 +68,8 @@
 
     <!-- Playlist and search tabs -->
     <section id="tabs-section" class="columns small-12 large-5">
-        <dl class="tabs row" data-tab>
+        <a class="show-for-medium-down link-go-to" href="#player-section"><div class="content-go-to"><i class="fa fa-music"></i></div></a>
+        <dl id="tabs-header" class="tabs row" data-tab>
             <dd id="playlist-tab" class="active columns small-6"><a href="#playlist-panel">Playlist</a></dd>
             <dd id="search-tab" class="columns small-6"><a href="#search-panel">Search</a></dd>
         </dl>
