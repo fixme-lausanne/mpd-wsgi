@@ -48,15 +48,17 @@ a {
   }
 }
 
-section {
-  padding-left: 50px;
-  padding-right: 50px;
+main {
+  @media #{$medium-up} {
+    padding-left: 50px;
+    padding-right: 50px;
+  }
 }
 
 // Header
 body header {
   padding-top: 15px;
-  padding-bottom: 48px;
+  padding-bottom: 30px;
 }
 
 #title {
