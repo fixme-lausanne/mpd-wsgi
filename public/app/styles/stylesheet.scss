@@ -20,6 +20,10 @@ h1, h2, h3, h4, body {
   color: $text-color;
 }
 
+p {
+  font-family: "Open Sans", "Helvetica Neue", "Helvetica", Helvetica, Arial, sans-serif;
+}
+
 body {
   background-color: $background-color;
 }
@@ -29,7 +33,16 @@ li {
 }
 
 button, input[type='submit'] {
-  background-color: inherit;
+  background-color: $background-color;
+  margin-bottom: 0;
+
+  &:active {
+    background-color: darken($secondary-color, 20%);
+  }
+
+  &:focus {
+    background-color: inherit;
+  }
 
   &:hover {
     background-color: $secondary-color;
@@ -48,11 +61,22 @@ a {
   }
 }
 
+section {
+  height: 100vh;
+  padding-left: 0;
+  padding-right: 0;
+}
+
 main {
   @media #{$medium-up} {
     padding-left: 50px;
     padding-right: 50px;
   }
+}
+
+.row .row {
+  margin-left: inherit; // override Foundation's default
+  margin-right: inherit;
 }
 
 // Header
@@ -86,17 +110,58 @@ body header {
   }
 }
 
+
+
+// Player section
+#player-section {
+  padding-top: 10%;
+  padding-left: 0;
+  padding-right: 0;
+  position: relative;
+
+  @media #{$medium-up} {
+    height: 90vh;
+  }
+}
+
 // Current track
+#current-track {
+  position: absolute;
+  z-index: 9999;
+  background-color: $background-color;
+  width: 100%;
 
-#current-track > h4 {
+  & > p {
+    margin: 0;
+    text-align: center;
+  }
+}
 
+#current-title {
+  font-size: xx-large;
+}
+
+#current-album {
+  font-size: large;
+  font-weight: lighter;
+}
+
+#current-artist {
+  font-size: large;
 }
 
 #album-cover {
-  padding: 40px;
+  top: 15vh;
+  max-width: 350px;
 }
 
 // Player
+
+#player {
+  position: absolute;
+  bottom: 1.2vh;
+  width: inherit;
+}
 
 #loading-bar {
   height: 60px;
@@ -109,6 +174,14 @@ body header {
   background-color: $tertiary-color;
 }
 
+#player-actions {
+  margin-left: auto;
+  margin-right: auto;
+}
+
+
+// Tabs section
+
 // Playlist and Search
 .content {
   width: 100%; // Override Foundation's default
@@ -119,6 +192,9 @@ body header {
 }
 
 .tabs dd {
+  padding-left: 0;
+  padding-right: 0;
+
   &.active > a {
     background-color: $secondary-color;
     color: lighten($text-color, 20%);

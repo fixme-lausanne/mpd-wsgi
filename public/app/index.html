@@ -13,7 +13,7 @@
 </head>
 <body>
 
-<header class="row">
+<header class="row show-for-medium-up">
     <div class="row">
         <div id="title" class="columns"><a href="/">{ <b id="logo">fmm:</b> 'fix my music' }</a></div>
     </div>
@@ -25,16 +25,20 @@
 </header>
 
 <main class="row medium-centered">
-    <section id="player-section" class="columns small-12 medium-7" >
+    <section id="player-section" class="columns small-12 large-7" >
         <div id="current-track" class="small-7 medium-10 large-12 large-centered">
             <p id="current-title" data-bind="text: current().title"></p>
             <p id="current-album" data-bind="text: current().album"></p>
             <p id="current-artist" data-bind="text: current().artist"></p>
         </div>
 
-        <div id="album-cover">
+        <div id="album-cover" class="small-centered columns">
+            <!--
             <img src="images/default_album_xlarge.jpg"
                  alt="album picture" data-bind="attr: {src: covers().extralarge}">
+                 -->
+            <img src="images/default_album_xlarge.jpg"
+                 alt="album picture" data-bind="">
         </div>
 
 
@@ -62,7 +66,7 @@
     </section>
 
     <!-- Playlist and search tabs -->
-    <section id="tabs-section" class="columns small-12 medium-5">
+    <section id="tabs-section" class="columns small-12 large-5">
         <dl class="tabs row" data-tab>
             <dd id="playlist-tab" class="active columns small-6"><a href="#playlist-panel">Playlist</a></dd>
             <dd id="search-tab" class="columns small-6"><a href="#search-panel">Search</a></dd>
