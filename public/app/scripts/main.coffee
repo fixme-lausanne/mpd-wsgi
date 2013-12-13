@@ -14,6 +14,7 @@ urlCover = base_url + '/cover'
 urlSearch = base_url + '/search'
 urlFile = base_url + '/file'
 urlUpdate = base_url + '/update'
+urlStatus = base_url + '/status'
 
 
 searchLimit = 20 # Maximal number of songs the search will return
@@ -72,6 +73,8 @@ class PlayerActions
     url = url || "#{urlActions}/#{caller}"
 
     $.getJSON(url)
+    .done (data) ->
+        viewModel.getStatus()
     .fail (data) ->
         logFailure(caller, data)
 
@@ -88,10 +91,12 @@ class PlayerViewModel
     self.searchFilter = ko.observable 'any'
     self.searchResult = ko.observableArray []
     self.fileUrl = ko.observable urlFile
+    self.status = ko.observable {state: 'stop'}
 
     self.getCurrent()
     self.getPlaylist()
     self.getCover()
+    self.getStatus()
 
   # Current song
   getCurrent: =>
@@ -120,6 +125,14 @@ class PlayerViewModel
     .fail (data) =>
         logFailure 'getCover', data
         @covers errorCover
+
+  # Status
+  getStatus: =>
+    $.getJSON urlStatus, (data) =>
+      @status data
+    .fail (data) =>
+        logFailure 'getStatus', data
+        @status {state: 'stop'}
 
   # Search
   search: =>
