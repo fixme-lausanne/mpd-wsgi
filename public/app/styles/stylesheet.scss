@@ -20,7 +20,7 @@ h1, h2, h3, h4, body {
   color: $text-color;
 }
 
-p {
+p, span {
   font-family: "Open Sans", "Helvetica Neue", "Helvetica", Helvetica, Arial, sans-serif;
 }
 
@@ -242,6 +242,43 @@ body header {
   #label-radio-any {
     width: 4em;
   }
+}
+
+.result-panel ul {
+  margin-left: 0;
+
+  li {
+    padding-top: 5px;
+    padding-bottom: 7px;
+    padding-left: 10vw;
+    line-height: 1.2em;
+
+    @media #{$large-up} {
+      padding-left: 10px;
+    }
+
+    &:hover {
+      background-color: darken($primary-color, 15%);
+    }
+  }
+}
+
+.result-title {
+  display: block;
+  font-weight: lighter;
+  color: lighten($text-color, 20%);
+}
+
+.result-artist {
+  margin-right: 14px;
+  font-size: small;
+  font-weight: bold;
+  color: darken($text-color, 15%);
+}
+
+.result-album {
+  font-size: small;
+  color: darken($text-color, 20%);
 }
 
 

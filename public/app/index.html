@@ -70,7 +70,7 @@
             <dd id="search-tab" class="columns small-6"><a href="#search-panel">Search</a></dd>
         </dl>
         <div class="tabs-content">
-            <div class="content active" id="playlist-panel">
+            <div class="content active result-panel" id="playlist-panel">
 
                 <!-- Playlist elements -->
                 <!-- ko with: playlist.error -->
@@ -78,19 +78,19 @@
                 <!-- /ko -->
 
                 <!-- ko ifnot: playlist.error -->
-                <!-- ko foreach: playlist -->
                 <ul>
+                <!-- ko foreach: playlist -->
                     <li>
-                        <span class="playlist-title" data-bind="text: title"></span>
-                        <span class="playlist-artist" data-bind="text: artist"></span>
-                        <span class="playlist-album" data-bind="text: album"></span>
+                        <span class="result-title" data-bind="text: title"></span>
+                        <span class="result-artist" data-bind="text: artist"></span>
+                        <span class="result-album" data-bind="text: album"></span>
                     </li>
-                </ul>
                 <!-- /ko -->
+                </ul>
                 <!-- /ko -->
 
             </div>
-            <div class="content" id="search-panel">
+            <div class="content result-panel" id="search-panel">
                 <input type="text" placeholder="Type something" data-bind="value: searchText, valueUpdate: 'afterkeydown'"/>
 
                 <!-- Filter -->
@@ -109,15 +109,15 @@
                 <!-- /ko -->
 
                 <!-- ko ifnot: playlist.error -->
-                <!-- ko foreach: searchResult -->
                 <ul id="search-result">
+                <!-- ko foreach: searchResult -->
                     <li>
-                        <span class="search-title" data-bind="text: title"></span>
-                        <span class="search-artist" data-bind="text: artist"></span>
-                        <span class="search-album" data-bind="text: album"></span>
+                        <span class="result-title" data-bind="text: title"></span>
+                        <span class="result-artist" data-bind="text: artist"></span>
+                        <span class="result-album" data-bind="text: album"></span>
                     </li>
-                </ul>
                 <!-- /ko -->
+                </ul>
                 <!-- /ko -->
 
             </div>
