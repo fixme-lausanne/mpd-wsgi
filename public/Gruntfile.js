@@ -310,7 +310,6 @@ module.exports = function (grunt) {
                 'coffee',
                 'compass',
                 'copy:styles',
-                'imagemin',
                 'svgmin',
                 'htmlmin'
             ]
