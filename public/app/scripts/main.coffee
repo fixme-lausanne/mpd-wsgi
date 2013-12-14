@@ -1,3 +1,4 @@
+
 # Foundation, callback for tabs
 $(document).foundation
   tab:
@@ -6,15 +7,14 @@ $(document).foundation
 
 # KnockoutJS
 
-base_url = 'http://mpd.fixme.ch/api'
-urlCurrent = base_url + '/current'
-urlPlaylist = base_url + '/playlist'
-urlActions = base_url + '/action'
-urlCover = base_url + '/cover'
-urlSearch = base_url + '/search'
-urlFile = base_url + '/file'
-urlUpdate = base_url + '/update'
-urlStatus = base_url + '/status'
+url = '/api'
+urlCurrent = url + '/current'
+urlPlaylist = url + '/playlist'
+urlActions = url + '/action'
+urlCover = url + '/cover'
+urlSearch = url + '/search'
+urlFile = url + '/file'
+urlUpdate = url + '/update'
 
 
 searchLimit = 20 # Maximal number of songs the search will return
