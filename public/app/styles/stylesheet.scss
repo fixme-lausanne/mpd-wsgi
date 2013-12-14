@@ -20,6 +20,10 @@ h1, h2, h3, h4, body {
   color: $text-color;
 }
 
+p, span {
+  font-family: "Open Sans", "Helvetica Neue", "Helvetica", Helvetica, Arial, sans-serif;
+}
+
 body {
   background-color: $background-color;
 }
@@ -29,7 +33,16 @@ li {
 }
 
 button, input[type='submit'] {
-  background-color: inherit;
+  background-color: $background-color;
+  margin-bottom: 0;
+
+  &:active {
+    background-color: darken($secondary-color, 20%);
+  }
+
+  &:focus {
+    background-color: inherit;
+  }
 
   &:hover {
     background-color: $secondary-color;
@@ -49,14 +62,27 @@ a {
 }
 
 section {
-  padding-left: 50px;
-  padding-right: 50px;
+  height: 100vh;
+  padding-left: 0;
+  padding-right: 0;
+}
+
+main {
+  @media #{$medium-up} {
+    padding-left: 50px;
+    padding-right: 50px;
+  }
+}
+
+.row .row {
+  margin-left: inherit; // override Foundation's default
+  margin-right: inherit;
 }
 
 // Header
 body header {
   padding-top: 15px;
-  padding-bottom: 48px;
+  padding-bottom: 30px;
 }
 
 #title {
@@ -84,17 +110,58 @@ body header {
   }
 }
 
+
+
+// Player section
+#player-section {
+  padding-left: 0;
+  padding-right: 0;
+  position: relative;
+
+  @media #{$medium-up} {
+    height: 90vh;
+  }
+}
+
 // Current track
+#current-track {
+  position: absolute;
+  z-index: 500;
+  background-color: $background-color;
+  width: 100%;
+  margin-top: 10%;
 
-#current-track > h4 {
+  & > p {
+    margin: 0;
+    text-align: center;
+  }
+}
 
+#current-title {
+  font-size: xx-large;
+}
+
+#current-album {
+  font-size: large;
+  font-weight: lighter;
+}
+
+#current-artist {
+  font-size: large;
 }
 
 #album-cover {
-  padding: 40px;
+  top: 24vh;
+  max-width: 350px;
 }
 
 // Player
+
+#player {
+  position: absolute;
+  bottom: 1.2vh;
+  width: 100%;
+}
 
 #loading-bar {
   height: 60px;
@@ -107,13 +174,33 @@ body header {
   background-color: $tertiary-color;
 }
 
-// Playlist and Search
-
-#tabs-tracks {
-  padding-left: 20px;
+#player-actions {
+  margin-left: auto;
+  margin-right: auto;
 }
 
-.tabs dd {
+
+// Tabs section
+
+// Playlist and Search
+.content {
+  width: 100%; // Override Foundation's default
+}
+
+#tabs-section {
+  padding-left: 0;
+  padding-right: 0;
+  position: relative;
+}
+
+#tabs-header {
+  margin-top: 58px;
+}
+
+#tabs-header dd {
+  padding-left: 0;
+  padding-right: 0;
+
   &.active > a {
     background-color: $secondary-color;
     color: lighten($text-color, 20%);
@@ -146,7 +233,6 @@ body header {
       color: darken($text-color, 30%);
     }
 
-
     &:checked + label {
       background-color: $primary-color;
       color: $text-color;
@@ -156,6 +242,65 @@ body header {
   #label-radio-any {
     width: 4em;
   }
+}
+
+.result-panel ul {
+  margin-left: 0;
+
+  li {
+    padding-top: 5px;
+    padding-bottom: 7px;
+    padding-left: 10vw;
+    line-height: 1.2em;
+
+    @media #{$large-up} {
+      padding-left: 10px;
+    }
+
+    &:hover {
+      background-color: darken($primary-color, 15%);
+    }
+  }
+}
+
+.result-title {
+  display: block;
+  font-weight: lighter;
+  color: lighten($text-color, 20%);
+}
+
+.result-artist {
+  margin-right: 14px;
+  font-size: small;
+  font-weight: bold;
+  color: darken($text-color, 15%);
+}
+
+.result-album {
+  font-size: small;
+  color: darken($text-color, 20%);
+}
+
+
+
+// Misc
+.link-go-to {
+  float: right;
+}
+
+.content-go-to {
+  @extend button;
+}
+
+
+
+// Error messages
+.error-message {
+  text-align: center;
+  color: #dfaca0;
+  background-color: rgb(47, 0, 10);
+  height: 3em;
+  line-height: 2.8em;
 }
 
 // Error pages (404, etc.)
