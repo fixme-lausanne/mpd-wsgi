@@ -7,7 +7,7 @@ $(document).foundation
 
 # KnockoutJS
 
-url = 'http://mpd.fixme.ch/api'
+url = '/api'
 urlCurrent = url + '/current'
 urlPlaylist = url + '/playlist'
 urlActions = url + '/action'
