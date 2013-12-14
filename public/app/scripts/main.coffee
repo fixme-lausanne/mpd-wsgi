@@ -15,6 +15,7 @@ urlCover = url + '/cover'
 urlSearch = url + '/search'
 urlFile = url + '/file'
 urlUpdate = url + '/update'
+urlStatus = url + '/status'
 
 
 searchLimit = 20 # Maximal number of songs the search will return
