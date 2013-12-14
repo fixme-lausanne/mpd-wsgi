@@ -30,7 +30,7 @@ class MpdClient(mpd.MPDClient):
 
     def __init__(self, *args, **kwargs):
         super(MpdClient, self).__init__(*args, **kwargs)
-        self.lastfm_api = lastfm.Api(config.LASTFM_KEY)
+        self.lastfm_api = lastfm.Api(config.LASTFM_KEY, no_cache=True)
 
     def execute_command(self, command, *args, **kwargs):
         if command in MpdClient.Authorized_commands:
