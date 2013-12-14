@@ -20,12 +20,6 @@ urlStatus = base_url + '/status'
 searchLimit = 20 # Maximal number of songs the search will return
 
 
-errorCover =
-  extralarge: 'images/error_album_xlarge.jpg'
-  large: 'images/error_album_large.jpg'
-  medium: 'images/error_album_medium.jpg'
-  small: 'images/error_album_small.jpg'
-
 defaultCover =
   extralarge: 'images/default_album_xlarge.jpg'
   large: 'images/default_album_large.jpg'
@@ -38,9 +32,6 @@ logFailure = (callerName, data) ->
   console.error "#{callerName} has failed"
   console.error data
 
-fnName = (fn) ->
-  # fn.toString().match( /function ([^\(]+)/ )[1]
-  null
 
 # Current song
 class Song
@@ -133,9 +124,7 @@ class PlayerViewModel
         new Song(item))
     .fail (data) =>
         logFailure 'getPlaylist', data
-        @playlist [
-          {error: 'Playlist: Error'}
-        ]
+        @playlist {error: 'Playlist: Error'}
 
   # Covers
   getCover: =>
@@ -143,7 +132,15 @@ class PlayerViewModel
       @covers data ? defaultCover
     .fail (data) =>
         logFailure 'getCover', data
-        @covers errorCover
+        @covers defaultCover
+
+  # Status
+  getStatus: =>
+    $.getJSON urlStatus, (data) =>
+      @status data
+    .fail (data) =>
+        logFailure 'getStatus', data
+        @status {state: 'stop'}
 
   # Status
   getStatus: =>
@@ -165,9 +162,7 @@ class PlayerViewModel
           new Song(item))
       .fail (data) =>
           logFailure 'search', data
-          @searchResult [
-            {error: 'Search: Error'}
-          ]
+          @searchResult {error: 'Search: Error'}
     else
       @searchResult []
 
