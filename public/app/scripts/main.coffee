@@ -133,9 +133,7 @@ class PlayerViewModel
         new Song(item))
     .fail (data) =>
         logFailure 'getPlaylist', data
-        @playlist [
-          {error: 'Playlist: Error'}
-        ]
+        @playlist {error: 'Playlist: Error'}
 
   # Covers
   getCover: =>
@@ -161,13 +159,11 @@ class PlayerViewModel
     if searchString.length > 3
       url = "#{urlSearch}?#{filter}=#{searchString}&limit=#{searchLimit}"
       $.getJSON url, (searchData) =>
-        @searchResult $.map(searchData.results, (item) ->
+        @searchResult $.map(searchData.songs, (item) ->
           new Song(item))
       .fail (data) =>
           logFailure 'search', data
-          @searchResult [
-            {error: 'Search: Error'}
-          ]
+          @searchResult {error: 'Search: Error'}
     else
       @searchResult []
 
