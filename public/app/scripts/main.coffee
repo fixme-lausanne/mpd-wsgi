@@ -40,6 +40,7 @@ class Song
     @title = data.title   || 'unknown title'
     @artist = data.artist || 'unknown artist'
     @album = data.album   || 'unknown album'
+    @filename = data.file || 'unknown filename'
 
 # Player actions
 class PlayerActions
@@ -72,8 +73,12 @@ class PlayerActions
 
 
 class PlaylistActions
-  @add: (filename) ->
-    PlaylistActions._send('PUT', filename)
+  @add: (song) ->
+    console.log song
+    PlaylistActions._send('PUT', {song: song.filename})
+
+  @delete: (song) ->
+    PlaylistActions._send('DELETE', {song: song.filename})
 
   @clear: ->
     PlaylistActions._send('DELETE')

@@ -252,6 +252,7 @@ body header {
     padding-bottom: 7px;
     padding-left: 10vw;
     line-height: 1.2em;
+    position: relative;
 
     @media #{$large-up} {
       padding-left: 10px;
@@ -260,8 +261,10 @@ body header {
     &:hover {
       background-color: darken($primary-color, 15%);
     }
+
   }
 }
+
 
 .result-title {
   display: block;
@@ -279,6 +282,29 @@ body header {
 .result-album {
   font-size: small;
   color: darken($text-color, 20%);
+}
+
+.action-track {
+  position: absolute;
+  right: 0;
+  top: 0;
+  height: 100%;
+  background-color: inherit;
+  opacity: 0.3;
+
+  &:hover {
+    opacity: 1;
+  }
+}
+
+.add-track:hover {
+  color: rgb(247, 247, 247);
+  background-color: inherit;
+}
+
+.delete-track:hover {
+  color: rgb(238, 68, 81);
+  background-color: inherit;
 }
 
 

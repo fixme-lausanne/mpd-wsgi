@@ -88,6 +88,7 @@
                         <span class="result-title" data-bind="text: title"></span>
                         <span class="result-artist" data-bind="text: artist"></span>
                         <span class="result-album" data-bind="text: album"></span>
+                        <button class="action-track delete-track" data-bind="click: $parent.playlistActions.delete"><i class="fa fa-times"></i></button>
                     </li>
                 <!-- /ko -->
                 </ul>
@@ -119,6 +120,7 @@
                         <span class="result-title" data-bind="text: title"></span>
                         <span class="result-artist" data-bind="text: artist"></span>
                         <span class="result-album" data-bind="text: album"></span>
+                        <button class="action-track add-track" data-bind="click: $parent.playlistActions.add"><i class="fa fa-plus"></i></button>
                     </li>
                     <ul class="f-dropdown content" data-dropdown-content data-bind="attr:{'id': 'drop' + $index()}">
                         <li>Add to playlist</li>
