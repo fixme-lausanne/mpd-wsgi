@@ -45,7 +45,7 @@
                 <!-- Player actions -->
                 <button id="action-previous" class="action columns small-2" data-bind="click: playerActions.previous"><i class="fa fa-backward"></i></button>
                 <button id="action-pause" class="action columns small-4" data-bind="click: playerActions.pause, visible: status().state == 'play'"><i class="fa fa-pause"></i></button>
-                <button id="action-play" class="action columns small-4" data-bind="click: playerActions.play, visible: status().state == 'pause' || status == 'stop'"><i class="fa fa-play"></i></button>
+                <button id="action-play" class="action columns small-4" data-bind="click: playerActions.play, visible: status().state == 'pause' || status().state == 'stop'"><i class="fa fa-play"></i></button>
                 <button id="action-next" class="action columns small-2" data-bind="click: playerActions.next"><i class="fa fa-forward"></i></button>
 
                 <!-- Download the current file -->
