@@ -77,11 +77,11 @@
                 <button data-bind="click: playlistActions.clear"><i class="fa fa-trash-o"></i></button>
 
                 <!-- Playlist elements -->
-                <!-- ko with: playlist.error -->
-                <div class="error-message" data-bind="text: error"></div>
+                <!-- ko ifnot: playlist().error == undefined -->
+                <div class="error-message" data-bind="text: playlist().error"></div>
                 <!-- /ko -->
 
-                <!-- ko ifnot: playlist.error -->
+                <!-- ko if: playlist().error == undefined -->
                 <ul>
                 <!-- ko foreach: playlist -->
                     <li>
@@ -108,11 +108,11 @@
                 <label for="radio-artist">Artist</label>
 
                 <!-- Results -->
-                <!-- ko if: playlist.error -->
-                <div class="error-message" data-bind="text: error"></div>
+                <!-- ko ifnot: searchResult().error == undefined -->
+                <div class="error-message" data-bind="text: searchResult().error"></div>
                 <!-- /ko -->
 
-                <!-- ko ifnot: playlist.error -->
+                <!-- ko if: searchResult().error == undefined -->
                 <ul id="search-result">
                 <!-- ko foreach: searchResult -->
                     <li>
