@@ -159,7 +159,7 @@ class PlayerViewModel
     if searchString.length > 3
       url = "#{urlSearch}?#{filter}=#{searchString}&limit=#{searchLimit}"
       $.getJSON url, (searchData) =>
-        @searchResult $.map(searchData.results, (item) ->
+        @searchResult $.map(searchData.songs, (item) ->
           new Song(item))
       .fail (data) =>
           logFailure 'search', data
