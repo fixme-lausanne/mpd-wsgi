@@ -281,7 +281,7 @@ def playlist_delete():
     if 'song' in request.form:
         return jsonify(mpd_command('delete', request.form['song']))
     else:
-        return jsonify(mpd_command('clear')
+        return jsonify(mpd_command('clear'))
 
 
 SEARCH_TERMS = ['any', 'artist', 'album', 'title']
