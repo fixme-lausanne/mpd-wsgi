@@ -45,19 +45,19 @@ class Song
 # Player actions
 class PlayerActions
   @previous: ->
-    PlayerActions._send('previous')
+    PlayerActions._send 'previous'
 
   @next: ->
-    PlayerActions._send('next')
+    PlayerActions._send 'next'
 
   @pause: ->
-    PlayerActions._send('pause')
+    PlayerActions._send 'pause'
 
   @play: ->
-    PlayerActions._send('play')
+    PlayerActions._send 'play'
 
   @update: ->
-    PlayerActions._send('update', urlUpdate)
+    PlayerActions._send 'update', urlUpdate
 
 
   # private
@@ -69,18 +69,18 @@ class PlayerActions
     .done (data) ->
         viewModel.getStatus()
     .fail (data) ->
-        logFailure(caller, data)
+        logFailure caller, data
 
 
 class PlaylistActions
   @add: (song) ->
-    PlaylistActions._send('PUT', {song: song.filename})
+    PlaylistActions._send 'PUT', {song: song.filename}
 
   @delete: (index) ->
-    PlaylistActions._send('DELETE', null, "#{urlPlaylist}/#{index()}")
+    PlaylistActions._send 'DELETE', null, "#{urlPlaylist}/#{index()}"
 
   @clear: ->
-    PlaylistActions._send('DELETE')
+    PlaylistActions._send 'DELETE'
 
   @_send: (type, data = null, url = null) ->
     url = url || urlPlaylist
@@ -90,7 +90,7 @@ class PlaylistActions
         viewModel.getCurrent()
         viewModel.getPlaylist()
     .fail (data) ->
-        logFailure('PlaylistActions._send', data)
+        logFailure 'PlaylistActions._send', data
 
 
 # ViewModel
@@ -125,8 +125,8 @@ class PlayerViewModel
   # Playlist
   getPlaylist: =>
     $.getJSON urlPlaylist, (data) =>
-      @playlist $.map(data.songs, (item) ->
-        new Song(item))
+      @playlist $.map data.songs, (item) ->
+        new Song(item)
     .fail (data) =>
         logFailure 'getPlaylist', data
         @playlist {error: 'Playlist: Error'}
@@ -163,8 +163,8 @@ class PlayerViewModel
     if searchString.length > 3
       url = "#{urlSearch}?#{filter}=#{searchString}&limit=#{searchLimit}"
       $.getJSON url, (searchData) =>
-        @searchResult $.map(searchData.songs, (item) ->
-          new Song(item))
+        @searchResult $.map searchData.songs, (item) ->
+          new Song(item)
       .fail (data) =>
           logFailure 'search', data
           @searchResult {error: 'Search: Error'}
