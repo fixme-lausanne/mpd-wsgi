@@ -52,11 +52,6 @@ class MpdClient(mpd.MPDClient):
         ret = super(MpdClient, self).playlistinfo(*args, **kwargs)
         return {'songs':ret}
 
-    def clear_songs(self, songs):
-        for id in songs:
-            song_id = int(id)
-            self.delete(song_id)
-
     def search(self, limit, *args, **kwargs):
         results = super(MpdClient, self).search(*args, **kwargs)
         return {'songs': results[:limit]}
@@ -118,8 +113,6 @@ def generate_doc():
     route url as key and the docstring of the callback method as value.
     """
     url_map = app.url_map
-    import IPython
-    IPython.embed()
 
     doc = list()
     for i in url_map.iter_rules():
@@ -286,7 +279,7 @@ def playlist_delete():
     Note: the playlist is 0 indexed
     """
     if 'song' in request.form:
-        return jsonify(mpd_command('delete', request.form['songs']))
+        return jsonify(mpd_command('delete', request.form['song']))
     else:
         return jsonify(mpd_command('clear')
 
