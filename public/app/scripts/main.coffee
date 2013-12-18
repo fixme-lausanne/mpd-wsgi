@@ -7,15 +7,15 @@ $(document).foundation
 
 # KnockoutJS
 
-url = '/api'
-urlCurrent = url + '/current'
-urlPlaylist = url + '/playlist'
-urlActions = url + '/action'
-urlCover = url + '/cover'
-urlSearch = url + '/search'
-urlFile = url + '/file'
-urlUpdate = url + '/update'
-urlStatus = url + '/status'
+base_url = '/api'
+urlCurrent = base_url + '/current'
+urlPlaylist = base_url + '/playlist'
+urlActions = base_url + '/action'
+urlCover = base_url + '/cover'
+urlSearch = base_url + '/search'
+urlFile = base_url + '/file'
+urlUpdate = base_url + '/update'
+urlStatus = base_url + '/status'
 
 
 searchLimit = 20 # Maximal number of songs the search will return
