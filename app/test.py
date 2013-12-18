@@ -58,7 +58,15 @@ class AppTestCase(unittest.TestCase):
         for i in ['album', 'artist', 'title', 'any']:
             ret = self.client.get('/search?{}=1'.format(i))
             self.assertEqual(ret.status_code, 200)
-
+    def test_delete(self):
+        def get_playlist():
+            ret = self.client.get('/playlist')
+            return json.loads(ret.data)
+        old_len = len(get_playlist()['songs'])
+        self.client.delete('/playlist?song=0')
+        new_len = len(get_playlist()['songs'])
+        self.assertEqual(old_len - 1, new_len)
+        
     def test_playlist_manipulation(self):
         def get_playlist():
             ret = self.client.get('/playlist')

@@ -15,6 +15,7 @@ import lastfm
 
 
 app = Flask(__name__)
+
 app_doc = None
 
 socket = Sockets(app)
@@ -26,7 +27,7 @@ class MpdClient(mpd.MPDClient):
     Authorized_commands = ('stats', 'play', 'pause', 'toggle_play',
                            'playlistinfo', 'currentsong', 'next',
                            'previous', 'status', 'search', 'clear',
-                           'add', 'cover')
+                           'add', 'cover', 'delete')
 
     def __init__(self, *args, **kwargs):
         super(MpdClient, self).__init__(*args, **kwargs)
@@ -278,8 +279,12 @@ def playlist_delete():
         integer list for the index of the song to be removed.
     Note: the playlist is 0 indexed
     """
-    if 'song' in request.form:
-        return jsonify(mpd_command('delete', request.form['song']))
+    if 'song' in request.args:
+        try:
+            return jsonify(mpd_command('delete', int(request.args['song'])))
+        except mpd.CommandError as e:
+            abort(404)
+
     else:
         return jsonify(mpd_command('clear'))
 
