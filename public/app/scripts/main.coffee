@@ -67,7 +67,7 @@ class PlayerActions
 
     $.getJSON(url)
     .done (data) ->
-        viewModel.getStatus()
+        viewModel.loadUI()
     .fail (data) ->
         logFailure caller, data
 
@@ -87,8 +87,7 @@ class PlaylistActions
 
     $.ajax({url: url, type: type, data: data})
     .done (data) ->
-        viewModel.getCurrent()
-        viewModel.getPlaylist()
+        viewModel.loadUI()
     .fail (data) ->
         logFailure 'PlaylistActions._send', data
 
@@ -108,10 +107,7 @@ class PlayerViewModel
     self.fileUrl = ko.observable urlFile
     self.status = ko.observable {state: 'stop'}
 
-    self.getCurrent()
-    self.getPlaylist()
-    self.getCover()
-    self.getStatus()
+    @loadUI()
 
   # Current song
   getCurrent: =>
@@ -162,6 +158,14 @@ class PlayerViewModel
           @searchResult {error: 'Search: Error'}
     else
       @searchResult []
+
+  # Refresh the interface
+  loadUI: ->
+    @getStatus()
+    @getCover()
+    @getPlaylist()
+    @getCurrent()
+
 
 # Instanciate the ViewModel
 viewModel = new PlayerViewModel()
