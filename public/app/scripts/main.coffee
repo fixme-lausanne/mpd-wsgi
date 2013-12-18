@@ -41,6 +41,7 @@ class Song
     @artist = data.artist || 'unknown artist'
     @album = data.album   || 'unknown album'
     @filename = data.file || 'unknown filename'
+    @position = data.pos  || null
 
 # Player actions
 class PlayerActions
@@ -106,6 +107,9 @@ class PlayerViewModel
     self.searchResult = ko.observableArray []
     self.fileUrl = ko.observable urlFile
     self.status = ko.observable {state: 'stop'}
+
+    @isCurrent = (index) ->
+      index().toString() is @current().position
 
     @loadUI()
 

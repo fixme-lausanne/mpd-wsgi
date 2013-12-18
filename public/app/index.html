@@ -84,7 +84,7 @@
                 <!-- ko if: playlist().error == undefined -->
                 <ul>
                 <!-- ko foreach: playlist -->
-                    <li>
+                    <li data-bind="css: {playing: $parent.isCurrent($index) }">
                         <span class="result-title" data-bind="text: title"></span>
                         <span class="result-artist" data-bind="text: artist"></span>
                         <span class="result-album" data-bind="text: album"></span>
