@@ -96,17 +96,16 @@ class PlaylistActions
 # ViewModel
 class PlayerViewModel
   constructor: ->
-    self = this
-    self.current = ko.observable ''
-    self.playerActions = PlayerActions
-    self.playlistActions = PlaylistActions
-    self.playlist = ko.observableArray []
-    self.covers = ko.observable ''
-    self.searchText = ko.observable ''
-    self.searchFilter = ko.observable 'any'
-    self.searchResult = ko.observableArray []
-    self.fileUrl = ko.observable urlFile
-    self.status = ko.observable {state: 'stop'}
+    @current = ko.observable ''
+    @playerActions = PlayerActions
+    @playlistActions = PlaylistActions
+    @playlist = ko.observableArray []
+    @covers = ko.observable ''
+    @searchText = ko.observable ''
+    @searchFilter = ko.observable 'any'
+    @searchResult = ko.observableArray []
+    @fileUrl = ko.observable urlFile
+    @status = ko.observable {state: 'stop'}
 
     @isCurrent = (index) ->
       index().toString() is @current().position
