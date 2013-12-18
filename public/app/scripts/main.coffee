@@ -74,17 +74,16 @@ class PlayerActions
 
 class PlaylistActions
   @add: (song) ->
-    console.log song
     PlaylistActions._send('PUT', {song: song.filename})
 
-  @delete: (song) ->
-    PlaylistActions._send('DELETE', {song: song.filename})
+  @delete: (index) ->
+    PlaylistActions._send('DELETE', null, "#{urlPlaylist}/#{index()}")
 
   @clear: ->
     PlaylistActions._send('DELETE')
 
-  @_send: (type, data = null) ->
-    url = "#{urlPlaylist}"
+  @_send: (type, data = null, url = null) ->
+    url = url || urlPlaylist
 
     $.ajax({url: url, type: type, data: data})
     .done (data) ->

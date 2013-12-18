@@ -88,7 +88,7 @@
                         <span class="result-title" data-bind="text: title"></span>
                         <span class="result-artist" data-bind="text: artist"></span>
                         <span class="result-album" data-bind="text: album"></span>
-                        <button class="action-track delete-track" data-bind="click: $parent.playlistActions.delete"><i class="fa fa-times"></i></button>
+                        <button class="action-track delete-track" data-bind="click: $parent.playlistActions.delete.bind($data, $index)"><i class="fa fa-times"></i></button>
                     </li>
                 <!-- /ko -->
                 </ul>
