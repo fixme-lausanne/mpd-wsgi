@@ -270,23 +270,24 @@ def playlist_add():
         abort(400)
 
 
+@app.route("/playlist/<int:songid>", methods=['DELETE'])
+def song_delete(songid):
+    try:
+        return jsonify(mpd_command('delete', songid))
+    except mpd.CommandError:
+        abort(404)
+
+
 @app.route("/playlist", methods=['DELETE'])
 def playlist_delete():
-    """if no argument named 'song' was given: 
+    """if no argument named 'song' was given:
         Clean the playlist by removing all the elements in it.
     else:
-        remove the list of songs contained in the playlist, the argument is a 
+        remove the list of songs contained in the playlist, the argument is a
         integer list for the index of the song to be removed.
     Note: the playlist is 0 indexed
     """
-    if 'song' in request.args:
-        try:
-            return jsonify(mpd_command('delete', int(request.args['song'])))
-        except mpd.CommandError as e:
-            abort(404)
-
-    else:
-        return jsonify(mpd_command('clear'))
+    return jsonify(mpd_command('clear'))
 
 
 SEARCH_TERMS = ['any', 'artist', 'album', 'title']
