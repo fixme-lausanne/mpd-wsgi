@@ -52,6 +52,10 @@ class MpdClient(mpd.MPDClient):
         ret = super(MpdClient, self).playlistinfo(*args, **kwargs)
         return {'songs':ret}
 
+    def clear_songs(self, songs):
+        for id in songs:
+            song_id = int(id)
+            self.delete(song_id)
 
     def search(self, limit, *args, **kwargs):
         results = super(MpdClient, self).search(*args, **kwargs)
@@ -271,9 +275,17 @@ def playlist_add():
 
 @app.route("/playlist", methods=['DELETE'])
 def playlist_delete():
-    """Clean the playlist by removing all the elements in it.
+    """if no argument named 'songs' was given: 
+        Clean the playlist by removing all the elements in it.
+    else:
+        remove the list of songs contained in the playlist, the argument is a 
+        integer list for the index of the song to be removed.
+    Note: the playlist is 0 indexed
     """
-    return jsonify(mpd_command('clear'))
+    if 'song' in request.form:
+        return jsonify(mpd_command('delete', request.form['songs']))
+    else:
+        abort(400)
 
 
 SEARCH_TERMS = ['any', 'artist', 'album', 'title']
