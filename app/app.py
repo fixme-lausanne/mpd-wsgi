@@ -278,7 +278,7 @@ def playlist_add():
 
 @app.route("/playlist", methods=['DELETE'])
 def playlist_delete():
-    """if no argument named 'songs' was given: 
+    """if no argument named 'song' was given: 
         Clean the playlist by removing all the elements in it.
     else:
         remove the list of songs contained in the playlist, the argument is a 
