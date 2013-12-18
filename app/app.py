@@ -118,6 +118,9 @@ def generate_doc():
     route url as key and the docstring of the callback method as value.
     """
     url_map = app.url_map
+    import IPython
+    IPython.embed()
+
     doc = list()
     for i in url_map.iter_rules():
         if "static" in i.rule:
@@ -285,7 +288,7 @@ def playlist_delete():
     if 'song' in request.form:
         return jsonify(mpd_command('delete', request.form['songs']))
     else:
-        abort(400)
+        return jsonify(mpd_command('clear')
 
 
 SEARCH_TERMS = ['any', 'artist', 'album', 'title']
