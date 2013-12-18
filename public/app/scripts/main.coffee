@@ -147,14 +147,6 @@ class PlayerViewModel
         logFailure 'getStatus', data
         @status {state: 'stop'}
 
-  # Status
-  getStatus: =>
-    $.getJSON urlStatus, (data) =>
-      @status data
-    .fail (data) =>
-        logFailure 'getStatus', data
-        @status {state: 'stop'}
-
   # Search
   search: =>
     searchString = @searchText()
