@@ -13,7 +13,7 @@
 </head>
 <body>
 
-<header class="row show-for-medium-up">
+<header id="app-header" class="row show-for-medium-up">
     <div class="row">
         <div id="title" class="columns"><a href="/">{ <b id="logo">fmm:</b> 'fix my music' }</a></div>
     </div>
@@ -45,7 +45,7 @@
                 <!-- Player actions -->
                 <button id="action-previous" class="action columns small-2" data-bind="click: playerActions.previous"><i class="fa fa-backward"></i></button>
                 <button id="action-pause" class="action columns small-4" data-bind="click: playerActions.pause, visible: status().state == 'play'"><i class="fa fa-pause"></i></button>
-                <button id="action-play" class="action columns small-4" data-bind="click: playerActions.play, visible: status().state == 'pause' || status == 'stop'"><i class="fa fa-play"></i></button>
+                <button id="action-play" class="action columns small-4" data-bind="click: playerActions.play, visible: status().state == 'pause' || status().state == 'stop'"><i class="fa fa-play"></i></button>
                 <button id="action-next" class="action columns small-2" data-bind="click: playerActions.next"><i class="fa fa-forward"></i></button>
 
                 <!-- Download the current file -->
@@ -64,7 +64,8 @@
 
     <!-- Playlist and search tabs -->
     <section id="tabs-section" class="columns small-12 large-5">
-        <a class="show-for-medium-down link-go-to" href="#player-section"><div class="content-go-to"><i class="fa fa-music"></i></div></a>
+        <a class="show-for-medium-only link-go-to" href="#app-header"><div class="content-go-to"><i class="fa fa-music"></i></div></a>
+        <a class="show-for-small-only link-go-to" href="#player-section"><div class="content-go-to"><i class="fa fa-music"></i></div></a>
         <dl id="tabs-header" class="tabs row" data-tab>
             <dd id="playlist-tab" class="active columns small-6"><a href="#playlist-panel">Playlist</a></dd>
             <dd id="search-tab" class="columns small-6"><a href="#search-panel">Search</a></dd>
@@ -76,17 +77,18 @@
                 <button data-bind="click: playlistActions.clear"><i class="fa fa-trash-o"></i></button>
 
                 <!-- Playlist elements -->
-                <!-- ko with: playlist.error -->
-                <div class="error-message" data-bind="text: error"></div>
+                <!-- ko ifnot: playlist().error == undefined -->
+                <div class="error-message" data-bind="text: playlist().error"></div>
                 <!-- /ko -->
 
-                <!-- ko ifnot: playlist.error -->
+                <!-- ko if: playlist().error == undefined -->
                 <ul>
                 <!-- ko foreach: playlist -->
-                    <li>
+                    <li data-bind="css: {playing: $parent.isCurrent($index) }">
                         <span class="result-title" data-bind="text: title"></span>
                         <span class="result-artist" data-bind="text: artist"></span>
                         <span class="result-album" data-bind="text: album"></span>
+                        <button class="action-track delete-track" data-bind="click: $parent.playlistActions.delete.bind($data, $index)"><i class="fa fa-times"></i></button>
                     </li>
                 <!-- /ko -->
                 </ul>
@@ -107,18 +109,22 @@
                 <label for="radio-artist">Artist</label>
 
                 <!-- Results -->
-                <!-- ko if: playlist.error -->
-                <div class="error-message" data-bind="text: error"></div>
+                <!-- ko ifnot: searchResult().error == undefined -->
+                <div class="error-message" data-bind="text: searchResult().error"></div>
                 <!-- /ko -->
 
-                <!-- ko ifnot: playlist.error -->
+                <!-- ko if: searchResult().error == undefined -->
                 <ul id="search-result">
                 <!-- ko foreach: searchResult -->
-                    <li>
+                    <li data-bind="attr:{'data-dropdown': 'drop' + $index()}">
                         <span class="result-title" data-bind="text: title"></span>
                         <span class="result-artist" data-bind="text: artist"></span>
                         <span class="result-album" data-bind="text: album"></span>
+                        <button class="action-track add-track" data-bind="click: $parent.playlistActions.add"><i class="fa fa-plus"></i></button>
                     </li>
+                    <ul class="f-dropdown content" data-dropdown-content data-bind="attr:{'id': 'drop' + $index()}">
+                        <li>Add to playlist</li>
+                    </ul>
                 <!-- /ko -->
                 </ul>
                 <!-- /ko -->
@@ -132,8 +138,9 @@
 <!-- bower:js -->
 <script src="bower_components/modernizr/modernizr.js"></script>
 <script src="bower_components/jquery/jquery.js"></script>
-<script src="bower_components/foundation/js/foundation.js"></script>
 <script src="bower_components/knockoutjs/build/output/knockout-latest.js"></script>
+<script src="bower_components/foundation/js/foundation.js"></script>
+<script src="bower_components/foundation/js/foundation/foundation.dropdown.js"></script>
 <!-- endbower -->
 <!-- endbuild -->
 

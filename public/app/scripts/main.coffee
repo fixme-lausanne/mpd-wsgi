@@ -7,15 +7,15 @@ $(document).foundation
 
 # KnockoutJS
 
-url = '/api'
-urlCurrent = url + '/current'
-urlPlaylist = url + '/playlist'
-urlActions = url + '/action'
-urlCover = url + '/cover'
-urlSearch = url + '/search'
-urlFile = url + '/file'
-urlUpdate = url + '/update'
-urlStatus = url + '/status'
+base_url = '/api'
+urlCurrent = base_url + '/current'
+urlPlaylist = base_url + '/playlist'
+urlActions = base_url + '/action'
+urlCover = base_url + '/cover'
+urlSearch = base_url + '/search'
+urlFile = base_url + '/file'
+urlUpdate = base_url + '/update'
+urlStatus = base_url + '/status'
 
 
 searchLimit = 20 # Maximal number of songs the search will return
@@ -40,23 +40,25 @@ class Song
     @title = data.title   || 'unknown title'
     @artist = data.artist || 'unknown artist'
     @album = data.album   || 'unknown album'
+    @filename = data.file || 'unknown filename'
+    @position = data.pos  || null
 
 # Player actions
 class PlayerActions
   @previous: ->
-    PlayerActions._send('previous')
+    PlayerActions._send 'previous'
 
   @next: ->
-    PlayerActions._send('next')
+    PlayerActions._send 'next'
 
   @pause: ->
-    PlayerActions._send('pause')
+    PlayerActions._send 'pause'
 
   @play: ->
-    PlayerActions._send('play')
+    PlayerActions._send 'play'
 
   @update: ->
-    PlayerActions._send('update', urlUpdate)
+    PlayerActions._send 'update', urlUpdate
 
 
   # private
@@ -66,27 +68,29 @@ class PlayerActions
 
     $.getJSON(url)
     .done (data) ->
-        viewModel.getStatus()
+        viewModel.loadUI()
     .fail (data) ->
-        logFailure(caller, data)
+        logFailure caller, data
 
 
 class PlaylistActions
-  @add: (filename) ->
-    PlaylistActions._send('PUT', filename)
+  @add: (song) ->
+    PlaylistActions._send 'PUT', {song: song.filename}
+
+  @delete: (index) ->
+    PlaylistActions._send 'DELETE', null, "#{urlPlaylist}/#{index()}"
 
   @clear: ->
-    PlaylistActions._send('DELETE')
+    PlaylistActions._send 'DELETE'
 
-  @_send: (type, data = null) ->
-    url = "#{urlPlaylist}"
+  @_send: (type, data = null, url = null) ->
+    url = url || urlPlaylist
 
     $.ajax({url: url, type: type, data: data})
     .done (data) ->
-        viewModel.getCurrent()
-        viewModel.getPlaylist()
+        viewModel.loadUI()
     .fail (data) ->
-        logFailure('PlaylistActions._send', data)
+        logFailure 'PlaylistActions._send', data
 
 
 # ViewModel
@@ -104,10 +108,10 @@ class PlayerViewModel
     self.fileUrl = ko.observable urlFile
     self.status = ko.observable {state: 'stop'}
 
-    self.getCurrent()
-    self.getPlaylist()
-    self.getCover()
-    self.getStatus()
+    @isCurrent = (index) ->
+      index().toString() is @current().position
+
+    @loadUI()
 
   # Current song
   getCurrent: =>
@@ -121,8 +125,8 @@ class PlayerViewModel
   # Playlist
   getPlaylist: =>
     $.getJSON urlPlaylist, (data) =>
-      @playlist $.map(data.songs, (item) ->
-        new Song(item))
+      @playlist $.map data.songs, (item) ->
+        new Song(item)
     .fail (data) =>
         logFailure 'getPlaylist', data
         @playlist {error: 'Playlist: Error'}
@@ -143,14 +147,6 @@ class PlayerViewModel
         logFailure 'getStatus', data
         @status {state: 'stop'}
 
-  # Status
-  getStatus: =>
-    $.getJSON urlStatus, (data) =>
-      @status data
-    .fail (data) =>
-        logFailure 'getStatus', data
-        @status {state: 'stop'}
-
   # Search
   search: =>
     searchString = @searchText()
@@ -159,13 +155,21 @@ class PlayerViewModel
     if searchString.length > 3
       url = "#{urlSearch}?#{filter}=#{searchString}&limit=#{searchLimit}"
       $.getJSON url, (searchData) =>
-        @searchResult $.map(searchData.results, (item) ->
-          new Song(item))
+        @searchResult $.map searchData.songs, (item) ->
+          new Song(item)
       .fail (data) =>
           logFailure 'search', data
           @searchResult {error: 'Search: Error'}
     else
       @searchResult []
+
+  # Refresh the interface
+  loadUI: ->
+    @getStatus()
+    @getCover()
+    @getPlaylist()
+    @getCurrent()
+
 
 # Instanciate the ViewModel
 viewModel = new PlayerViewModel()
