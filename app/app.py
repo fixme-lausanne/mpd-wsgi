@@ -156,6 +156,15 @@ def play():
     """
     return jsonify(mpd_command('play'))
 
+@app.route("/action/play/<int:songid>")
+def play_song(songid):
+    """
+    Play the actual song.
+
+    @return an empty json dictionnary.
+    """
+    return jsonify(mpd_command('play', songid))
+
 @app.route("/cover")
 def cover():
     """return a list of cover of different sizes.
