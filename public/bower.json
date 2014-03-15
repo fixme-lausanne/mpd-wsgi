@@ -2,12 +2,9 @@
   "name": "public",
   "version": "0.0.0",
   "dependencies": {
-    "jquery": "~1.10.2",
+    "jquery": "2.0.3",
     "foundation": "~5.0.2",
     "knockoutjs": "~3.0.0"
   },
-  "devDependencies": {},
-  "resolutions": {
-    "jquery": ">= 2.0.0"
-  }
+  "devDependencies": {}
 }
