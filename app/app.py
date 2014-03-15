@@ -11,6 +11,8 @@ from socket import error as SocketError
 import update_music
 import logging
 import threading
+import os
+from werkzeug import secure_filename
 import lastfm
 
 
@@ -132,6 +134,8 @@ def main_page():
     Simply return the documentation concerning the app.
     """
     global app_doc
+    import pudb
+    pudb.set_trace()
     if not app_doc:
         logging.info("Generate doc")
         app_doc = generate_doc()
@@ -230,8 +234,20 @@ def status():
     """
     return jsonify(mpd_command('status'))
 
+@app.route("/file", methods=['POST'])
+def upload_file():
+    """Add a new file to the mpd library
+    """
+    files = request.files.getlist("file[]")
+    file_names = []
+    for f in files:
+        if f:
+            filename = secure_filename(f.filename)
+            f.save(os.path.join(config.MPD_ROOT, filename))
+            file_names.append(filename)
+    return jsonify({'uploaded_files':file_names})
 
-@app.route("/file")
+@app.route("/file", methods=['GET'])
 def download_file():
     """Return the actual file played trough mpd or an empty string if there is no file playing.
     """
