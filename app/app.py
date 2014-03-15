@@ -234,9 +234,10 @@ def status():
     """
     return jsonify(mpd_command('status'))
 
+
 @app.route("/file", methods=['POST'])
 def upload_file():
-    """Add a new file to the mpd library
+    """Add files to the mpd library. 
     """
     files = request.files.getlist("file[]")
     file_names = []
@@ -245,7 +246,8 @@ def upload_file():
             filename = secure_filename(f.filename)
             f.save(os.path.join(config.MPD_ROOT, filename))
             file_names.append(filename)
-    return jsonify({'uploaded_files':file_names})
+    return jsonify({'uploaded_files': file_names})
+
 
 @app.route("/file", methods=['GET'])
 def download_file():
