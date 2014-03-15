@@ -1,6 +1,8 @@
 stdeb
-lastfm
+lastfm==0.2
 flask
 flask-sockets
 nose
 celementtree
+python-mpd2==0.5.2
+gunicorn
