@@ -21,6 +21,13 @@ app_doc = None
 socket = Sockets(app)
 
 
+def add_cors_headers(response):
+    response.headers['Access-Control-Allow-Origin'] = '*'
+    return response
+
+app.after_request(add_cors_headers)
+
+
 class MpdClient(mpd.MPDClient):
     """Enumeration of the commands available.
     """
