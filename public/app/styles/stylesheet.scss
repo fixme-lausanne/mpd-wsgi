@@ -217,6 +217,11 @@ body header {
   }
 }
 
+#playlist-result {
+    height: 80vh;
+    overflow-y: auto;
+}
+
 #search-panel {
   input[type='radio'] {
     display: none;
