@@ -15,6 +15,7 @@ import lastfm
 
 
 app = Flask(__name__)
+
 app_doc = None
 
 socket = Sockets(app)
@@ -26,7 +27,7 @@ class MpdClient(mpd.MPDClient):
     Authorized_commands = ('stats', 'play', 'pause', 'toggle_play',
                            'playlistinfo', 'currentsong', 'next',
                            'previous', 'status', 'search', 'clear',
-                           'add', 'cover')
+                           'add', 'cover', 'delete')
 
     def __init__(self, *args, **kwargs):
         super(MpdClient, self).__init__(*args, **kwargs)
@@ -155,6 +156,15 @@ def play():
     """
     return jsonify(mpd_command('play'))
 
+@app.route("/action/play/<int:songid>")
+def play_song(songid):
+    """
+    Play the actual song.
+
+    @return an empty json dictionnary.
+    """
+    return jsonify(mpd_command('play', songid))
+
 @app.route("/cover")
 def cover():
     """return a list of cover of different sizes.
@@ -269,19 +279,24 @@ def playlist_add():
         abort(400)
 
 
+@app.route("/playlist/<int:songid>", methods=['DELETE'])
+def song_delete(songid):
+    try:
+        return jsonify(mpd_command('delete', songid))
+    except mpd.CommandError:
+        abort(404)
+
+
 @app.route("/playlist", methods=['DELETE'])
 def playlist_delete():
-    """if no argument named 'song' was given: 
+    """if no argument named 'song' was given:
         Clean the playlist by removing all the elements in it.
     else:
-        remove the list of songs contained in the playlist, the argument is a 
+        remove the list of songs contained in the playlist, the argument is a
         integer list for the index of the song to be removed.
     Note: the playlist is 0 indexed
     """
-    if 'song' in request.form:
-        return jsonify(mpd_command('delete', request.form['song']))
-    else:
-        return jsonify(mpd_command('clear')
+    return jsonify(mpd_command('clear'))
 
 
 SEARCH_TERMS = ['any', 'artist', 'album', 'title']
