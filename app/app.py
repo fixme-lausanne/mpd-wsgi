@@ -15,6 +15,7 @@ import lastfm
 
 
 app = Flask(__name__)
+app.debug = True
 
 app_doc = None
 
@@ -59,6 +60,10 @@ class MpdClient(mpd.MPDClient):
     def playlistinfo(self, *args, **kwargs):
         ret = super(MpdClient, self).playlistinfo(*args, **kwargs)
         return {'songs':ret}
+    
+    def seek(self, time):
+        current = self.currentsong()
+        return super(MpdClient, self).seek(current.get('pos', 0), time)
 
     def search(self, limit, *args, **kwargs):
         results = super(MpdClient, self).search(*args, **kwargs)
