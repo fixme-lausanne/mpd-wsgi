@@ -145,7 +145,7 @@ def main_page():
     return render_template("help.html", doc=app_doc)
 
 
-@app.route("/action/seek/<time:int>")
+@app.route("/action/seek/<int:time>")
 def seek(time):
     """Seek to a particular time in the current song
     """
