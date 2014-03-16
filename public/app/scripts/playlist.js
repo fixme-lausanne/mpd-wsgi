@@ -7,7 +7,7 @@ window.mpd.playlist = new function() {
 
     // Manage playlist actions
     var _send = function(type, data, url) {
-        var url = url || urlPlaylist;
+        var url = url || config.urlPlaylist;
 
         $.ajax({
             url: url,

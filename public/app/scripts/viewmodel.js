@@ -88,6 +88,7 @@ window.mpd.viewmodel = function() {
                 var songs = $.map(data.songs, function(item) {
                     return new window.mpd.song(item);
                 });
+                this.searchResult(songs);
             }).fail(function(xhr, status, err) {
                 window.mpd.utils.logErrors('search', {
                     xhr: xhr, status: status, error: err,
