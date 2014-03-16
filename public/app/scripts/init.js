@@ -7,18 +7,17 @@ $(document).foundation({
 
 $(document).ready(function() {
     // Instanciate the ViewModel
-    var viewModel = new window.mpd.viewmodel();
-    window.mpd.vm = viewModel;
+    window.mpd.vm = new window.mpd.viewmodel();
 
     // Search on change
-    viewModel.searchText.subscribe(function(){
+    window.mpd.vm.searchText.subscribe(function(){
         window.mpd.vm.search();
     });
 
-    viewModel.searchFilter.subscribe(function(data) {
+    window.mpd.vm.searchFilter.subscribe(function(data) {
         window.mpd.vm.search();
     });
 
     // Apply the bindings
-    ko.applyBindings(viewModel);
+    ko.applyBindings(window.mpd.vm);
 });
