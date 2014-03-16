@@ -22,7 +22,10 @@ socket = Sockets(app)
 
 
 def add_cors_headers(response):
-    response.headers['Access-Control-Allow-Origin'] = '*'
+    response.headers['Access-Control-Allow-Origin'] = "*"
+    response.headers['Access-Control-Allow-Methods'] =  "POST, GET, OPTIONS, PUT, DELETE"
+    response.headers['Access-Control-Allow-Headers'] = "Content-Type"
+    response.headers['Access-Control-Allow-Credentials'] = "true"
     return response
 
 app.after_request(add_cors_headers)
