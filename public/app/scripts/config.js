@@ -4,6 +4,7 @@ if (window.mpd == undefined) {
 
 window.mpd.config = new function() {
     this.base_url = 'http://localhost:8000';
+    this.urlCurrent = this.base_url + '/current';
     this.urlPlaylist = this.base_url + '/playlist';
     this.urlActions = this.base_url + '/action';
     this.urlCover = this.base_url + '/cover';
