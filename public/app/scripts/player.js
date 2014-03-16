@@ -6,7 +6,7 @@ window.mpd.player = new function() {
     var config = window.mpd.config;
 
     // Manage actions
-    var _sendPlayerAction = function(action, url) {
+    var _send = function(action, url) {
         var url = url || config.urlActions + '/' + action;
 
         $.ajax({

@@ -6,7 +6,7 @@ window.mpd.playlist = new function() {
     var config = window.mpd.config;
 
     // Manage playlist actions
-    var _sendPlaylistAction = function(type, data, url) {
+    var _send = function(type, data, url) {
         var url = url || urlPlaylist;
 
         $.ajax({
@@ -26,16 +26,15 @@ window.mpd.playlist = new function() {
 
     this.actions = function() {
         this.add = function(song) {
-            _sendPlaylistAction('PUT', {song: song.filename});
+            _send('PUT', {song: song.filename});
         };
 
         this.delete = function(index) {
-            _sendPlaylistAction('DELETE', null,
-                                config.urlPlaylist + '/' + index());
+            _send('DELETE', null, config.urlPlaylist + '/' + index());
         };
 
         this.clear = function() {
-            _sendPlaylistAction('DELETE');
+            _send('DELETE');
         };
     };
 }
