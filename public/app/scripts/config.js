@@ -1,4 +1,4 @@
-if (window.mpd == undefined) {
+if (window.mpd === undefined) {
     window.mpd = {};
 }
 
@@ -20,5 +20,5 @@ window.mpd.config = new function() {
         large: 'images/default_album_large.jpg',
         medium: 'images/default_album_medium.jpg',
         small: 'images/default_album_small.jpg'
-    }
+    };
 };

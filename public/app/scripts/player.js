@@ -1,4 +1,4 @@
-if (window.mpd == undefined) {
+if (window.mpd === undefined) {
     window.mpd = {};
 }
 
@@ -13,7 +13,7 @@ window.mpd.player = new function() {
             url: url,
             context: {action: action,
                       url: url}
-        }).done(function(data){
+        }).done(function(_){
             window.mpd.vm.loadUi();
         }).fail(function(xhr, status, err){
             window.mpd.utils.logErrors(action, {
@@ -44,4 +44,4 @@ window.mpd.player = new function() {
             _send('update', config.urlUpdate);
         };
     };
-}
+};

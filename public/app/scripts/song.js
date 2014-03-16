@@ -1,4 +1,4 @@
-if (window.mpd == undefined) {
+if (window.mpd === undefined) {
     window.mpd = {};
 }
 
@@ -9,4 +9,4 @@ window.mpd.song = function(data) {
     this.album = data.album || 'unknown album';
     this.filename = data.filename || 'unkown filename';
     this.position = data.pos || null;
-}
+};

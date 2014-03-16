@@ -1,4 +1,4 @@
-if (window.mpd == undefined) {
+if (window.mpd === undefined) {
     window.mpd = {};
 }
 
@@ -78,8 +78,8 @@ window.mpd.viewmodel = function() {
 
         if (searchString.length > 3) {
             var url =
-                config.urlSearch + '?' + filter + '=' + searchString
-                + '&limit=' + config.searchLimit;
+                config.urlSearch + '?' + filter + '=' + searchString +
+                '&limit=' + config.searchLimit;
 
             $.ajax({
                 url: url,
@@ -130,4 +130,4 @@ window.mpd.viewmodel = function() {
 
         context.loadUi();
     })(this);
-}
+};

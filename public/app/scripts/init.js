@@ -1,7 +1,7 @@
 // Init foundation
 $(document).foundation({
     tab: {
-        callback: function(tab) {}
+        callback: function(_) {}
     }
 });
 
@@ -14,7 +14,7 @@ $(document).ready(function() {
         window.mpd.vm.search();
     });
 
-    window.mpd.vm.searchFilter.subscribe(function(data) {
+    window.mpd.vm.searchFilter.subscribe(function(_) {
         window.mpd.vm.search();
     });
 

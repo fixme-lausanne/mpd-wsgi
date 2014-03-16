@@ -1,4 +1,4 @@
-if (window.mpd == undefined) {
+if (window.mpd === undefined) {
     window.mpd = {};
 }
 
@@ -14,7 +14,7 @@ window.mpd.playlist = new function() {
             type: type,
             data: data,
             context: {data: data, url: url, type: type}
-        }).done(function(data) {
+        }).done(function(_) {
             window.mpd.vm.loadUi();
         }).fail(function(xhr, status, err) {
             window.mpd.utils.logErrors(this.type, {
@@ -37,4 +37,4 @@ window.mpd.playlist = new function() {
             _send('DELETE');
         };
     };
-}
+};
