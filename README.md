@@ -78,5 +78,14 @@ You can run test with a grunt task
 The default behavior of grunt is to run `jshint`, all tests and finally to build everything.
 
 # Screenshots
+
+### Current version (16/03/2014)
+
+![Current song](http://i.imgur.com/sIN9hP3.png)
+
+![Playlist](http://i.imgur.com/yzyEaCb.png)
+
+![Search](http://i.imgur.com/Bxp2b4t.png)
+
 ### A first mockup
 ![First mockup](http://i.imgur.com/H3tAnib.png)
