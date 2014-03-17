@@ -127,7 +127,7 @@ body header {
 #current-track {
   position: absolute;
   z-index: 500;
-  background-color: $background-color;
+  background-color: rgba($background-color, 0.6);
   width: 100%;
   margin-top: 10%;
 
@@ -215,6 +215,11 @@ body header {
       background-color: lighten($background-color, 12%);
     }
   }
+}
+
+#playlist-result, #search-result {
+    height: 80vh;
+    overflow-y: auto;
 }
 
 #search-panel {
