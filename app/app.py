@@ -39,7 +39,7 @@ class MpdClient(mpd.MPDClient):
     Authorized_commands = ('stats', 'play', 'pause', 'toggle_play',
                            'playlistinfo', 'currentsong', 'next',
                            'previous', 'status', 'search', 'clear',
-                           'add', 'cover', 'delete')
+                           'add', 'cover', 'delete', 'seek')
 
     def __init__(self, *args, **kwargs):
         super(MpdClient, self).__init__(*args, **kwargs)
@@ -64,6 +64,10 @@ class MpdClient(mpd.MPDClient):
     def playlistinfo(self, *args, **kwargs):
         ret = super(MpdClient, self).playlistinfo(*args, **kwargs)
         return {'songs':ret}
+
+    def seek(self, time):
+        current = self.currentsong()
+        return super(MpdClient, self).seek(current.get('pos', 0), time)
 
     def search(self, limit, *args, **kwargs):
         results = super(MpdClient, self).search(*args, **kwargs)
@@ -148,6 +152,13 @@ def main_page():
         logging.info("Generate doc")
         app_doc = generate_doc()
     return render_template("help.html", doc=app_doc)
+
+
+@app.route("/action/seek/<int:time>")
+def seek(time):
+    """Seek to a particular time in the current song
+    """
+    return jsonify(mpd_command('seek', time))
 
 
 @app.route("/action/pause")
