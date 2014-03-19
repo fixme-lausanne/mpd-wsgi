@@ -4,14 +4,14 @@ if (window.mpd === undefined) {
 
 window.mpd.config = new function() {
     this.base_url = '/api';
-    this.urlCurrent = this.base_url + '/current';
-    this.urlPlaylist = this.base_url + '/playlist';
-    this.urlActions = this.base_url + '/action';
-    this.urlCover = this.base_url + '/cover';
-    this.urlSearch = this.base_url + '/search';
-    this.urlFile = this.base_url + '/file';
-    this.urlUpdate = this.base_url + '/update';
-    this.urlStatus = this.base_url + '/status';
+    this.urlCurrent = this.baseUrl + '/current';
+    this.urlPlaylist = this.baseUrl + '/playlist';
+    this.urlActions = this.baseUrl + '/action';
+    this.urlCover = this.baseUrl + '/cover';
+    this.urlSearch = this.baseUrl + '/search';
+    this.urlFile = this.baseUrl + '/file';
+    this.urlUpdate = this.baseUrl + '/update';
+    this.urlStatus = this.baseUrl + '/status';
 
     this.searchLimit = 20;
 

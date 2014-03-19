@@ -73,8 +73,8 @@ window.mpd.viewmodel = function() {
     };
 
     this.search = function() {
-        var searchString = this.searchText();
-        var filter = this.searchFilter();
+        var searchString = encodeURIComponent(this.searchText());
+        var filter = encodeURIComponent(this.searchFilter());
 
         if (searchString.length > 3) {
             var url =
