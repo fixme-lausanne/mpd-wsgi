@@ -36,5 +36,9 @@ window.mpd.playlist = new function() {
         this.clear = function() {
             _send('DELETE');
         };
+
+        this.play = function(index) {
+            _send('GET', null, config.base_url + '/action/play/' + index());
+        };
     };
 };
