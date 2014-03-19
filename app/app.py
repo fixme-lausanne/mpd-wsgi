@@ -134,8 +134,6 @@ def main_page():
     Simply return the documentation concerning the app.
     """
     global app_doc
-    import pudb
-    pudb.set_trace()
     if not app_doc:
         logging.info("Generate doc")
         app_doc = generate_doc()
