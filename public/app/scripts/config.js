@@ -3,7 +3,7 @@ if (window.mpd === undefined) {
 }
 
 window.mpd.config = new function() {
-    this.base_url = '/api';
+    this.baseUrl = '/api';
     this.urlCurrent = this.baseUrl + '/current';
     this.urlPlaylist = this.baseUrl + '/playlist';
     this.urlActions = this.baseUrl + '/action';
