@@ -38,7 +38,7 @@ window.mpd.playlist = new function() {
         };
 
         this.play = function(index) {
-            _send('GET', null, config.baseUrl + '/action/play/' + index());
+            _send('GET', null, config.urlActions + '/play/' + index());
         };
     };
 };
