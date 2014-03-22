@@ -7,6 +7,6 @@ window.mpd.song = function(data) {
     this.title = data.title || 'unknown title';
     this.artist = data.artist || 'unknown artist';
     this.album = data.album || 'unknown album';
-    this.filename = data.filename || 'unknown filename';
+    this.filename = data.file || 'unknown filename';
     this.position = data.pos || null;
 };
