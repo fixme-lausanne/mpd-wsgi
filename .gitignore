@@ -1,8 +1,13 @@
+# Global
+# ======
+
+.*
+
 # API
 # ===
 
-*.pyc
-__pycache__
+api/*.pyc
+api/__pycache__
 
 
 # Client
