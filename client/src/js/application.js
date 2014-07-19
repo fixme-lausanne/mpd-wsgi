@@ -14,6 +14,5 @@ AppDispatch = _.extend({}, Backbone.Events);
 var AppView = require('./views/app');
 console.log(AppView);
 $(function() {
-    debugger;
     App = new AppView();
 })
