@@ -1,2 +1,13 @@
+# API
+# ===
+
 *.pyc
 __pycache__
+
+
+# Client
+# ======
+
+client/node_modules
+client/build
+client/src/lib
