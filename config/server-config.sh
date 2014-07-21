@@ -32,6 +32,7 @@ npm -v
 # Client side
 echo "Install client dependencies"
 cd /vagrant/client
+sudo gem install compass --no-ri --no-rdoc
 npm install
 node node_modules/bower/bin/bower install
 node node_modules/gulp/bin/gulp.js build
