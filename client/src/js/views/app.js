@@ -13,7 +13,10 @@ var AppRouter = require('../routers/app');
 module.exports = Backbone.View.extend({
     el: 'body',
 
-    initialize: function() {
+    initialize: function(config) {
+        this.controlsView = new ControlsView();
+        this.tabbarView = new ListTabsView();
+
         AppRouter.on('route:root', _.bind(this.tabAlbums, this));
         AppRouter.on('route:albums', _.bind(this.tabAlbums, this));
         AppRouter.on('route:artists', _.bind(this.tabArtists, this));
@@ -23,29 +26,44 @@ module.exports = Backbone.View.extend({
 
         Backbone.history.start();
 
-        this.controlsView = new ControlsView();
-        this.tabbarView = new ListTabsView();
-
-        $(document).foundation();
+        $.when(this.fechDataOnLoad())
+            .done(_.bind(AppStorage.populate, AppStorage))
+            .fail(_.bind(this.handleFailure, this));
     },
 
     tabAlbums: function() {
         this.currentView = new TabAlbumsView();
+        this.currentView.render();
     },
 
     tabArtists: function() {
         this.currentView = new TabArtistsView();
+        this.currentView.render();
     },
 
     tabGenres: function() {
         this.currentView = new TabGenresView();
+        this.currentView.render();
     },
 
     tabPlaylists: function() {
         this.currentView = new TabPlaylistsView();
+        this.currentView.render();
     },
 
     tabSongs: function() {
         this.currentView = new TabSongsView();
+        this.currentView.render();
+    },
+
+    fechDataOnLoad: function() {
+        return $.ajax({
+            type: 'GET',
+            url: AppConfig.api + '/playlist'
+        });
+    },
+
+    handleFailure: function(xhr, err, status) {
+        console.error(xhr, err, status);
     }
 });

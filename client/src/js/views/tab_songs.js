@@ -5,7 +5,6 @@ module.exports = Backbone.View.extend({
     el: '#tab-content',
 
     initialize: function() {
-        debugger;
         this.$el.html(template());
     }
 });
