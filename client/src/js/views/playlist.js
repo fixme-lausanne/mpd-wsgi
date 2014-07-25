@@ -19,7 +19,6 @@ module.exports = Backbone.View.extend({
     },
 
     select: function() {
-        console.log(this.model);
         this.model.set({selected: true});
     }
 });

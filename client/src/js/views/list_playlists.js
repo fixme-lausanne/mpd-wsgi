@@ -22,7 +22,6 @@ module.exports = Backbone.View.extend({
     },
 
     renderAll: function() {
-        console.log('playlists: renderAll');
         return this.collection.map(this.renderOne, this);
     }
 });
