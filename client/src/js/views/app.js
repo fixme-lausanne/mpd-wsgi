@@ -59,7 +59,7 @@ module.exports = Backbone.View.extend({
     fechDataOnLoad: function() {
         return $.ajax({
             type: 'GET',
-            url: AppConfig.api + '/playlist'
+            url: AppConfig.api + '/initial_data'
         });
     },
 

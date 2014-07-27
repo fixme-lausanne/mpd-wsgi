@@ -26,7 +26,6 @@ module.exports = Backbone.View.extend({
     },
 
     renderListTracks: function() {
-        new ListTracks(AppStorage.get('playlists').get('songs'));
         var view = new ListTracksView({
             collection: AppStorage.get('playlists').get('songs')
         });
