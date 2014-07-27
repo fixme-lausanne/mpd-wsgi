@@ -39,7 +39,8 @@ class MpdClient(mpd.MPDClient):
     Authorized_commands = ('stats', 'play', 'pause', 'toggle_play',
                            'playlistinfo', 'currentsong', 'next',
                            'previous', 'status', 'search', 'clear',
-                           'add', 'cover', 'delete', 'seek')
+                           'add', 'cover', 'delete', 'seek',
+                           'list_by_tags', 'list_albums', 'find',)
 
     def __init__(self, *args, **kwargs):
         super(MpdClient, self).__init__(*args, **kwargs)
@@ -60,6 +61,29 @@ class MpdClient(mpd.MPDClient):
                 return ret
         else:
             abort(401)
+
+    def find(self, *args, **kwargs):
+        return super(MpdClient, self).find(*args, **kwargs)
+
+    def list(self, *args, **kwargs):
+        ret = self.list_by_tags(*args, **kwargs)
+        return {'results': ret}
+
+    def list_by_tags(self, *args, **kwargs):
+        return super(MpdClient, self).list(*args, **kwargs)
+
+    def list_albums(self):
+        res = {}
+        albums = self.list_by_tags('album')
+        for album in albums:
+            album_info = self.find('album', album)
+            artists = set(map(lambda x:x['artist'], album_info))
+            for artist in artists:
+                if res.get(album):
+                    res[album].append(artist)
+                else:
+                    res[album] = [artist]
+        return {'albums': res}
 
     def playlistinfo(self, *args, **kwargs):
         ret = super(MpdClient, self).playlistinfo(*args, **kwargs)
@@ -338,7 +362,6 @@ def playlist_delete():
 
 SEARCH_TERMS = ['any', 'artist', 'album', 'title']
 
-
 @app.route("/search")
 def search():
     """Search a song for any of this component or any
@@ -360,6 +383,44 @@ def search():
     else:
         abort(400)
 
+
+LIST_TERMS = ['album', 'artist', 'genre', 'composer', 'date',
+              'performer', 'title', 'track',]
+
+@app.route("/list")
+def list_by_tags():
+    """Lists all tags of the specified type.
+    TYPE must be one of that list:
+    album,
+    artist,
+    composer,
+    date,
+    genre,
+    performer,
+    title,
+    track.
+
+    @param TYPE
+    """
+    tag_type = request.args['type']
+    if tag_type in LIST_TERMS:
+        return jsonify(mpd_command('list_by_tags', tag_type))
+    else:
+        abort(400)
+
+@app.route("/list_albums")
+def list_albums():
+    """List all albums.
+    """
+    return jsonify(mpd_command('list_albums'))
+
+@app.route("/initial_data")
+def initial_data():
+    """@return initial data
+    """
+    ret = {'albums': mpd_command('list_albums')['albums'],
+           'playlists': mpd_command('playlistinfo')['songs']}
+    return jsonify(ret)
 
 @socket.route('/player_change')
 def player_change(ws):
