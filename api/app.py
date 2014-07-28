@@ -40,7 +40,9 @@ class MpdClient(mpd.MPDClient):
                            'playlistinfo', 'currentsong', 'next',
                            'previous', 'status', 'search', 'clear',
                            'add', 'cover', 'delete', 'seek',
-                           'list_by_tags', 'list_albums', 'find',)
+                           'list_by_tags', 'find',
+                           'list_albums', 'list_artists', 'list_genres',)
+
 
     def __init__(self, *args, **kwargs):
         super(MpdClient, self).__init__(*args, **kwargs)
@@ -84,6 +86,34 @@ class MpdClient(mpd.MPDClient):
                 else:
                     res[album] = [artist]
         return {'albums': res}
+
+    def list_artists(self):
+        res = {}
+        artists = self.list_by_tags('artist')
+        for artist in artists:
+            artist_info = self.find('artist', artist)
+            albums = set(map(lambda x:x['album'], artist_info))
+            for album in albums:
+                if res.get(artist):
+                    res[artist].append(album)
+                else:
+                    res[artist] = [album]
+
+        return {'artists': res}
+
+    def list_genres(self):
+        res = {}
+        genres = self.list_by_tags('genre')
+        for genre in genres:
+            genre_info = self.find('genre', genre)
+            albums = set(map(lambda x:x['album'], genre_info))
+            for album in albums:
+                if res.get(genre):
+                    res[genre].append(album)
+                else:
+                    res[genre] = [album]
+
+        return {'genres': res}
 
     def playlistinfo(self, *args, **kwargs):
         ret = super(MpdClient, self).playlistinfo(*args, **kwargs)
@@ -414,12 +444,26 @@ def list_albums():
     """
     return jsonify(mpd_command('list_albums'))
 
+@app.route("/list_artists")
+def list_artists():
+    """List all artists.
+    """
+    return jsonify(mpd_command('list_artists'))
+
+@app.route("/list_genres")
+def list_genres():
+    """List all genres.
+    """
+    return jsonify(mpd_command('list_genres'))
+
 @app.route("/initial_data")
 def initial_data():
     """@return initial data
     """
     ret = {'albums': mpd_command('list_albums')['albums'],
-           'playlists': mpd_command('playlistinfo')['songs']}
+           'playlists': mpd_command('playlistinfo')['songs'],
+           'artists': mpd_command('list_artists')['artists'],
+           'genres': mpd_command('list_genres')['genres']}
     return jsonify(ret)
 
 @socket.route('/player_change')
