@@ -1,0 +1,19 @@
+li {
+    list-style: none;
+}
+
+// List of items, like artists or playlists.
+.side-list {
+    padding-left: 0;
+    padding-right: 0;
+    padding-top: 4px;
+    padding-bottom: 4px;
+
+    height: 87vh;
+    overflow-y: scroll;
+    overflow-x: hidden;
+
+    ul {
+        margin: 0;
+    }
+}

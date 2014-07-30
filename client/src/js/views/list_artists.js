@@ -7,11 +7,12 @@ module.exports = Backbone.View.extend({
     initialize: function() {
         this.listenTo(AppStorage.get('artists'),
                       'add remove', this.render);
+        this.$ul = this.$('ul');
     },
 
     render: function() {
-        this.$el.empty();
-        this.$el.append(this.renderAll());
+        this.$ul.empty();
+        this.$ul.append(this.renderAll());
         return this;
     },
 

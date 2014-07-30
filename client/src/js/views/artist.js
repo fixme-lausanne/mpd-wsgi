@@ -3,7 +3,7 @@ var template = require('../../templates/artist.html');
 // ArtistView
 module.exports = Backbone.View.extend({
     tagName: 'li',
-    className: 'artist',
+    className: 'artist row',
 
     events: {
         'click': 'select'

@@ -3,7 +3,7 @@ var template = require('../../templates/playlist.html');
 // PlaylistView
 module.exports = Backbone.View.extend({
     tagName: 'li',
-    className: 'playlist',
+    className: 'playlist row',
 
     events: {
         'click': 'select'
