@@ -38,7 +38,7 @@
     },
     "browser": {
         "foundation": "./src/lib/foundation/js/foundation/foundation.js",
-        "foundation_topbar": "./src/lib/foundation/js/foundation/foundation.topbar.js"
+        "foundation_slider": "./src/lib/foundation/js/foundation/foundation.slider.js"
     },
     "browserify": {
         "transform": [

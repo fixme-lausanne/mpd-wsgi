@@ -17,3 +17,66 @@ li {
         margin: 0;
     }
 }
+
+// Controls
+
+#controls {
+    padding-top: 3px;
+    padding-bottom: 3px;
+    border-bottom: 1px solid rgba(160, 160, 160, 1);
+    box-shadow: 0px 0px 4px rgba(1, 2, 3, 0.47);
+    background: linear-gradient(to bottom, #F5F5F5, #CECECE);
+}
+
+.buttons-controls {
+    font-size: 1.8rem;
+    text-align: center;
+    letter-spacing: 1rem;
+    line-height: 45px;
+}
+
+#info-panel {
+    background-color: rgb(230, 230, 230);
+    border-radius: 2px;
+    box-shadow: inset 0px 1px 18px rgba(1, 2, 3, 0.22);
+    background: radial-gradient(ellipse 198px 99px at 147px 66px,
+                                rgba(231, 231, 231, 0.52) 20%,
+                                rgba(144, 158, 167, 0.5) 100%);
+}
+
+@mixin overflow-ellipsis {
+    text-overflow: ellipsis;
+    white-space: nowrap;
+    overflow: hidden;
+}
+
+#info-current {
+    h5 {
+        @include overflow-ellipsis();
+        width: 100%;
+        font-size: 0.9rem;
+        font-weight: bold;
+    }
+
+    p {
+        @include overflow-ellipsis();
+        width: 100%;
+        font-size: 0.7rem;
+    }
+}
+
+.range-slider-active-segment {
+    background-color: #838383;
+    border-radius: 1000px;
+}
+
+.range-slider.round .range-slider-handle {
+    background-color: rgb(219, 219, 219);
+    border: 1px solid rgb(134, 134, 134);
+    box-shadow: 0px 0px 2px rgba(0, 0, 0, 0.24);
+
+    &:hover {
+        background-color: inherit;
+        box-shadow: 0px 0px 2px rgba(0, 0, 0, 0.75);
+    }
+}

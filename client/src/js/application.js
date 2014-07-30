@@ -3,6 +3,7 @@ _ = require('underscore');
 Backbone = require('backbone');
 
 var __foundation = require('foundation');
+var __foundation_slider = require('foundation_slider');
 
 var __init = require('./init');
 

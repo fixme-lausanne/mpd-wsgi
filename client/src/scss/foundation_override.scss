@@ -7,6 +7,11 @@ $body-font-color: rgb(66, 66, 66);
 // Grid
 $row-width: 100%;
 
+// Slider
+$range-slider-handle-width: rem-calc(16);
+$range-slider-handle-height: rem-calc(16);
+$range-slider-handle-position-top: rem-calc(-2);
+
 // Foundation Components
 @charset "UTF-8";
 
@@ -33,7 +38,7 @@ $row-width: 100%;
 //  "../lib/foundation/scss/foundation/components/panels",
 //  "../lib/foundation/scss/foundation/components/pricing-tables",
 //  "../lib/foundation/scss/foundation/components/progress-bars",
-//  "../lib/foundation/scss/foundation/components/range-slider",
+  "../lib/foundation/scss/foundation/components/range-slider",
 //  "../lib/foundation/scss/foundation/components/reveal",
 //  "../lib/foundation/scss/foundation/components/side-nav",
 //  "../lib/foundation/scss/foundation/components/split-buttons",
