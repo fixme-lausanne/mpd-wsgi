@@ -7,6 +7,8 @@ var __foundation_slider = require('foundation_slider');
 
 var __init = require('./init');
 
+var __utils = require('./utils');
+
 
 // Global events dispatcher
 AppDispatch = _.extend({}, Backbone.Events);
@@ -22,7 +24,6 @@ AppStorage = new Storage();
 
 // Application
 var AppView = require('./views/app');
-console.log(AppView);
 $(function() {
     App = new AppView();
     $(document).foundation();

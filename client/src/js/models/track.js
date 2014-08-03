@@ -2,7 +2,7 @@
 module.exports = Backbone.Model.extend({
     defaults: {
         title: '',
-        time: '00:00',
+        time: 0,
         artist: '',
         album: '',
         genre: ''

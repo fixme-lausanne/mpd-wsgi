@@ -14,7 +14,10 @@ module.exports = Backbone.View.extend({
     },
 
     render: function() {
-        this.$el.html(template(this.model.toJSON()));
+        var attributes = this.model.toJSON();
+        var t = Number(attributes.time).secondsToHours();
+        attributes.time = t.hours.pad() + ':' + t.minutes.pad() + ':' + t.seconds.pad();
+        this.$el.html(template(attributes));
         return this;
     },
 
