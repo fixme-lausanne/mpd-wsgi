@@ -14,6 +14,7 @@ import threading
 import os
 from werkzeug import secure_filename
 import lastfm
+import json
 
 
 app = Flask(__name__)
@@ -37,6 +38,7 @@ class MpdClient(mpd.MPDClient):
     """Enumeration of the commands available.
     """
     Authorized_commands = ('stats', 'play', 'pause', 'toggle_play',
+                           'idle',
                            'playlistinfo', 'currentsong', 'next',
                            'previous', 'status', 'search', 'clear',
                            'add', 'cover', 'delete', 'seek',
@@ -63,6 +65,10 @@ class MpdClient(mpd.MPDClient):
                 return ret
         else:
             abort(401)
+
+    def idle(self, *args, **kwargs):
+        ret = super(MpdClient, self).idle(*args, **kwargs)
+        return {'result': ret}
 
     def find(self, *args, **kwargs):
         return super(MpdClient, self).find(*args, **kwargs)
@@ -466,20 +472,20 @@ def initial_data():
            'genres': mpd_command('list_genres')['genres']}
     return jsonify(ret)
 
-@socket.route('/player_change')
-def player_change(ws):
-    """Blocking call, will send a message when the state of the player has changed (next, pause, play, time)
+@socket.route("/events")
+def events(ws):
+    """Blocking call.
+    Everytime changes occurred in one or more mpd's SUBSYSTEMs a list of them is sent in the form of a JSON object.
+    The JSON object is formatted as `{"status": "success", "result": ["SUBSYSTEM"]}` where SUBSYSTEM is one of the following:
+    - database          -- The song database
+    - update            -- Database updates
+    - storedplaylist    -- Stored playlists
+    - playlist          -- The current playlist
+    - player            -- The player
+    - mixer             -- The volume mixer
+    - output            -- Audio outputs
+    - options           -- Playback options
     """
-    while True:
-        #blocking method
-        mpd_command('idle', 'player')
-        ws.send(mpd_command('currentsong'))
-
-
-@socket.route("/playlist_change")
-def playlist_change(ws):
-    """Blocking call, will send the playlist if it has changed
-    """
-    while True:
-        mpd_command('idle', 'playlist')
-        ws.send(mpd_command('playlist'))
+    while not ws.closed:
+        ret = mpd_command('idle')
+        ws.send(json.dumps(ret), binary=False)
