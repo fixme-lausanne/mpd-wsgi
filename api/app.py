@@ -43,7 +43,8 @@ class MpdClient(mpd.MPDClient):
                            'previous', 'status', 'search', 'clear',
                            'add', 'cover', 'delete', 'seek',
                            'list_by_tags', 'find',
-                           'list_albums', 'list_artists', 'list_genres',)
+                           'list_albums', 'list_artists', 'list_genres',
+                           'list_songs', 'list_playlists')
 
 
     def __init__(self, *args, **kwargs):
@@ -121,9 +122,28 @@ class MpdClient(mpd.MPDClient):
 
         return {'genres': res}
 
+    def list_songs(self, *args, **kwargs):
+        res = super(MpdClient, self).listallinfo(*args, **kwargs)
+        songs = [value for value in res if 'file' in value]
+        return {'songs': songs}
+
+    def list_playlists(self, *args, **kwargs):
+        res = []
+        playlists = super(MpdClient, self).listplaylists(*args, **kwargs)
+        for playlist in playlists:
+            last_modif = playlist.get('last-modified', None)
+            name = playlist.get('playlist', None)
+            playlist_info = super(MpdClient, self).listplaylistinfo(name)
+
+            res.append({'name': name,
+                        'songs': playlist_info,
+                        'last-modified': last_modif})
+
+        return {'playlists': res}
+
     def playlistinfo(self, *args, **kwargs):
         ret = super(MpdClient, self).playlistinfo(*args, **kwargs)
-        return {'songs':ret}
+        return {'songs': ret}
 
     def seek(self, time):
         current = self.currentsong()
@@ -462,14 +482,27 @@ def list_genres():
     """
     return jsonify(mpd_command('list_genres'))
 
+@app.route("/list_songs")
+def list_songs():
+    """List all songs.
+    """
+    return jsonify(mpd_command('list_songs'))
+
+@app.route("/list_playlists")
+def list_playlists():
+    """List all playlists.
+    """
+    return jsonify(mpd_command('list_playlists'))
+
 @app.route("/initial_data")
 def initial_data():
     """@return initial data
     """
-    ret = {'albums': mpd_command('list_albums')['albums'],
-           'playlists': mpd_command('playlistinfo')['songs'],
-           'artists': mpd_command('list_artists')['artists'],
-           'genres': mpd_command('list_genres')['genres']}
+    ret = {'playlists': mpd_command('list_playlists')['playlists'],
+           'songs': mpd_command('list_songs')['songs'],
+           'status': mpd_command('status'),
+           'currentsong': mpd_command('currentsong'),
+           'currentplaylist': mpd_command('playlistinfo')['songs']}
     return jsonify(ret)
 
 @socket.route("/events")
