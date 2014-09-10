@@ -1,8 +1,8 @@
 var ControlsView = require('../views/controls');
 var ListTabsView = require('../views/list_tabs');
 
-var TabAlbumsView = require('../views/tab_albums');
 var TabArtistsView = require('../views/tab_artists');
+var TabAlbums = require('./tab_albums.jsx');
 var TabGenresView = require('../views/tab_genres');
 var TabPlaylistsView = require('../views/tab_playlists');
 var TabSongsView = require('../views/tab_songs');
@@ -32,8 +32,8 @@ module.exports = Backbone.View.extend({
     },
 
     tabAlbums: function() {
-        this.currentView = new TabAlbumsView();
-        this.currentView.render();
+        React.renderComponent(TabAlbums(),
+                              document.getElementById('tab-content'));
     },
 
     tabArtists: function() {

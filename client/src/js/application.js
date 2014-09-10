@@ -1,6 +1,7 @@
 jQuery = $ = require('jquery');
 _ = require('underscore');
 Backbone = require('backbone');
+React = require('react');
 
 var __foundation = require('foundation');
 var __foundation_slider = require('foundation_slider');
