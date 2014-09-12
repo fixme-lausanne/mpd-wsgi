@@ -56,8 +56,9 @@ var TableSongs = React.createClass({
 var SelectedPlaylist = React.createClass({
     render: function() {
         var playlist = _.findWhere(this.props.allPlaylists,
-                                   {id: this.props.playlist});
-        var totalDuration = _.reduce(playlist.songs, function(acc, song) {
+                                   {name: this.props.playlist});
+        var songs = _.isObject(playlist) ? playlist.songs : [];
+        var totalDuration = _.reduce(songs, function(acc, song) {
             return acc + Number.parseInt(song.time, 10);
         }, 0);
         return (
@@ -65,23 +66,23 @@ var SelectedPlaylist = React.createClass({
                      className="content-list columns medium-9">
               <header class="row">
                 <h1>Playing</h1>
-                <p>{playlist.songs.length} songs, {totalDuration} seconds</p>
+                <p>{songs.length} songs, {totalDuration} seconds</p>
               </header>
-              <TableSongs songs={playlist.songs} />
+              <TableSongs songs={songs} />
             </section>
         );
     }
 });
 
 var ListPlaylists = React.createClass({
-    handleClick: function(id) {
-        this.props.onClick(id);
+    handleClick: function(name) {
+        this.props.onClick(name);
     },
 
     render: function() {
         var playlists = _.map(this.props.playlists, function(plst) {
             return (
-                <li onClick={this.handleClick.bind(this, plst.id)}>
+                <li onClick={this.handleClick.bind(this, plst.name)}>
                   <Playlist name={plst.name}
                             image={plst.image}/>
                 </li>
@@ -100,89 +101,20 @@ var ListPlaylists = React.createClass({
 module.exports = React.createClass({
     getInitialState: function() {
         return {
-            playlists: [
-                {
-                    "id": 1,
-                    "last-modified": "2014-08-04T11:17:21Z",
-                    "name": "FUCKYOU_AMERICA",
-                    "songs": [
-                        {
-                            "album": "Antimateria",
-                            "artist": "Adri\u00e1n Berenguer",
-                            "file": "Adrian Berenguer (copy)/Antimateria/01 - Adrin Berenguer - Ilvatar.mp3",
-                            "genre": "(255)",
-                            "last-modified": "2013-08-25T18:43:23Z",
-                            "time": "179",
-                            "title": "Il\u00favatar",
-                            "track": "01"
-                        },
-                        {
-                            "album": "Shakerism",
-                            "artist": "Heymoonshaker",
-                            "date": "2013",
-                            "file": "Heymoonshaker - Shakerism 2013/02 - Wallet Switcher.flac",
-                            "genre": "Beatbox blues",
-                            "last-modified": "2013-11-15T06:41:16Z",
-                            "time": "269",
-                            "title": "Wallet Switcher",
-                            "track": "2"
-                        },
-                        {
-                            "album": "Shakerism",
-                            "artist": "Heymoonshaker",
-                            "date": "2013",
-                            "file": "Heymoonshaker - Shakerism 2013/03 - Part 1.flac",
-                            "genre": "Beatbox blues",
-                            "last-modified": "2013-11-15T06:39:29Z",
-                            "time": "128",
-                            "title": "Part 1",
-                            "track": "3"
-                        }
-                    ]
-                },
-                {
-                    "id": 2,
-                    "last-modified": "2014-08-04T11:17:21Z",
-                    "name": "Wonderful playlist name",
-                    "songs": [
-                        {
-                            "album": "NOPNOP album",
-                            "artist": "Yada yada artist",
-                            "file": "Adrian Berenguer (copy)/Antimateria/01 - Adrin Berenguer - Ilvatar.mp3",
-                            "genre": "(255)",
-                            "last-modified": "2013-08-25T18:43:23Z",
-                            "time": "179",
-                            "title": "ROFLOFLO title",
-                            "track": "01"
-                        },
-                        {
-                            "album": "OTHER NOPNOP album",
-                            "artist": "Other NADA YADA artist",
-                            "file": "Adrian Berenguer (copy)/Antimateria/01 - Adrin Berenguer - Ilvatar.mp3",
-                            "genre": "(255)",
-                            "last-modified": "2013-08-25T18:43:23Z",
-                            "time": "367",
-                            "title": "HELLO NOP YALALALA title",
-                            "track": "02"
-                        }
-                    ]
-                }
-            ],
-
-            selected: 1
+            selected: 'current'
         };
     },
 
-    handlePlaylistSelection: function(playlistId) {
-        this.setState({selected: playlistId});
+    handlePlaylistSelection: function(playlistName) {
+        this.setState({selected: playlistName});
     },
 
     render: function() {
         return (
             <div>
-              <ListPlaylists playlists={this.state.playlists}
+              <ListPlaylists playlists={this.props.data.playlists}
                              onClick={this.handlePlaylistSelection}/>
-              <SelectedPlaylist allPlaylists={this.state.playlists}
+              <SelectedPlaylist allPlaylists={this.props.data.playlists}
                                 playlist={this.state.selected}/>
             </div>
         );

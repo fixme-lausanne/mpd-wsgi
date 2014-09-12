@@ -16,27 +16,8 @@ var Album = React.createClass({
 
 // TabAlbums
 module.exports = React.createClass({
-    getInitialState: function() {
-        return {
-            albums: [
-                {title: 'Autumn prelude', artist: 'Zero-project'},
-                {title: 'Camellia no Hitomi', artist: 'Nakano Aiko'},
-                {title: 'Autumn prelude', artist: 'Zero-project'},
-                {title: 'Camellia no Hitomi', artist: 'Nakano Aiko'},
-                {title: 'Autumn prelude', artist: 'Zero-project'},
-                {title: 'Camellia no Hitomi', artist: 'Nakano Aiko'},
-                {title: 'Autumn prelude', artist: 'Zero-project'},
-                {title: 'Camellia no Hitomi', artist: 'Nakano Aiko'},
-                {title: 'Autumn prelude', artist: 'Zero-project'},
-                {title: 'Camellia no Hitomi', artist: 'Nakano Aiko'},
-                {title: 'Autumn prelude', artist: 'Zero-project'},
-                {title: 'Camellia no Hitomi', artist: 'Nakano Aiko'}
-            ]
-        };
-    },
-
     render: function() {
-        var albums = _.map(this.state.albums, function(albm) {
+        var albums = _.map(this.props.data.albums, function(albm) {
             return (
                 <li>
                   <Album cid={albm.cid}
