@@ -1,116 +1,80 @@
-var Track = require('../models/track');
-var Playlist = require('../models/playlist');
+var getByAlbums = function(songs) {
+    var byAlbums = _.groupBy(songs, 'album');
+    return groupByAttr(byAlbums, 'artist', function(artistsSongs) {
+        return _.map(artistsSongs, function(songs, artist) {
+            return {
+                title: this.key,
+                songs: songs,
+                artist: artist
+            };
+        }, this);
+    });
+};
 
-var ListAlbums = require('../collections/list_albums');
-var ListArtists = require('../collections/list_artists');
-var ListGenres = require('../collections/list_genres');
-var ListPlaylists = require('../collections/list_playlists');
-var ListTracks = require('../collections/list_tracks');
+var getByArtists = function(songs) {
+    var byArtists = _.groupBy(songs, 'artist');
+    return groupByAttr(byArtists, 'album', function(albumsSongs) {
+        var albums = _.map(albumsSongs, function(songs, title) {
+            return {
+                title: title,
+                songs: songs,
+                artist: this.key
+            };
+        });
 
-// AppStorage
-module.exports = Backbone.Model.extend({
+        return { name: this.key, albums: albums };
+    });
+};
 
-    initialize: function() {
-        this.set('tracks', new ListTracks());
-        this.set('albums', new ListAlbums());
-        this.set('playlists', new ListPlaylists());
-        this.set('artists', new ListArtists());
+var groupByAttr = function(coll, attr, fn) {
+    return _.chain(coll)
+        .reduce(function(acc, values, key) {
+            var context = {acc: acc, values: values, key: key};
 
-        this.set('currentTrack', new Track());
-        this.set('currentPlaylist', new Playlist());
+            var grouped = _.groupBy(values, function(v) {
+                return _.property(attr)(v);
+            });
+
+            acc.push(fn.call(context, grouped));
+
+            return acc;
+        }, [])
+        .flatten()
+        .value();
+};
+
+var Storage = {
+    defaultState: {
+        currentPlaylist: {},
+        currentSong: {},
+
+        songs: [],
+        albums: [],
+        artists: [],
+        playlists: []
     },
 
     populate: function(data) {
-        this.get('tracks').add(data.songs);
-
-        // Current playlist
-        var current = {
+        var currentSong = data.currentsong || [];
+        var currentPlaylist = {
             name: 'current',
-            songs: new ListTracks(data.playlists)
+            songs: data.currentplaylist || []
         };
 
-        this.get('currentPlaylist').set(current);
+        var songs = data.songs;
+        var playlists = _.flatten([currentPlaylist, data.playlists]);
+        var albums = getByAlbums(data.songs) || [];
+        var artists = getByArtists(data.songs) || [];
 
-        // Playlists
-        var modulo2 = {
-            name: 'modulo2',
-            songs: new ListTracks(_.filter(data.playlists, function(s) {
-                return (s.id % 2) === 0;
-            }))
+        return {
+            currentSong: currentSong,
+            currentPlaylist: currentPlaylist,
+            albums: albums,
+            artists: artists,
+            playlists: playlists,
+            songs: songs
         };
-
-        var keygeneration = {
-            name: 'KEY-GENeration',
-            songs: new ListTracks(_.filter(data.playlists, function(s) {
-                return (s.id % 4) === 0;
-            }))
-        };
-
-        this.get('playlists').add([current, modulo2, keygeneration]);
-
-        // Albums
-        var albums = this.getByAlbums();
-        this.get('albums').add(albums);
-
-        // Artists
-        var artists = this.getByArtists();
-        this.get('artists').add(artists);
-    },
-
-    getAlbums: function() {
-        return this.get('tracks').groupBy('album');
-    },
-
-    getByAlbums: function() {
-        var byAlbums = this.getAlbums();
-        return this.groupByAttr(byAlbums, 'artist', function(artistsTracks) {
-            return _.map(artistsTracks, function(tracks, artist) {
-                return {
-                    title: this.key,
-                    tracks: new ListTracks(tracks),
-                    artist: artist
-                };
-            }, this);
-        });
-    },
-
-    getArtists: function() {
-        return this.get('tracks').groupBy('artist');
-    },
-
-    getByArtists: function() {
-        var byArtists = this.getArtists();
-        return this.groupByAttr(byArtists, 'album', function(albumsTracks) {
-            var albums = _.map(albumsTracks, function(tracks, title) {
-                return {
-                    title: title,
-                    tracks: new ListTracks(tracks),
-                    artist: this.key
-                };
-            });
-
-            return { name: this.key, albums: new ListAlbums(albums) };
-        });
-    },
-
-    groupByAttr: function(coll, attr, fn) {
-        return _.chain(coll)
-            .reduce(function(acc, values, key) {
-                var context = {acc: acc, values: values, key: key};
-
-                var grouped = _.groupBy(values, function(v) {
-                    return v.get(attr);
-                });
-
-                acc.push(fn.call(context, grouped));
-
-                return acc;
-            }, [])
-            .flatten()
-            .value();
-
-        // Genres
-        // var genres = null;
-        // this.get('genres').add(genres);
     }
-});
+};
+
+module.exports = Storage;
