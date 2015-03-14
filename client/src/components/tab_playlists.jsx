@@ -1,5 +1,6 @@
 /*global require,module*/
-var React = require('react');
+var React = require('react'),
+    _ = require('lodash');
 
 var Playlist = React.createClass({
     render: function() {
@@ -37,10 +38,10 @@ var TableSongs = React.createClass({
                              time={song.time}
                              artist={song.artist}
                              album={song.album}
-                             genre={song.genre}/>)
+                             genre={song.genre}/>);
         });
         return (
-            <table>
+            <table className="table table-bordered">
               <thead>
                 <tr>
                   <th>Name</th>
@@ -67,7 +68,7 @@ var SelectedPlaylist = React.createClass({
         return (
             <section id="list-tracks"
                      className="content-list col-md-9">
-              <header class="row">
+              <header className="row">
                 <h1>Playing</h1>
                 <p>{songs.length} songs, {totalDuration} seconds</p>
               </header>
@@ -114,9 +115,9 @@ var TabPlaylists = React.createClass({
     render: function() {
         return (
             <div>
-              <ListPlaylists playlists={this.props.data.playlists}
+              <ListPlaylists playlists={this.props.playlists}
                              onClick={this.handlePlaylistSelection}/>
-              <SelectedPlaylist allPlaylists={this.props.data.playlists}
+              <SelectedPlaylist allPlaylists={this.props.playlists}
                                 playlist={this.state.selected}/>
             </div>
         );
