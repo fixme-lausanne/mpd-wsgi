@@ -46,7 +46,6 @@ var CurrentPlaylist = React.createClass({
     }
 });
 
-// Controls
 var Controls = React.createClass({
     render: function() {
         return (

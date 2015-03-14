@@ -22,7 +22,6 @@ var Header = React.createClass({
     }
 });
 
-// App
 var App = React.createClass({
     statics: {
         fetchInitialData: function(api, params) {
@@ -55,8 +54,6 @@ var App = React.createClass({
                                   artists={this.state.albums}
                                   status={this.state.status}/>
                 </main>
-
-                <footer></footer>
             </div>
         );
     }
