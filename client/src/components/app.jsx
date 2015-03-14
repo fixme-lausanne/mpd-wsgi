@@ -52,6 +52,7 @@ var App = React.createClass({
                                   playlists={this.state.playlists}
                                   songs={this.state.songs}
                                   albums={this.state.albums}
+                                  artists={this.state.albums}
                                   status={this.state.status}/>
                 </main>
 

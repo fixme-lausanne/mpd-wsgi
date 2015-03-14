@@ -18,6 +18,7 @@ var React = require('react'),
 var routes = (
     <Route name="appRoot" path="/" handler={App}>
         <DefaultRoute name="albums" handler={TabAlbums} />
+        <Route name="artists" handler={TabArtists} />
         <Route name="playlists" handler={TabPlaylists} />
         <NotFoundRoute handler={TabAlbums} />
     </Route>
