@@ -40,12 +40,12 @@ var SelectedArtist = React.createClass({
             return (<li><Album title={albm}/></li>);
         });
         return (
-            <section className="content-list columns medium-9">
+            <section className="content-list col-md-9">
               <header className="row">
                 <h1>{artist.name}</h1>
               </header>
 
-              <ul id="list-albums" className="medium-block-grid-1">
+              <ul id="list-albums" className="col-md-block-grid-1">
                 {albums}
               </ul>
             </section>
@@ -69,7 +69,7 @@ var ListArtists = React.createClass({
         }, this);
         return (
             <section id="list-artists"
-                     className="side-list columns medium-3">
+                     className="side-list col-md-3">
               <ul>{artists}</ul>
             </section>
         );

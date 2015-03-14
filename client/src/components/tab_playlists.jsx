@@ -7,7 +7,7 @@ var Playlist = React.createClass({
             <div className="playlist">
               <figure>
                 <img src={this.props.image}/>
-                <figcaption className="columns medium-8">
+                <figcaption className="col-md-8">
                   <h6>{this.props.name}</h6>
                 </figcaption>
               </figure>
@@ -66,7 +66,7 @@ var SelectedPlaylist = React.createClass({
         }, 0);
         return (
             <section id="list-tracks"
-                     className="content-list columns medium-9">
+                     className="content-list col-md-9">
               <header class="row">
                 <h1>Playing</h1>
                 <p>{songs.length} songs, {totalDuration} seconds</p>
@@ -93,7 +93,7 @@ var ListPlaylists = React.createClass({
         }, this);
         return (
             <section id="list-playlists"
-                     className="side-list columns medium-3">
+                     className="side-list col-md-3">
               <ul>{playlists}</ul>
             </section>
         );
