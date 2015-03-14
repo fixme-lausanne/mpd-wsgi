@@ -336,7 +336,7 @@ def status():
 
 @app.route("/file", methods=['POST'])
 def upload_file():
-    """Add files to the mpd library. 
+    """Add files to the mpd library.
     """
     files = request.files.getlist("file[]")
     file_names = []
@@ -497,6 +497,13 @@ def list_playlists():
 @app.route("/initial_data")
 def initial_data():
     """@return initial data
+    {
+     "playlists": [],
+     "songs": [],
+     "status": {}
+     "currentSong": [],
+     "currentPlaylist": {}
+    }
     """
     ret = {'playlists': mpd_command('list_playlists')['playlists'],
            'songs': mpd_command('list_songs')['songs'],
