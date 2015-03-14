@@ -1,3 +1,6 @@
+/*global require,module*/
+var React = require('react');
+
 var InfoCurrentSong = React.createClass({
     render: function() {
         return (
@@ -44,7 +47,7 @@ var CurrentPlaylist = React.createClass({
 });
 
 // Controls
-module.exports  = React.createClass({
+var Controls = React.createClass({
     render: function() {
         return (
             <div id="controls" className="row">
@@ -75,3 +78,5 @@ module.exports  = React.createClass({
         );
     }
 });
+
+module.exports = Controls;

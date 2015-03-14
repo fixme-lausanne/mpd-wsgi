@@ -1,5 +1,7 @@
-// NavTabs
-module.exports = React.createClass({
+/*global require,module*/
+var React = require('react');
+
+var NavTabs = React.createClass({
     render: function() {
         return (
             <nav id="list-tabs">
@@ -15,3 +17,5 @@ module.exports = React.createClass({
         );
     }
 });
+
+module.exports = NavTabs;

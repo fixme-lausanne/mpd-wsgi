@@ -1,8 +1,9 @@
-var Storage = require('../models/storage');
-var Config = require('../models/config');
-
-var Controls = require('./controls.jsx');
-var NavTabs = require('./nav_tabs');
+/*global require,module*/
+var React = require('react'),
+    Storage = require('../models/storage'),
+    Config = require('../models/config'),
+    Controls = require('./controls.jsx'),
+    NavTabs = require('./nav_tabs.jsx');
 
 var Header = React.createClass({
     render: function() {
@@ -66,6 +67,6 @@ module.exports = React.createClass({
 
               <footer></footer>
             </div>
-        )
+        );
     }
 });

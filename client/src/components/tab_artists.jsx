@@ -1,3 +1,6 @@
+/*global require,module*/
+var React = require('react');
+
 var Artist = React.createClass({
     render: function() {
         return (
@@ -31,11 +34,11 @@ var Album = React.createClass({
 
 var SelectedArtist = React.createClass({
     render: function() {
-        var artist = _.findWhere(this.props.allArtists,
+        var artist = findWhere(this.props.allArtists,
                                  {id: this.props.artist});
-        var albums = _.map(artist.albums, function(albm) {
+        var albums = artist.albums.map(function(albm) {
             return (<li><Album title={albm}/></li>);
-        })
+        });
         return (
             <section className="content-list columns medium-9">
               <header className="row">
@@ -56,13 +59,13 @@ var ListArtists = React.createClass({
     },
 
     render: function() {
-        var artists = _.map(this.props.artists, function(artist) {
+        var artists = this.props.artists.map(function(artist) {
             return (
                 <li onClick={this.handleClick.bind(this, artist.id)}>
                   <Artist image="/images/all_artists.png"
                           name={artist.name}/>
                 </li>
-            )
+            );
         }, this);
         return (
             <section id="list-artists"
@@ -73,8 +76,7 @@ var ListArtists = React.createClass({
     }
 });
 
-// TabArtists
-module.exports  = React.createClass({
+var TabArtists  = React.createClass({
     getInitialState: function() {
         return {
             artists: [
@@ -138,3 +140,5 @@ module.exports  = React.createClass({
         );
     }
 });
+
+module.exports = TabArtists;

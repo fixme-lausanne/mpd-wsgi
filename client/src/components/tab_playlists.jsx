@@ -1,3 +1,6 @@
+/*global require,module*/
+var React = require('react');
+
 var Playlist = React.createClass({
     render: function() {
         return (
@@ -97,8 +100,7 @@ var ListPlaylists = React.createClass({
     }
 });
 
-// TabPlaylists
-module.exports = React.createClass({
+var TabPlaylists = React.createClass({
     getInitialState: function() {
         return {
             selected: 'current'
@@ -120,3 +122,5 @@ module.exports = React.createClass({
         );
     }
 });
+
+module.exports = TabPlaylists;

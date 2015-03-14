@@ -1,6 +1,9 @@
 /*global require,module*/
 var React = require('react'),
     Router = require('react-router'),
+    Route = Router.Route,
+    DefaultRoute = Router.DefaultRoute,
+    NotFoundRoute = Router.NotFoundRoute,
 
     App = require('./components/app.jsx'),
     TabAlbums = require('./components/tab_albums.jsx'),
@@ -8,17 +11,19 @@ var React = require('react'),
     TabPlaylists = require('./components/tab_playlists.jsx');
 
 var routes = (
-    <Routes location="hash">
+    <Route location="hash">
       <Route path="/" handler={App}>
         <Route name="albums" handler={TabAlbums} />
         <Route name="playlists" handler={TabPlaylists} />
         <DefaultRoute handler={TabAlbums} />
         <NotFoundRoute handler={TabAlbums} />
       </Route>
-    </Routes>
+    </Route>
 );
 
-React.renderComponent(
-    routes,
-    document.getElementsById('react-root')
-);
+Router.run(routes, Router.HistoryLocation, function(Handler) {
+    React.renderComponent(
+        <Handler/>,
+        document.getElementById('react-root')
+    );
+});

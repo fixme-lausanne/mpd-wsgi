@@ -1,3 +1,6 @@
+/*global require,module*/
+var React = require('react');
+
 var Album = React.createClass({
     render: function() {
         return (
@@ -15,9 +18,9 @@ var Album = React.createClass({
 });
 
 // TabAlbums
-module.exports = React.createClass({
+var TabAlbums = React.createClass({
     render: function() {
-        var albums = _.map(this.props.data.albums, function(albm) {
+        var albums = this.props.data.albums.map(function(albm) {
             return (
                 <li>
                   <Album cid={albm.cid}
@@ -34,3 +37,5 @@ module.exports = React.createClass({
         );
     }
 });
+
+module.exports = TabAlbums;
