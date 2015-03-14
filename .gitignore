@@ -14,5 +14,4 @@ api/__pycache__
 # ======
 
 client/node_modules
-client/build
-client/src/lib
+client/static/output
