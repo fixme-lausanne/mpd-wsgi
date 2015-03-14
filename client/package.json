@@ -19,6 +19,7 @@
     "build": "npm run build:js && npm run build:css",
     "watch:js": "watchify -vd -e src/index.jsx -o static/output/bundle.js",
     "watch": "npm run watch:js",
+    "browser": "browser-sync start --server static --files \"static/output/*.js, static/output/*.css\"",
     "prebuild:js": "mkdir -p static/output",
     "prebuild:css": "mkdir -p static/output",
     "prewatch:js": "mkdir -p static/output"
