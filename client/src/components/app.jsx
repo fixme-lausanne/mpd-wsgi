@@ -1,5 +1,11 @@
+/*jshint esnext: true*/
 /*global require,module*/
 var React = require('react'),
+    Router = require('react-router'),
+    RouteHandler = Router.RouteHandler,
+    csp = require('js-csp'),
+    request = require('superagent'),
+
     Storage = require('../models/storage'),
     Config = require('../models/config'),
     Controls = require('./controls.jsx'),
@@ -19,54 +25,41 @@ var Header = React.createClass({
 });
 
 // App
-module.exports = React.createClass({
+var App = React.createClass({
+    statics: {
+        fetchInitialData: function(api, params) {
+            return csp.go(function*() {
+                return (yield csp.take(api.fetchInitialData()));
+            });
+        }
+    },
+
     getInitialState: function() {
-        return {
-            data: Storage.defaultState
-        };
-    },
-
-    componentWillMount: function() {
-        $.when(this.fechDataOnLoad())
-            .done(_.bind(this.handleLoadSuccess, this))
-            .fail(_.bind(this.handleLoadFailure, this));
-    },
-
-    componentDidMount: function() {
-        $(document).foundation();
-    },
-
-    fechDataOnLoad: function() {
-        return $.ajax({
-            type: 'GET',
-            url: Config.api + '/initial_data'
-        });
-    },
-
-    handleLoadSuccess: function(data) {
-        this.setState({data: Storage.populate(data)});
-    },
-
-    handleLoadFailure: function(xhr, err, status) {
-        console.error(xhr, err, status);
+        return this.props.initialData.appRoot.data;
     },
 
     render: function() {
         return (
             <div>
-              <header>
+            <header>
                 {/* Controls: backward, play, forward, search, etc. */}
                 <Controls />
                 {/* List of tabs: songs, albums, artist, etc. */}
                 <NavTabs />
-              </header>
+            </header>
 
-              <main id="tab-content" className="row">
-                <this.props.activeRouteHandler data={this.state.data} />
-              </main>
+            <main id="tab-content" className="row">
+                <RouteHandler currentPlaylist={this.state.currentPlaylist}
+                              currentSong={this.state.currentSong}
+                              playlist={this.state.playlist}
+                              songs={this.state.songs}
+                              status={this.state.status}/>
+            </main>
 
-              <footer></footer>
+            <footer></footer>
             </div>
         );
     }
 });
+
+module.exports = App;
