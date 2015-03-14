@@ -23,7 +23,7 @@ var routes = (
     </Route>
 );
 
-Router.run(routes, Router.HistoryLocation, function(Handler, state) {
+Router.run(routes, Router.HashLocation, function(Handler, state) {
     csp.go(function*() {
         var fetchableRoutes = state.routes.filter(function(route) {
             return route.handler.fetchInitialData;
