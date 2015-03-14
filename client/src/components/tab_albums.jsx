@@ -17,15 +17,13 @@ var Album = React.createClass({
     }
 });
 
-// TabAlbums
 var TabAlbums = React.createClass({
     render: function() {
-        var albums = this.props.data.albums.map(function(albm) {
+        var albums = this.props.albums.map(function(album) {
             return (
                 <li>
-                  <Album cid={albm.cid}
-                         title={albm.title}
-                         artist={albm.artist}/>
+                  <Album title={album.title}
+                         artist={album.artist}/>
                 </li>
             );
         });

@@ -27,6 +27,7 @@
   "dependencies": {
     "classnames": "^1.1.4",
     "js-csp": "^0.3.3",
+    "lodash": "^3.5.0",
     "object-assign": "^2.0.0",
     "react": "^0.12.0",
     "superagent": "^1.1.0"

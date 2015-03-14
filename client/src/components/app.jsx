@@ -6,8 +6,6 @@ var React = require('react'),
     csp = require('js-csp'),
     request = require('superagent'),
 
-    Storage = require('../models/storage'),
-    Config = require('../models/config'),
     Controls = require('./controls.jsx'),
     NavTabs = require('./nav_tabs.jsx');
 
@@ -29,34 +27,35 @@ var App = React.createClass({
     statics: {
         fetchInitialData: function(api, params) {
             return csp.go(function*() {
-                return (yield csp.take(api.fetchInitialData()));
+                return (yield api.queryInitialData());
             });
         }
     },
 
     getInitialState: function() {
-        return this.props.initialData.appRoot.data;
+        return this.props.initialData.appRoot;
     },
 
     render: function() {
         return (
             <div>
-            <header>
-                {/* Controls: backward, play, forward, search, etc. */}
-                <Controls />
-                {/* List of tabs: songs, albums, artist, etc. */}
-                <NavTabs />
-            </header>
+                <header>
+                    {/* Controls: backward, play, forward, search, etc. */}
+                    <Controls />
+                    {/* List of tabs: songs, albums, artist, etc. */}
+                    <NavTabs />
+                </header>
 
-            <main id="tab-content" className="row">
-                <RouteHandler currentPlaylist={this.state.currentPlaylist}
-                              currentSong={this.state.currentSong}
-                              playlist={this.state.playlist}
-                              songs={this.state.songs}
-                              status={this.state.status}/>
-            </main>
+                <main id="tab-content" className="row">
+                    <RouteHandler currentPlaylist={this.state.currentPlaylist}
+                                  currentSong={this.state.currentSong}
+                                  playlists={this.state.playlists}
+                                  songs={this.state.songs}
+                                  albums={this.state.albums}
+                                  status={this.state.status}/>
+                </main>
 
-            <footer></footer>
+                <footer></footer>
             </div>
         );
     }
