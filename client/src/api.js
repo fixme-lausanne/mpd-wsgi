@@ -38,66 +38,11 @@ function queryInitialData() {
             currentPlaylist: data.currentplaylist,
             songs: data.songs,
             playlists: playlists,
-            albums: byAlbum(data.songs),
-            artists: byArtist(data.songs),
+            albums: _.groupBy(data.songs, 'album'),
+            artists: _.groupBy(data.songs, 'artist'),
             status: data.status
         };
     });
-}
-
-function byAlbum(songs) {
-    var attr = 'album',
-        grouped = _.groupBy(songs, attr);
-    return groupByAttr(grouped, attr, function(albumsSongs) {
-        var albums = _.map(albumsSongs, function(songs, title) {
-            return {
-                title: title,
-                songs: songs,
-                album: this.key
-            };
-        });
-
-        return {
-            name: this.key,
-            albums: albums
-        };
-    });
-}
-
-function byArtist(songs) {
-    var attr = 'artist',
-        grouped = _.groupBy(songs, attr);
-    return groupByAttr(grouped, attr, function(artistsSongs) {
-        var artists = _.map(artistsSongs, function(songs, title) {
-            return {
-                title: title,
-                songs: songs,
-                artist: this.key
-            };
-        });
-
-        return {
-            name: this.key,
-            artists: artists
-        };
-    });
-}
-
-function groupByAttr(coll, attr, fn) {
-    return _.chain(coll)
-        .reduce(function(acc, values, key) {
-            var context = {acc: acc, values: values, key: key};
-
-            var grouped = _.groupBy(values, function(v) {
-                return v[attr];
-            });
-
-            acc.push(fn.call(context, grouped));
-
-            return acc;
-        }, [])
-        .flatten()
-        .value();
 }
 
 module.exports = {
