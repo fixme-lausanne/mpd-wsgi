@@ -14,10 +14,10 @@
   "homepage": "https://github.com/fixme-lausanne/mpd-wsgi",
   "scripts": {
     "test": "jest",
-    "build:js": "browserify -e src/index.js -o static/output/bundle.js",
+    "build:js": "browserify -e src/index.jsx -o static/output/bundle.js",
     "build:css": "lessc static/css/main.less static/output/bundle.css"
     "build": "npm run build:js && npm run build:css",
-      "watch:js": "watchify -vd -e src/index.js -o static/output/bundle.js",
+      "watch:js": "watchify -vd -e src/index.jsx -o static/output/bundle.js",
       "watch": "npm run watch:js",
       "prebuild:js": "mkdir -p static/output",
       "prebuild:css": "mkdir -p static/output",
