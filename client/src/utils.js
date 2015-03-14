@@ -1,5 +1,5 @@
-// Convert seconds to hours, minutes, seconds
-Number.prototype.secondsToHours = function() {
+/*global require,module*/
+function secondsToHours() {
     var hours = Math.floor(this / 3600);
     var hours_rem = this % 3600;
     var minutes = Math.floor(hours_rem / 60);
@@ -10,10 +10,9 @@ Number.prototype.secondsToHours = function() {
         minutes: minutes,
         seconds: seconds
     };
-};
+}
 
-// Leading zeros
-Number.prototype.pad = function(size) {
+function pad(size) {
     var s = String(this);
     if (typeof(size) !== "number"){
         size = 2;
@@ -22,4 +21,9 @@ Number.prototype.pad = function(size) {
         s = "0" + s;
     }
     return s;
+}
+
+module.exports = {
+    secondsToHours: secondsToHours,
+    pad: pad
 };
