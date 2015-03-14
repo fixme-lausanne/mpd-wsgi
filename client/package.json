@@ -1,15 +1,58 @@
 {
-    "name": "mpdwsgi-client",
-    "version": "0.0.0",
-    "description": "Web client for mpd-wsgi",
-    "repository": {
-        "type": "git",
-        "url": "https://github.com/fixme-lausanne/mpd-wsgi"
-    },
-    "author": "Samuel El-Borai <samuel.elborai@gmail.com>",
-    "license": "MIT",
-    "bugs": {
-        "url": "https://github.com/fixme-lausanne/mpd-wsgi/issues"
-    },
-    "homepage": "https://github.com/fixme-lausanne/mpd-wsgi"
+  "name": "mpdwsgi-client",
+  "version": "2.0.0",
+  "description": "Web client for mpd-wsgi",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/fixme-lausanne/mpd-wsgi"
+  },
+  "author": "Samuel El-Borai <samuel.elborai@gmail.com>",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/fixme-lausanne/mpd-wsgi/issues"
+  },
+  "homepage": "https://github.com/fixme-lausanne/mpd-wsgi",
+  "scripts": {
+    "test": "jest",
+    "build:js": "browserify -e src/index.js -o static/output/bundle.js",
+    "build:css": "lessc static/css/main.less static/output/bundle.css"
+    "build": "npm run build:js && npm run build:css",
+      "watch:js": "watchify -vd -e src/index.js -o static/output/bundle.js",
+      "watch": "npm run watch:js",
+      "prebuild:js": "mkdir -p static/output",
+      "prebuild:css": "mkdir -p static/output",
+      "prewatch:js": "mkdir -p static/output"
+  },
+  "dependencies": {
+    "classnames": "^1.1.4",
+    "js-csp": "^0.3.3",
+    "object-assign": "^2.0.0",
+    "react": "^0.12.0",
+    "superagent": "^1.1.0"
+  },
+  "devDependencies": {
+    "browser-sync": "^2.2.4",
+    "browserify": "^9.0.3",
+    "jest-cli": "^0.4.0",
+    "less": "^2.4.0",
+    "react-tools": "^0.13.0",
+    "reactify": "^1.1.0",
+    "watchify": "^2.4.0"
+  },
+  "browserify": {
+    "transform": [
+      "reactify"
+    ]
+  },
+  "jest": {
+    "testFileExtensions": [
+      "js",
+      "jsx"
+    ],
+    "testDirectoryName": "tests",
+    "scriptPreprocessor": "<rootDir>/bin/jsx-preprocessor.js",
+    "unmockedModulePathPatterns": [
+      "<rootDir>/node_modules/react"
+    ]
+  }
 }
