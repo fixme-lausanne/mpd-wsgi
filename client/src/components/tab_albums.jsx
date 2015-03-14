@@ -12,15 +12,15 @@ var Album = React.createClass({
                 .value();
         return (
             <div className="album">
-              <figure>
-                <img width="150" src="/images/all_artists.png" />
-                <figcaption>
-                  <h5>{this.props.title}</h5>
-                <ol>
-                {songs}
-                </ol>
-                </figcaption>
-              </figure>
+                <figure>
+                    <img width="150" src="/images/all_artists.png" />
+                    <figcaption>
+                        <h5>{this.props.title}</h5>
+                        <ol>
+                            {songs}
+                        </ol>
+                    </figcaption>
+                </figure>
             </div>
         );
     }
@@ -33,14 +33,14 @@ var TabAlbums = React.createClass({
             return (
                 <li>
                     <Album songs={songs}
-                title={albumTitle}/>
+                           title={albumTitle}/>
                 </li>
             );
         }, this);
         return (
             <ul id="list-albums"
                 className="content-list medium-block-grid-5">
-              {albums}
+                {albums}
             </ul>
         );
     }
