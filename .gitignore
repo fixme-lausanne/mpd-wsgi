@@ -8,10 +8,4 @@
 
 api/*.pyc
 api/__pycache__
-
-
-# Client
-# ======
-
-client/node_modules
-client/static/output
+api/build
