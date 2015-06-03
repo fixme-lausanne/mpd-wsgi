@@ -14,6 +14,7 @@ import threading
 import os
 from werkzeug import secure_filename
 import lastfm
+import json
 
 
 app = Flask(__name__)
@@ -37,9 +38,14 @@ class MpdClient(mpd.MPDClient):
     """Enumeration of the commands available.
     """
     Authorized_commands = ('stats', 'play', 'pause', 'toggle_play',
+                           'idle',
                            'playlistinfo', 'currentsong', 'next',
                            'previous', 'status', 'search', 'clear',
-                           'add', 'cover', 'delete', 'seek')
+                           'add', 'cover', 'delete', 'seek',
+                           'list_by_tags', 'find',
+                           'list_albums', 'list_artists', 'list_genres',
+                           'list_songs', 'list_playlists')
+
 
     def __init__(self, *args, **kwargs):
         super(MpdClient, self).__init__(*args, **kwargs)
@@ -61,9 +67,83 @@ class MpdClient(mpd.MPDClient):
         else:
             abort(401)
 
+    def idle(self, *args, **kwargs):
+        ret = super(MpdClient, self).idle(*args, **kwargs)
+        return {'result': ret}
+
+    def find(self, *args, **kwargs):
+        return super(MpdClient, self).find(*args, **kwargs)
+
+    def list(self, *args, **kwargs):
+        ret = self.list_by_tags(*args, **kwargs)
+        return {'results': ret}
+
+    def list_by_tags(self, *args, **kwargs):
+        return super(MpdClient, self).list(*args, **kwargs)
+
+    def list_albums(self):
+        res = {}
+        albums = self.list_by_tags('album')
+        for album in albums:
+            album_info = self.find('album', album)
+            artists = set(map(lambda x:x['artist'], album_info))
+            for artist in artists:
+                if res.get(album):
+                    res[album].append(artist)
+                else:
+                    res[album] = [artist]
+        return {'albums': res}
+
+    def list_artists(self):
+        res = {}
+        artists = self.list_by_tags('artist')
+        for artist in artists:
+            artist_info = self.find('artist', artist)
+            albums = set(map(lambda x:x['album'], artist_info))
+            for album in albums:
+                if res.get(artist):
+                    res[artist].append(album)
+                else:
+                    res[artist] = [album]
+
+        return {'artists': res}
+
+    def list_genres(self):
+        res = {}
+        genres = self.list_by_tags('genre')
+        for genre in genres:
+            genre_info = self.find('genre', genre)
+            albums = set(map(lambda x:x['album'], genre_info))
+            for album in albums:
+                if res.get(genre):
+                    res[genre].append(album)
+                else:
+                    res[genre] = [album]
+
+        return {'genres': res}
+
+    def list_songs(self, *args, **kwargs):
+        res = super(MpdClient, self).listallinfo(*args, **kwargs)
+        songs = [value for value in res if 'file' in value]
+        return {'songs': songs}
+
+    def list_playlists(self, *args, **kwargs):
+        res = []
+        playlists = super(MpdClient, self).listplaylists(*args, **kwargs)
+        for playlist in playlists:
+            last_modif = playlist.get('last-modified', None)
+            name = playlist.get('playlist', None)
+            playlist_info = super(MpdClient, self).listplaylistinfo(name)
+
+            res.append({'name': name,
+                        'songs': playlist_info,
+                        'last-modified': last_modif})
+
+        return {'playlists': res}
+
     def playlistinfo(self, *args, **kwargs):
         ret = super(MpdClient, self).playlistinfo(*args, **kwargs)
-        return {'songs':ret}
+        return {'songs': ret}
 
     def seek(self, time):
         current = self.currentsong()
@@ -256,7 +336,7 @@ def status():
 
 @app.route("/file", methods=['POST'])
 def upload_file():
-    """Add files to the mpd library. 
+    """Add files to the mpd library.
     """
     files = request.files.getlist("file[]")
     file_names = []
@@ -338,7 +418,6 @@ def playlist_delete():
 
 SEARCH_TERMS = ['any', 'artist', 'album', 'title']
 
-
 @app.route("/search")
 def search():
     """Search a song for any of this component or any
@@ -361,20 +440,92 @@ def search():
         abort(400)
 
 
-@socket.route('/player_change')
-def player_change(ws):
-    """Blocking call, will send a message when the state of the player has changed (next, pause, play, time)
-    """
-    while True:
-        #blocking method
-        mpd_command('idle', 'player')
-        ws.send(mpd_command('currentsong'))
+LIST_TERMS = ['album', 'artist', 'genre', 'composer', 'date',
+              'performer', 'title', 'track',]
 
+@app.route("/list")
+def list_by_tags():
+    """Lists all tags of the specified type.
+    TYPE must be one of that list:
+    album,
+    artist,
+    composer,
+    date,
+    genre,
+    performer,
+    title,
+    track.
 
-@socket.route("/playlist_change")
-def playlist_change(ws):
-    """Blocking call, will send the playlist if it has changed
+    @param TYPE
     """
-    while True:
-        mpd_command('idle', 'playlist')
-        ws.send(mpd_command('playlist'))
+    tag_type = request.args['type']
+    if tag_type in LIST_TERMS:
+        return jsonify(mpd_command('list_by_tags', tag_type))
+    else:
+        abort(400)
+
+@app.route("/list_albums")
+def list_albums():
+    """List all albums.
+    """
+    return jsonify(mpd_command('list_albums'))
+
+@app.route("/list_artists")
+def list_artists():
+    """List all artists.
+    """
+    return jsonify(mpd_command('list_artists'))
+
+@app.route("/list_genres")
+def list_genres():
+    """List all genres.
+    """
+    return jsonify(mpd_command('list_genres'))
+
+@app.route("/list_songs")
+def list_songs():
+    """List all songs.
+    """
+    return jsonify(mpd_command('list_songs'))
+
+@app.route("/list_playlists")
+def list_playlists():
+    """List all playlists.
+    """
+    return jsonify(mpd_command('list_playlists'))
+
+@app.route("/initial_data")
+def initial_data():
+    """@return initial data
+    {
+     "playlists": [],
+     "songs": [],
+     "status": {}
+     "currentSong": [],
+     "currentPlaylist": {}
+    }
+    """
+    ret = {'playlists': mpd_command('list_playlists')['playlists'],
+           'songs': mpd_command('list_songs')['songs'],
+           'status': mpd_command('status'),
+           'currentsong': mpd_command('currentsong'),
+           'currentplaylist': mpd_command('playlistinfo')['songs']}
+    return jsonify(ret)
+
+@socket.route("/events")
+def events(ws):
+    """Blocking call.
+    Everytime changes occurred in one or more mpd's SUBSYSTEMs a list of them is sent in the form of a JSON object.
+    The JSON object is formatted as `{"status": "success", "result": ["SUBSYSTEM"]}` where SUBSYSTEM is one of the following:
+    - database          -- The song database
+    - update            -- Database updates
+    - storedplaylist    -- Stored playlists
+    - playlist          -- The current playlist
+    - player            -- The player
+    - mixer             -- The volume mixer
+    - output            -- Audio outputs
+    - options           -- Playback options
+    """
+    while not ws.closed:
+        ret = mpd_command('idle')
+        ws.send(json.dumps(ret), binary=False)

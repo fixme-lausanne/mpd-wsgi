@@ -1,2 +1,11 @@
-*.pyc
-__pycache__
+# Global
+# ======
+
+.*
+
+# API
+# ===
+
+api/*.pyc
+api/__pycache__
+api/build
