@@ -44,7 +44,7 @@ class MpdClient(mpd.MPDClient):
                            'add', 'cover', 'delete', 'seek',
                            'list_by_tags', 'find',
                            'list_albums', 'list_artists', 'list_genres',
-                           'list_songs', 'list_playlists')
+                           'list_songs', 'list_playlists', 'setvol')
 
 
     def __init__(self, *args, **kwargs):
@@ -333,6 +333,17 @@ def status():
     """
     return jsonify(mpd_command('status'))
 
+@app.route("/volume", methods=['POST'])
+def volume():
+    """Set volume.
+
+    @param 'volume', should match 0 <= volume <= 100
+    """
+    if 'volume' in request.form:
+        volume = int(request.form['volume'])
+        if 0 <= volume <= 100:
+            return jsonify(mpd_command('setvol', volume))
+    abort(400)
 
 @app.route("/file", methods=['POST'])
 def upload_file():
