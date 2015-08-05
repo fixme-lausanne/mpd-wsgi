@@ -333,7 +333,7 @@ def status():
     """
     return jsonify(mpd_command('status'))
 
-@app.route("/volume", methods=['POST'])
+@app.route("/volume", methods=['PUT'])
 def volume():
     """Set volume.
 
@@ -397,7 +397,7 @@ def playlist():
     return jsonify(mpd_command('playlistinfo'))
 
 
-@app.route("/playlist", methods=['PUT'])
+@app.route("/playlist", methods=['POST'])
 def playlist_add():
     """
     """
